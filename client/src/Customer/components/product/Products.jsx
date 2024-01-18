@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Product from './Product';
+import ProductCard from './ProductCard';
 import axios from 'axios';
-import HeaderTittle from '../HeaderTittle';
 
 const Products = ({ Categories }) => {
   const [products, setProducts] = useState([]);
@@ -37,10 +36,9 @@ const Products = ({ Categories }) => {
 
   return (
     <>
-    <HeaderTittle tittle={`Product from ${Categories}`}/>
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:grid-cols-4 mb-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-4 mb-2">
         {filteredData.map((item) => (
-          <Product
+          <ProductCard
             key={item._id}
             P_id={item._id}
             P_name={item.title}

@@ -14,7 +14,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { IoIosRemove } from "react-icons/io";
-import Product from './Product.jsx'
+import Product from './ProductCard.jsx'
 import axios from 'axios'
 
 function classNames(...classes) {

@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ProductReview from '../ProductReview/ProductReview';
 import HeaderTittle from '../HeaderTittle';
-import Product from './Product';
+import Product from './ProductCard';
 
 const SingleProduct = () => {
 
@@ -62,7 +62,6 @@ const SingleProduct = () => {
         }, 2000) // Reset success message after 2 seconds
     }
 
-    console.log("R Pro", Relatedproducts);
     return (
         <>
             <Layout>
@@ -72,8 +71,8 @@ const SingleProduct = () => {
                             <div className="w-full px-4 md:w-1/2 ">
                                 <div className="sticky top-0 z-20 overflow-hidden ">
                                     <div className="relative mb-6 lg:mb-10 lg:h-2/4 ">
-                                        <img src={products.image} alt=""
-                                            className="object-cover w-full lg:h-[80dvh] " />
+                                        <img src={products.image} alt="Product Image"
+                                            className="object-cover object-left-top w-full lg:h-[80dvh] " />
                                     </div>
                                     <div className="flex-wrap hidden md:flex ">
                                         <div className="w-1/2 p-2 sm:w-1/4">

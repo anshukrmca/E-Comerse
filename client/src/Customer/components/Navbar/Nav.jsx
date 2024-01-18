@@ -1,11 +1,11 @@
-
 import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { FaBars, FaShoppingBag, FaTimes } from 'react-icons/fa';
 import { navigation } from './NavigationData.js'
-import { Avatar, Badge, Link } from '@mui/material';
+import { Avatar, Badge, Link, Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { BsCloudMoon, BsCloudSun } from 'react-icons/bs'
+import DailogModel from '../DailogModel.jsx'
 
 
 function classNames(...classes) {
@@ -15,28 +15,40 @@ function classNames(...classes) {
 export default function Nav() {
     const [open, setOpen] = useState(false)
     const navigate = useNavigate()
-
     const [theme, setTheme] = useState('');
+    const [modelopen, setModelopen] = useState(false);
 
-  useEffect(() => {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
-    } else {
-      setTheme('light');
-    }
-  }, []);
+    // theme information  start
+    useEffect(() => {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
+    }, []);
 
-  const handleThemeSwitch = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  };
+    const handleThemeSwitch = () => {
+        setTheme(theme === 'dark' ? 'light' : 'dark');
+    };
 
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [theme]);
+    useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [theme]);
+    // theme information  end
+
+    // Authmodel information  start
+    const handleClickOpenModel = () => {
+        setModelopen(true);
+    };
+    const handleCloseModel = () => {
+        setModelopen(false);
+        navigate('/');
+    };
+    // Authmodel information  end
 
     return (
         <div className="bg-white z-30 fixed w-full">
@@ -290,7 +302,7 @@ export default function Nav() {
 
                                 {/* Profile */}
                                 <div className="flex lg:ml-6">
-                                    <a className="text-sm cursor-pointer font-medium text-gray-700 hover:text-gray-800">Sign In</a>
+                                    <a onClick={handleClickOpenModel} className="text-sm cursor-pointer font-medium text-gray-700 hover:text-gray-800">Sign In</a>
                                 </div>
                                 <div className="flex lg:ml-6">
                                     <Avatar sx={{ bgcolor: 'lightblue' }} className='cursor-pointer'>A</Avatar>
@@ -299,22 +311,28 @@ export default function Nav() {
                                 {/* Cart */}
                                 <div className="ml-4 flow-root lg:ml-6 mr-3">
                                     <Link onClick={() => { navigate('/cart') }} to='/cart' className="cursor-pointer">
-                                        <Badge badgeContent={4} color="error">
-                                            <FaShoppingBag className="h-6 w-6 flex-shrink-0 text-gray-600 group-hover:text-gray-500" />
-                                        </Badge>
+                                        <Tooltip title="Cart">
+                                            <Badge badgeContent={4} color="error">
+                                                <FaShoppingBag className="h-6 w-6 flex-shrink-0 text-gray-600 group-hover:text-gray-500" />
+                                            </Badge>
+                                        </Tooltip>
                                     </Link>
                                 </div>
                                 {/* Theme */}
                                 <div className="ml-4 flow-root lg:ml-6 mr-3 text-black">
-                                    <span className='text-[30px] cursor-pointer' onClick={handleThemeSwitch}>
-                                        {theme === 'dark' ? <BsCloudSun size={30} /> : <BsCloudMoon size={30} />}
-                                    </span>
+                                    <Tooltip title="Theme">
+                                        <span className='text-[30px] cursor-pointer' onClick={handleThemeSwitch}>
+                                            {theme === 'dark' ? <BsCloudSun size={30} /> : <BsCloudMoon size={30} />}
+                                        </span>
+                                    </Tooltip>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </nav>
             </header>
+            <DailogModel modelopen={modelopen} handleCloseModel={handleCloseModel}/>
+
         </div>
     )
 }

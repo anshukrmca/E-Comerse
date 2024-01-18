@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import './Product.css'
 
 
-const Product = ({ Kid, P_id, P_name, description, price, color, image }) => {
+const ProductCard = ({ Kid, P_id, P_name, description, price, color, image }) => {
   const [isAddToCart, setIsAddToCart] = useState(false)
   const [isAddwishList, setIsAddwishList] = useState(false)
 
@@ -32,12 +32,12 @@ const Product = ({ Kid, P_id, P_name, description, price, color, image }) => {
   return (
     <>
 
-      <div className="w-full productCard" key={Kid}>
-        <div className="p-4  rounded shadow  group">
+      <div className="w-[18rem] productCard mb-4" key={Kid}>
+        <div className="p-4 rounded shadow  group">
           <div className="block mb-2" href="#">
             <div className="relative overflow-hidden">
-              <div className="mb-5 overflow-hidden">
-                <img className="object-cover w-full mx-auto transition-all rounded h-52 group-hover:scale-110"
+              <div className="mb-5 overflow-hidden h-[12rem]">
+                <img className="object-cover w-full mx-auto transition-all rounded h-full group-hover:scale-110"
                   src={image}
                   alt="Product image" />
               </div>
@@ -58,7 +58,7 @@ const Product = ({ Kid, P_id, P_name, description, price, color, image }) => {
            <Link to={`/products/${id}`}>
               <h3 className="mb-2 text-xl font-bold ">{P_name.slice(0, 15)}</h3>
               <p className="text-[13px] mb-4 truncate-1-lines">
-                {description.slice(0, 65)}
+                {description.slice(0, 55)}
                 <span className='bg-gray-300/50 rounded-lg mx-2 px-2 pb-1 cursor-pointer hover:text-black'>
                   ...view more
                 </span>
@@ -88,4 +88,4 @@ const Product = ({ Kid, P_id, P_name, description, price, color, image }) => {
   )
 }
 
-export default Product
+export default ProductCard

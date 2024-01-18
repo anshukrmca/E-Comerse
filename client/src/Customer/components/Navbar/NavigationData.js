@@ -118,7 +118,7 @@ export const navigation = {
       },
     ],
     pages: [
-      { name: 'Company', id: '/login' },
+      { name: 'Company', id: '/about' },
       { name: 'Stores', id: '/store' },
     ],
   }

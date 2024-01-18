@@ -2,17 +2,37 @@ import React from "react";
 import CardItem from "./CardItem";
 import { Button } from "@mui/material";
 import Layout from '../layout/Layout'
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate()
   return (
     <>
      <Layout>
-     <div className="lg:grid grid-cols-3 lg:px-16 relative">
+     <div className="lg:grid grid-cols-3 lg:px-16 relative h-full mx-4">
         <div className="col-span-2">
-          {[1,1,1,1].map((item)=><CardItem />)}
+          {[1,1,1,1].map((item,i)=><CardItem key={i}/>)}
         </div>
-        <div className="px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0 ">
-          <div className="border p-4 bg-white dark:bg-gray-800">
+        <div className="px-5 sticky top-0 mt-5 lg:mt-0 mb-4">
+        <div className="p-4 bg-white dark:bg-gray-800 mb-4">
+            <p className="upppercase font-bold opacity-60 pb-4">
+              Add Coupon code
+            </p>
+            <hr />
+            <div className="space-y-3 font-semibold ">
+              <input type="text" placeholder="coupon code"
+              className='bg-gray-200 mt-2 dark:bg-gray-500 p-3 outline-none w-full h-10 rounded-lg'
+              />
+            </div>
+            <Button
+              variant="contained"
+              className="w-full"
+              sx={{ mt: " 1rem", px: "2rem", py: ".4rem", bgcolor: "#9155fd" }}
+            >
+              Apply
+            </Button>
+          </div>
+          <div className=" p-4 bg-white dark:bg-gray-800">
             <p className="upppercase font-bold opacity-60 pb-4">
               Price Details
             </p>
@@ -37,6 +57,7 @@ const Cart = () => {
               </div>
             </div>
             <Button
+            onClick={()=>{navigate(`/checkout/?step=2`)}}
               variant="contained"
               className="w-full"
               sx={{ mt: " 1rem", px: "2rem", py: ".7rem", bgcolor: "#9155fd" }}

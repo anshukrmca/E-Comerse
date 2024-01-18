@@ -4,10 +4,11 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import { Button } from "@mui/material";
 // import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 // import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import Product from "../product/Product";
+import Product from "../product/ProductCard";
 import axios from 'axios';
 import { MdChevronLeft,MdChevronRight } from "react-icons/md";
 import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
+import HeaderTittle from "../HeaderTittle";
 
 const responsive = {
     0: { items: 1 },
@@ -83,8 +84,9 @@ const HomeProductCarousels = ({ Categories }) => {
 
     return (
         <>
-            <div className="mx-4">
-                <h3 className="text-2xl font-bold">Men's Shirt</h3>
+            <div className="px-2 mb-3 bg-slate-300 dark:bg-slate-700 h-[auto]">
+                {/* <h3 className="text-2xl font-bold">Product from {`${Categories}`}</h3> */}
+                <HeaderTittle tittle={`Product from ${Categories}`}/>
                 <div className="relative p-5">
                     <AliceCarousel
                         items={items}
