@@ -1,18 +1,32 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Grid, TextField } from '@mui/material';
+import axios from 'axios';
+import { useDispatch } from 'react-redux'
+import { login } from '../../../redux/features/userSlice'
+
 
 const Login = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const data = new FormData(e.currentTarget);
     const userData = {
       email: data.get("email"),
       password: data.get("password"),
     }
-    console.log("login data", userData)
+    try {
+      const response = await axios.post('/api/auth/signin', userData);
+      const data = response.data;
+      localStorage.setItem("token", data.Jwt);
+      dispatch(login(data.user))
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+      // Handle other errors or network issues
+    }
   }
 
   return (
@@ -53,27 +67,16 @@ const Login = () => {
               className='w-full'
               type='submit'
               variant='contained'
-              sx={{mt:3,
+              sx={{
+                mt: 3,
                 padding: ".4rem 0", bgcolor: '#9155FD',
                 '&:hover': {
                   bgcolor: "#9175FD",
                 }
               }}>Sign In</Button>
           </Grid>
-        <Grid item xs={12}>
-          <Button
-            className='w-full'
-            type='submit'
-            variant='contained'
-            sx={{ 
-              padding: ".3rem 0", bgcolor: '#cc0000',
-              '&:hover': {
-                bgcolor: "#ff1a1a",
-              }
-            }}>Sign In with G</Button>
         </Grid>
-      </Grid>
-    </form >
+      </form >
       <div className='mt-2'>
         <p className='font-thin text-sm'>Need a Account ? <span onClick={() => { navigate("/signup") }} className='text-indigo-600 font-bold cursor-pointer'>New</span></p>
       </div>

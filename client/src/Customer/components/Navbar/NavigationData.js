@@ -23,7 +23,7 @@ export const navigation = {
             name: 'Clothing',
             items: [
               { name: 'Tops', id:"top", href: `{women/clothing/tops}` },
-              { name: 'Dresses', id:"women_dress", href: '#' },
+              { name: 'Dresses', id:"women_dress"},
               { name: 'Women Jeans', id: 'women_jeans' },
               { name: 'Lengha Choli', id: 'lengha_choli' },
               { name: 'Sweaters', id: 'sweater' },
@@ -85,6 +85,63 @@ export const navigation = {
               { name: 'Mens Kurtas', id: 'mens_kurta' },
               { name: 'Shirt', id: 'shirt' },
               { name: 'Men Jeans', id: 'men_jeans' },
+              { name: 'Sweaters', id: '#' },
+              { name: 'T-Shirts', id: 't-shirt' },
+              { name: 'Jackets', id: '#' },
+              { name: 'Activewear', id: '#' },
+              
+            ],
+          },
+          {
+            id: 'accessories',
+            name: 'Accessories',
+            items: [
+              { name: 'Watches', id: '#' },
+              { name: 'Wallets', id: '#' },
+              { name: 'Bags', id: '#' },
+              { name: 'Sunglasses', id: '#' },
+              { name: 'Hats', id: '#' },
+              { name: 'Belts', id: '#' },
+            ],
+          },
+          {
+            id: 'brands',
+            name: 'Brands',
+            items: [
+              { name: 'Re-Arranged', id: '#' },
+              { name: 'Counterfeit', id: '#' },
+              { name: 'Full Nelson', id: '#' },
+              { name: 'My Way', id: '#' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'boy',
+        name: 'Boy',
+        featured: [
+          {
+            name: 'New Arrivals',
+            id: '#',
+            imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
+            imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',
+          },
+          {
+            name: 'Artwork Tees',
+            id: '#',
+            imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg',
+            imageAlt:
+              'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.',
+          },
+        ],
+        sections: [
+          {
+            id: 'clothing',
+            name: 'Clothing',
+            items: [
+              { name: 'Boys Kurtas', id: 'Boys_kurta' },
+              { name: 'Shirt', id: 'shirt' },
+              { name: 'Boy Jeans', id: 'Boy_jeans' },
               { name: 'Sweaters', id: '#' },
               { name: 'T-Shirts', id: 't-shirt' },
               { name: 'Jackets', id: '#' },

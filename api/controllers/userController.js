@@ -1,7 +1,17 @@
 import User from '../models/userModel.js';
+import { getallUser } from '../service/userService.js';
 import { errorHandler } from '../utils/error.js';
 import bcryptjs from 'bcryptjs';
 
+
+export const getAllUser = async(req,res,next)=>{
+  try {
+    const users = await getallUser();
+    res.status(200).json(users);
+  } catch (error) {
+    next(error)
+  }
+}
 
 // update user
 

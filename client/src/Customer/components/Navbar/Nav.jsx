@@ -6,6 +6,10 @@ import { Avatar, Badge, Link, Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { BsCloudMoon, BsCloudSun } from 'react-icons/bs'
 import DailogModel from '../DailogModel.jsx'
+import { GrSettingsOption, GrUserSettings } from "react-icons/gr";
+import { IoIosLogOut } from "react-icons/io";
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, selectUser } from '../../../redux/features/userSlice.js';
 
 
 function classNames(...classes) {
@@ -17,6 +21,36 @@ export default function Nav() {
     const navigate = useNavigate()
     const [theme, setTheme] = useState('');
     const [modelopen, setModelopen] = useState(false);
+    const [isDrOpen, setIsDrOpen] = useState(false);
+    const token = localStorage.getItem("token")
+    const dispatch= useDispatch()
+    const user = useSelector(selectUser)
+
+    // profile dropwon section 
+    const ProfileDropdown = () => {
+        return (
+            <div id="dropdown_profile"
+                className="absolute top-11 right-8 w-36 rounded-lg mt-12 bg-slate-100 p-4 shadow-lg ">
+                <div className="py-1">
+                    <Link
+                        to='/profile'
+                        style={{ textDecoration: 'none' }}
+                        className="flex cursor-pointer items-center p-2 rounded-sm text-lg  hover:bg-gray-200 no-underline">
+                        <GrSettingsOption className='mx-1 text-gray-800 font-extrabold text-lg' />
+                        <span className=' text-gray-800'>Account</span>
+                    </Link>
+                    <Link onClick={handleLogOut}
+                        style={{ textDecoration: 'none' }}
+                        className="flex cursor-pointer items-center p-2 rounded-sm text-lg  hover:bg-gray-200">
+                        <IoIosLogOut className='mx-1 text-gray-800 font-extrabold text-lg' />
+                        <span className=' text-gray-800'> Logout</span>
+
+                    </Link>
+                </div>
+            </div>
+        )
+    }
+
 
     // theme information  start
     useEffect(() => {
@@ -49,6 +83,26 @@ export default function Nav() {
         navigate('/');
     };
     // Authmodel information  end
+
+    // get token after login 
+    useEffect(() => {
+        if (token) {
+            console.log("yes token os here", token)
+            handleCloseModel();
+        }
+    }, [token])
+
+    // logout 
+    const handleLogOut = () => {
+        localStorage.removeItem("token");
+        dispatch(logout());
+        setIsDrOpen(false)
+        navigate('/');
+    }
+
+    const handleCategoryClick = (category, section, item) => {
+        alert("1st :", category.id, "2nd :", section.id, "3rd :", item.id);
+    }
 
     return (
         <div className="bg-white z-30 fixed w-full">
@@ -172,7 +226,6 @@ export default function Nav() {
                 <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
                     Get free delivery on orders over $50
                 </p>
-
                 <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="border-b border-gray-200">
                         <div className="flex h-16 items-center">
@@ -210,7 +263,7 @@ export default function Nav() {
                                                             className={classNames(
                                                                 open
                                                                     ? 'border-indigo-600 text-indigo-600'
-                                                                    : 'border-transparent text-gray-700 hover:text-gray-800',
+                                                                    : ' text-gray-700 hover:text-gray-800',
                                                                 'relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out'
                                                             )}
                                                         >
@@ -267,7 +320,7 @@ export default function Nav() {
                                                                                     >
                                                                                         {section.items.map((item) => (
                                                                                             <li key={item.name} className="flex">
-                                                                                                <a href={item.href} className="hover:text-gray-800">
+                                                                                                <a onClick={handleCategoryClick} className="hover:text-gray-800 cursor-pointer">
                                                                                                     {item.name}
                                                                                                 </a>
                                                                                             </li>
@@ -299,27 +352,32 @@ export default function Nav() {
                             </Popover.Group>
 
                             <div className="ml-auto flex items-center">
-
                                 {/* Profile */}
-                                <div className="flex lg:ml-6">
-                                    <a onClick={handleClickOpenModel} className="text-sm cursor-pointer font-medium text-gray-700 hover:text-gray-800">Sign In</a>
-                                </div>
-                                <div className="flex lg:ml-6">
-                                    <Avatar sx={{ bgcolor: 'lightblue' }} className='cursor-pointer'>A</Avatar>
-                                </div>
 
+                                {!token ?
+                                    <div className="flex lg:ml-6">
+                                        <a onClick={handleClickOpenModel} className="text-sm cursor-pointer font-medium text-gray-700 hover:text-gray-800">Sign In</a>
+                                    </div>
+                                    :
+                                    <div className="flex lg:ml-6" x-data="{ open: false }" >
+                                        <div onClick={() => setIsDrOpen(!isDrOpen)}>
+                                            <Avatar src= {user && user.profilePicture} sx={{ bgcolor: 'lightblue',height: 60, width: 60}} className='cursor-pointer'></Avatar>
+                                        </div>
+                                    </div>
+                                }
+                                {isDrOpen && <ProfileDropdown />}
                                 {/* Cart */}
                                 <div className="ml-4 flow-root lg:ml-6 mr-3">
                                     <Link onClick={() => { navigate('/cart') }} to='/cart' className="cursor-pointer">
                                         <Tooltip title="Cart">
-                                            <Badge badgeContent={4} color="error">
+                                            <Badge badgeContent={1} color="error">
                                                 <FaShoppingBag className="h-6 w-6 flex-shrink-0 text-gray-600 group-hover:text-gray-500" />
                                             </Badge>
                                         </Tooltip>
                                     </Link>
                                 </div>
                                 {/* Theme */}
-                                <div className="ml-4 flow-root lg:ml-6 mr-3 text-black">
+                                <div className="ml-4 flow-root lg:ml-6 mr-1 text-black">
                                     <Tooltip title="Theme">
                                         <span className='text-[30px] cursor-pointer' onClick={handleThemeSwitch}>
                                             {theme === 'dark' ? <BsCloudSun size={30} /> : <BsCloudMoon size={30} />}
@@ -331,8 +389,9 @@ export default function Nav() {
                     </div>
                 </nav>
             </header>
-            <DailogModel modelopen={modelopen} handleCloseModel={handleCloseModel}/>
-
+            <DailogModel modelopen={modelopen} handleCloseModel={handleCloseModel} />
         </div>
     )
 }
+
+

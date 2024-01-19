@@ -27,7 +27,7 @@ export default function Checkout() {
               {steps.map((label, index) => {
                 return (
                   <Step key={index}>
-                    <StepLabel  StepIconComponent={CustomStepIcon} >{label}</StepLabel>
+                    <StepLabel>{label}</StepLabel>
                   </Step>
                 );
               })}

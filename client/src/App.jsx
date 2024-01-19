@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import Home from './Customer/pages/Home/Home'
 import About from './Customer/pages/About/About'
-import Login from './Customer/components/Auth/Login'
-import Signup from './Customer/components/Auth/Signup'
 import SingleProduct from './Customer/components/product/SingleProduct'
 import Cart from './Customer/components/cart/Cart'
 import ProductStore from './Customer/components/product/ProductStore'
 import Checkout from './Customer/components/checkout/Checkout'
 
+
+
 const App = () => {
+
+
+
   return (
     <div className='dark:bg-black text-black dark:text-white bg-slate-200 h-full w-[160dvw] md:w-full'>
       <Routes>

@@ -1,16 +1,15 @@
-import User from '../models/userModel.js';
 import bcryptjs from 'bcryptjs';
 import { errorHandler } from '../utils/error.js';
-import jwt from 'jsonwebtoken';
+import { gererateToken } from '../utils/JwtProvide.js';
+import { createUser, findUserByEmail } from '../service/userService.js';
+
 
 export const signup = async (req, res, next) => {
-  const { username, email, password } = req.body;
-  const hashedPassword = bcryptjs.hashSync(password, 10);
-  const newUser = new User({ username, email, password: hashedPassword });
   try {
-    await newUser.save();
-    res.status(201).json({ message: 'User created successfully' });
+   await createUser(req.body)
+   res.status(200).json({message:"User successful Created !"})
   } catch (error) {
+    // Handle errors
     next(error);
   }
 };
@@ -18,22 +17,16 @@ export const signup = async (req, res, next) => {
 export const signin = async (req, res, next) => {
   const { email, password } = req.body;
   try {
-    const validUser = await User.findOne({ email });
-    if (!validUser) return next(errorHandler(404, 'User not found'));
-    const validPassword = bcryptjs.compareSync(password, validUser.password);
+    const user = await findUserByEmail(email)
+    if (!user) return next(errorHandler(404, 'User not found'));
+    const validPassword = bcryptjs.compareSync(password, user.password);
     if (!validPassword) return next(errorHandler(401, 'wrong credentials'));
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
-    const { password: hashedPassword, ...rest } = validUser._doc;
-    const expiryDate = new Date(Date.now() + 3600000); // 1 hour
-    res
-      .cookie('access_token', token, { httpOnly: true, expires: expiryDate })
-      .status(200)
-      .json(rest);
+    const Jwt = gererateToken(user._id)
+    res.status(200).json({Jwt,user,message:"login success"})
   } catch (error) {
     next(error);
   }
 };
 
-export const signout = (req, res) => {
-  res.clearCookie('access_token').status(200).json('Signout success!');
-};
+
+

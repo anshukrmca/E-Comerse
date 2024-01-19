@@ -30,7 +30,7 @@ export default function DailogModel({modelopen,handleCloseModel}) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {location.pathname === "/login" ? <Login/> : <Signup/>}
+          {location.pathname === "/signup" ? <Signup/> : <Login/>}
         </Box>
       </Modal>
     </div>
