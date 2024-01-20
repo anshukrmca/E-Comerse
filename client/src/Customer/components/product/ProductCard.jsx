@@ -32,7 +32,7 @@ const ProductCard = ({ Kid, P_id, P_name, description, price, color, image }) =>
   return (
     <>
 
-      <div className="w-[18rem] productCard mb-4" key={Kid}>
+      <div className=" productCard mb-4" key={Kid}>
         <div className="p-4 rounded shadow  group">
           <div className="block mb-2" href="#">
             <div className="relative overflow-hidden">

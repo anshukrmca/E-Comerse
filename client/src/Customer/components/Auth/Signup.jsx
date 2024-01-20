@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Grid, TextField } from '@mui/material';
 import axios from 'axios'
@@ -20,7 +20,8 @@ const Signup = () => {
             try {
                 const response = await axios.post('/api/auth/signup', userData);
                 const data = response.data;
-                console.log(data);
+                alert(data.message);
+               // window.location.reload();
                 navigate('/login');
             } catch (error) {
                 console.log(error.response.data.message);
@@ -29,6 +30,7 @@ const Signup = () => {
             console.log("Password miss match", userData)
         }
     }
+
 
     return (
         <>

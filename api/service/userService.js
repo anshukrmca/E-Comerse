@@ -1,6 +1,5 @@
 import User from '../models/userModel.js';
-
-import {getUserIdFromToken} from '../utils/JwtProvide.js';
+import bcryptjs from 'bcryptjs';
 
 export const createUser = async (userData) => {
     try {
@@ -23,6 +22,7 @@ export const createUser = async (userData) => {
 export const findUserById = async(userId)=>{
    try {
      const user = await User.findById({_id:userId})
+     console.log("from service",user)
      if (!user) {
         throw new Error("User not found with id :",userId)
     }
