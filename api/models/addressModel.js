@@ -30,6 +30,9 @@ const addressSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    landmark: {
+      type: String,
+    },
   },
 
   { timestamps: true }

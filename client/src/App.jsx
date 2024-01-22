@@ -7,10 +7,14 @@ import SingleProduct from "./Customer/components/product/SingleProduct";
 import Cart from "./Customer/components/cart/Cart";
 import ProductStore from "./Customer/components/product/ProductStore";
 import Checkout from "./Customer/components/checkout/Checkout";
-import axios from "axios";
+import UProfileSetting from "./Customer/components/userProfileSetting/UProfileSetting";
+import UserProfile from "./Customer/components/userProfileSetting/UserProfile";
+import UserAddress from "./Customer/components/userProfileSetting/UserAddress";
+import OrderDetail from "./Customer/components/userProfileSetting/OrderDetail";
+import OrderSummery from "./Customer/components/userProfileSetting/OrderSummery";
 
 const App = () => {
- 
+
   return (
     <div className="dark:bg-black text-black dark:text-white bg-slate-200 h-full w-[160dvw] md:w-full">
       <Routes>
@@ -23,6 +27,15 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/store" element={<ProductStore />} />
         <Route path="/checkout/" element={<Checkout />} />
+
+        {/* profile  */}
+        <Route path="/Setting" element={<UProfileSetting />} >
+          <Route path="/Setting/profile" element={<UserProfile />} />
+          <Route path="/Setting/address" element={<UserAddress />} />
+          <Route path="/Setting/order" element={<OrderDetail />} />
+        </Route>
+        <Route path="/order-summery" element={<OrderSummery />} />
+
       </Routes>
     </div>
   );

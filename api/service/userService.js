@@ -22,7 +22,6 @@ export const createUser = async (userData) => {
 export const findUserById = async(userId)=>{
    try {
      const user = await User.findById({_id:userId})
-     console.log("from service",user)
      if (!user) {
         throw new Error("User not found with id :",userId)
     }

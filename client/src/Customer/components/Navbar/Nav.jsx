@@ -24,7 +24,7 @@ export default function Nav() {
   const [isDrOpen, setIsDrOpen] = useState(false);
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user")
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
 
   // profile dropwon section
   const ProfileDropdown = () => {
@@ -34,8 +34,7 @@ export default function Nav() {
         className="absolute top-11 right-8 w-36 rounded-lg mt-12 bg-slate-100 p-4 shadow-lg "
       >
         <div className="py-1">
-          <Link
-            to="/profile"
+          <Link onClick={()=>{navigate('/Setting/profile')}}
             style={{ textDecoration: "none" }}
             className="flex cursor-pointer items-center p-2 rounded-sm text-lg  hover:bg-gray-200 no-underline"
           >
@@ -88,8 +87,6 @@ export default function Nav() {
     navigate("/");
   };
   // Authmodel information  end
-
- 
 
   // logout
   const handleLogOut = async () => {
@@ -420,7 +417,7 @@ export default function Nav() {
                   <div className="flex lg:ml-6" x-data="{ open: false }">
                     <div onClick={() => setIsDrOpen(!isDrOpen)}>
                       <Avatar
-                      src={user.profilePicture}
+                        src={user.profilePicture}
                         sx={{ bgcolor: "lightblue", height: 50, width: 50 }}
                         className="cursor-pointer"
                       />

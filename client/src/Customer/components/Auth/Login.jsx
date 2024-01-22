@@ -31,6 +31,7 @@ const Login = () => {
       alert(data.message)
       localStorage.setItem("token", data.Jwt);
       await fetchData();
+      window.location.reload();
     } catch (error) {
       console.error(error);
       // Handle other errors or network issues
