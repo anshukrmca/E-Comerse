@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
 import "./App.css";
+import 'react-toastify/dist/ReactToastify.css';
 import { Route, Routes } from "react-router-dom";
 import Home from "./Customer/pages/Home/Home";
 import About from "./Customer/pages/About/About";

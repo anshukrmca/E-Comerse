@@ -30,7 +30,7 @@ const addressSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    landmark: {
+    landmarks: {
       type: String,
     },
   },
@@ -38,6 +38,6 @@ const addressSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Addresse = mongoose.model("addresse", addressSchema);
+const Addresse = mongoose.model("Address", addressSchema);
 
 export default Addresse;

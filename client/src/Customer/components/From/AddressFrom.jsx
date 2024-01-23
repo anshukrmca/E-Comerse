@@ -1,40 +1,97 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField';
 import { Button, Grid, } from '@mui/material';
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 
 
 const address = [
     {
         id: 'name',
-        lable: "Name"
+        lable: "Name",
+        colSize:12,
+        smColSize:6
     },
     {
         id: 'mobile',
-        lable: "Mobile"
+        lable: "Mobile",
+        colSize:12,
+        smColSize:6
     },
-    {
-        id: 'ziocode',
-        lable: "Zip Code"
-    },
+    
     {
         id: 'city',
-        lable: "City"
+        lable: "City",
+        colSize:12,
+        smColSize:6
     },
     {
         id: 'state',
-        lable: "State"
+        lable: "State",
+        colSize:12,
+        smColSize:6
     },
     {
-        id: 'lankmark',
-        lable: "Landmark (Optional)"
+        id: 'landmarks',
+        lable: "Landmark (Optional)",
+        colSize:12,
+        smColSize:6
+    },
+    {
+        id: 'zipCode',
+        lable: "Zip Code",
+        colSize:12,
+        smColSize:6
+    },
+    {
+        id: 'streetAddress',
+        lable: "Full Address",
+        colSize:12,
+        smColSize:12
     },
 
 ]
 
 
 
-const AddressFrom = ({ closeForm }) => {
+const AddressFrom = ({ closeForm,AddressId }) => {
+
+    const [formData, setFormData] = useState({
+        name: '',
+        mobile: '',
+        zipCode: '',
+        city: '',
+        state: '',
+        landmarks: '',
+        streetAddress:''
+    });
+
+useEffect(()=>{
+    const fetchData = async () => {
+        if (AddressId) {
+          try {
+            const res = await axios.get(`/api/address/AddressbyId/${AddressId}`);
+            const data = res.data.address;
+            setFormData((prevData) => ({
+                ...prevData,
+                name: data.name,
+                mobile: data.mobile,
+                zipCode: data.zipCode,
+                city: data.city,
+                state: data.state,
+                landmarks: data.landmarks,
+                streetAddress: data.streetAddress
+              }));
+          } catch (error) {
+            console.error('Error fetching address data:', error);
+          }
+        }
+      };
+    
+      fetchData();
+},[AddressId])
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,13 +99,20 @@ const AddressFrom = ({ closeForm }) => {
         const userData = {
             name: data.get("name"),
             mobile: data.get("mobile"),
-            ziocode: data.get("ziocode"),
+            zipCode: data.get("zipCode"),
             city: data.get("city"),
             state: data.get("state"),
             streetAddress: data.get("streetAddress"),
+            landmarks: data.get("landmarks"),
         };
         try {
-            console.log(userData);
+            console.log(userData)
+            const response = await axios.post('/api/address/newAddesss', userData);
+            const data = response.data;
+            toast.success(data.message)
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         } catch (error) {
             console.error(error);
             // Handle other errors or network issues
@@ -58,12 +122,12 @@ const AddressFrom = ({ closeForm }) => {
     return (
         <>
             <div className='dark:bg-slate-400 bg-[#f0f5ff] p-4'>
-                <p className='text-indigo-700  font-semibold mb-4'>ADD A NEW ADDRESS</p>
+                <p className='text-indigo-700  font-semibold mb-4'>{AddressId ? "Update":"ADD A NEW"} ADDRESS</p>
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={1}>
                         {address.map((item, i) => {
                             return (
-                                <Grid key={i} item xs={12} sm={6}>
+                                <Grid key={i} item xs={item.colSize} sm={item.smColSize}>
                                     <TextField
                                         required
                                         id={item.id}
@@ -73,12 +137,14 @@ const AddressFrom = ({ closeForm }) => {
                                         variant="standard"
                                         autoComplete='off'
                                         sx={{ outlineColor: 'black', borderColor: 'black', color: 'whitesmoke' }}
+                                        value={formData[item.id]}
+                                        onChange={(e) => setFormData({ ...formData, [item.id]: e.target.value })}
                                     />
                                 </Grid>
 
                             )
                         })}
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                             <TextField
                                 required
                                 id="streetAddress"
@@ -89,7 +155,7 @@ const AddressFrom = ({ closeForm }) => {
                                 autoComplete='off'
                                 sx={{ outlineColor: 'black', borderColor: 'black', color: 'whitesmoke' }}
                             />
-                        </Grid>
+                        </Grid> */}
 
 
                         <Grid item xs={12} sm={6}>
@@ -98,7 +164,7 @@ const AddressFrom = ({ closeForm }) => {
                                 type="submit"
                                 variant="contained"
                                 sx={{
-                                    mt:1,
+                                    mt: 1,
                                     padding: ".4rem 0",
                                     bgcolor: "#9155FD",
                                     "&:hover": {

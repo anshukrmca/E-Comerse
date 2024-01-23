@@ -33,12 +33,12 @@ const userSchema = new mongoose.Schema(
     //     ref: "cart",
     //   }
     // ],
-    // address: [
-    //   {
-    //     typeof:  mongoose.Schema.Types.ObjectId,
-    //     ref: "addresse",
-    //   }
-    // ],
+    Useraddress: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Address", 
+      }
+    ],
     // paymentInformaton: [
     //   {
     //     typeof:  mongoose.Schema.Types.ObjectId,

@@ -36,10 +36,16 @@ const productSchema = new Schema(
         quantity: { type: Number },
       },
     ],
-    image: {
+    mainImage: {
       type: String,
       required: true,
     },
+    SubImage: [
+      {
+        type: String,
+        required: true,
+      }
+    ],
     ratings: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ratings",

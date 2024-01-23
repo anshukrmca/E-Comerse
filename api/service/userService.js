@@ -21,7 +21,7 @@ export const createUser = async (userData) => {
 
 export const findUserById = async(userId)=>{
    try {
-     const user = await User.findById({_id:userId})
+     const user = await User.findById({_id:userId}).populate('Useraddress')
      if (!user) {
         throw new Error("User not found with id :",userId)
     }

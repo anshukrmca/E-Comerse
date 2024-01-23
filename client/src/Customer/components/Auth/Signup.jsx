@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Grid, TextField } from '@mui/material';
 import axios from 'axios'
 import { FcGoogle } from "react-icons/fc";
+import { toast } from 'react-toastify';
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -21,8 +22,8 @@ const Signup = () => {
                 const response = await axios.post('/api/auth/signup', userData);
                 const data = response.data;
                 alert(data.message);
+                toast.success(data.message);
                // window.location.reload();
-                navigate('/login');
             } catch (error) {
                 console.log(error.response.data.message);
             }

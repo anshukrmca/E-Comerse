@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRoutes from '../api/Routes/userRoute.js';
 import authRoutes from '../api/routes/authRoute.js';
 import productRoutes from '../api/Routes/productRoute.js'
+import addressRoute from '../api/Routes/addressRoute.js'
 import cookieParser from 'cookie-parser';
 import path from 'path';
 dotenv.config();
@@ -35,6 +36,7 @@ app.listen(process.env.PORT, () => {
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/address', addressRoute);
 
 app.use((err, req, res, next) => {  
   const statusCode = err.statusCode || 500;
