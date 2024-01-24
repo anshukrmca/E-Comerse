@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
-import { FaBars, FaShoppingBag, FaTimes } from "react-icons/fa";
+import { FaBars, FaShoppingBag, FaTimes, FaUser } from "react-icons/fa";
 import { navigation } from "./NavigationData.js";
 import { Avatar, Badge, Link, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ export default function Nav() {
   const [modelopen, setModelopen] = useState(false);
   const [isDrOpen, setIsDrOpen] = useState(false);
   const token = localStorage.getItem("token");
-  const user = localStorage.getItem("user")
+  const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch()
 
   // profile dropwon section
@@ -34,13 +34,26 @@ export default function Nav() {
         className="absolute top-11 right-8 w-36 rounded-lg mt-12 bg-slate-100 p-4 shadow-lg "
       >
         <div className="py-1">
-          <Link onClick={()=>{navigate('/Setting/profile')}}
+          <Link onClick={() => { navigate('/Setting/profile') }}
             style={{ textDecoration: "none" }}
             className="flex cursor-pointer items-center p-2 rounded-sm text-lg  hover:bg-gray-200 no-underline"
           >
             <GrSettingsOption className="mx-1 text-gray-800 font-extrabold text-lg" />
             <span className=" text-gray-800">Account</span>
           </Link>
+          {user.isAdmin === "true" && (
+            <Link
+              onClick={() => {
+                navigate('/dashboard')
+              }}
+              style={{ textDecoration: "none" }}
+              className="flex cursor-pointer items-center p-2 rounded-sm text-lg  hover:bg-gray-200"
+            >
+              <FaUser className="mx-1 text-gray-800 font-extrabold text-lg" />
+              <span className=" text-gray-800">Admin </span>
+            </Link>
+          )}
+
           <Link
             onClick={handleLogOut}
             style={{ textDecoration: "none" }}
@@ -98,6 +111,7 @@ export default function Nav() {
     setIsDrOpen(false);
     navigate("/");
   };
+
 
   // const handleCategoryClick = (category, section, item) => {
   //     alert("1st :", category.id, "2nd :", section.id, "3rd :", item.id);
@@ -418,7 +432,7 @@ export default function Nav() {
                     <div onClick={() => setIsDrOpen(!isDrOpen)}>
                       <Avatar
                         src={user.profilePicture}
-                        sx={{ bgcolor: "lightblue", height: 50, width: 50 }}
+                        sx={{ bgcolor: "lightblue", height: 60, width: 60 }}
                         className="cursor-pointer"
                       />
                     </div>

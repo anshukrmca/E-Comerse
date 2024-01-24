@@ -13,7 +13,7 @@ const Login = () => {
         withCredentials: true,
       });
       const data = JSON.stringify(response.data.user);
-     localStorage.setItem("user", data);
+      localStorage.setItem("user", data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -30,17 +30,13 @@ const Login = () => {
       const response = await axios.post("/api/auth/signin", userData);
       const data = response.data;
       toast.success(data.message)
-      if (data.isAdmin === "true") {
-        navigate("/dashboard");
-        localStorage.setItem("token", data.Jwt);
-        await fetchData();
-      } else {
-        navigate("/login");
-        localStorage.setItem("token", data.Jwt);
-        await fetchData();
-      }
+      localStorage.setItem("token", data.Jwt);
+      await fetchData();
+      setTimeout(() => {
       window.location.reload();
-     
+        
+      }, 2000);
+
     } catch (error) {
       console.error(error);
       // Handle other errors or network issues

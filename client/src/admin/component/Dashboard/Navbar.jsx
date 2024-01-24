@@ -63,7 +63,8 @@ export default function Navbar() {
             </div>
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               <div>
-                <Avatar src={user.profilePicture} />
+                <Avatar
+                 src={user.profilePicture} />
               </div>
               <div className="ml-4 flow-root lg:ml-6 mr-1 text-white">
                 <Tooltip title="Theme">
