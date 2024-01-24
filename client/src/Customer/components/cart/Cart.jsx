@@ -57,7 +57,7 @@ const Cart = () => {
               </div>
             </div>
             <Button
-            onClick={()=>{navigate(`/checkout/?step=2`)}}
+            onClick={()=>{navigate(`/checkout/?step=1`)}}
               variant="contained"
               className="w-full"
               sx={{ mt: " 1rem", px: "2rem", py: ".7rem", bgcolor: "#9155fd" }}

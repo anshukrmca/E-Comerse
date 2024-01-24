@@ -4,13 +4,13 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { useLocation } from 'react-router-dom';
-import OrderSummery from './OrderSummery';
+import CartSummery from './CartSummery';
 import DeleveryAddress from './DeleveryAddress';
 import Layout from '../layout/Layout';
 import Payment from './Payment'
 
 
-const steps = ['Login', 'Delevery Address', 'Order Summary', 'Payment'];
+const steps = ['Address', 'Summary', 'Payment'];
 
 export default function Checkout() {
 
@@ -21,7 +21,7 @@ export default function Checkout() {
   return (
     <>
       <Layout>
-        <div className='mb-4 mx-4 p-4 lg:px-20 bg-slate-300'>
+        <div className='mb-4 mx-4 p-1 lg:px-20 dark:bg-slate-800 bg-slate-300'>
           <Box sx={{ width: '100%' }}>
             <Stepper activeStep={step}>
               {steps.map((label, index) => {
@@ -33,11 +33,11 @@ export default function Checkout() {
               })}
             </Stepper>
                 <div>
-                  {step == 2 ?
+                  {step == 1 ?
                     <DeleveryAddress /> :
-                    step == 3 ?
-                      <OrderSummery />
-                      : step == 4 ?
+                    step == 2 ?
+                      <CartSummery />
+                      : step == 3 ?
                         <Payment />
                         : ''}
                 </div>

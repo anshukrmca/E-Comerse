@@ -89,9 +89,10 @@ export const getAddressByAddressID = async (req, res, next) => {
 
 
 
+
 // update 
 export const updateAddress = async (req, res, next) => {
-  const { AddressId } = req.body;
+  const { AddressId } = req.params;
   const token = req.cookies.token;
   try {
 

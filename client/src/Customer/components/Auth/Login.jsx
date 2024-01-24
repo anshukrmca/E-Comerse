@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Grid, TextField } from "@mui/material";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,10 +29,18 @@ const Login = () => {
     try {
       const response = await axios.post("/api/auth/signin", userData);
       const data = response.data;
-      alert(data.message)
-      localStorage.setItem("token", data.Jwt);
-      await fetchData();
+      toast.success(data.message)
+      if (data.isAdmin === "true") {
+        navigate("/dashboard");
+        localStorage.setItem("token", data.Jwt);
+        await fetchData();
+      } else {
+        navigate("/login");
+        localStorage.setItem("token", data.Jwt);
+        await fetchData();
+      }
       window.location.reload();
+     
     } catch (error) {
       console.error(error);
       // Handle other errors or network issues

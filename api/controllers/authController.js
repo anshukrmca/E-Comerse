@@ -28,8 +28,9 @@ export const signin = async (req, res, next) => {
       return res.status(401).json({ message: "Wrong credentials" });
     }
     const Jwt = gererateToken(user._id);
+    const isAdmin = user.isAdmin
     res.cookie("token", Jwt);
-    res.status(200).json({ Jwt,message: "login success" });
+    res.status(200).json({ isAdmin,Jwt,message: "login success" });
   } catch (error) {
     next(error);
   }

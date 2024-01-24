@@ -12,11 +12,12 @@ import UserProfile from "./Customer/components/userProfileSetting/UserProfile";
 import UserAddress from "./Customer/components/userProfileSetting/UserAddress";
 import OrderDetail from "./Customer/components/userProfileSetting/OrderDetail";
 import OrderSummery from "./Customer/components/userProfileSetting/OrderSummery";
+import Dashboard from './admin/component/Dashboard/Dashboard'
 
 const App = () => {
 
   return (
-    <div className="dark:bg-black text-black dark:text-white bg-slate-200 h-full w-[160dvw] md:w-full">
+    <div className="dark:bg-black text-black dark:text-white bg-white h-full w-[160dvw] md:w-full">
       <Routes>
         <Route path="/login" element={<Home />} />
         <Route path="/signup" element={<Home />} />
@@ -35,6 +36,8 @@ const App = () => {
           <Route path="/Setting/order" element={<OrderDetail />} />
         </Route>
         <Route path="/order-summery" element={<OrderSummery />} />
+
+        <Route path='/dashboard' element={<Dashboard/>}></Route>
 
       </Routes>
     </div>

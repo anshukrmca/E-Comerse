@@ -8,9 +8,9 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <>
-      <footer className='p-8 grid gap-x-16 gap-y-4 md:grid-cols-3'>
+      <footer className='p-8 grid gap-x-16 gap-y-4 md:grid-cols-2 lg:grid-cols-3'>
         <div>
-          <h1 className='font-bold text-3xl uppercase mb-4 tracking-wider'>
+          <h1 className='font-bold text-2xl uppercase mb-4 tracking-wider'>
             <Link to='/'>E-Comerse__:)</Link>
           </h1>
           <p className='text-justify text-sm'>
@@ -22,8 +22,8 @@ const Footer = () => {
           </p>
         </div>
         <div>
-          <h2 className='font-bold text-2xl mb-4 tracking-wider'>Useful Links</h2>
-          <div className='grid gap-1 md:grid-cols-2 mb-2'>
+          <h2 className='font-bold text-xl mb-4 tracking-wider'>Useful Links</h2>
+          <div className='grid gap-1 md:grid-cols-2 mb-2 text-[10px]'>
                 <Link className='hover:underline hover:text-lime-500'>Home</Link>
                 <Link className='hover:underline hover:text-lime-500'>Man Fashion</Link>
                 <Link className='hover:underline hover:text-lime-500'>Accessories</Link>
@@ -34,7 +34,7 @@ const Footer = () => {
                 <Link className='hover:underline hover:text-lime-500'>Terms</Link>
           </div>
         </div>
-        <div>
+        <div className='text-[10px]'>
           <h2 className='font-bold text-2xl mb-4 tracking-wider'>Contact</h2>
           <ul className='text-center'>
             <li className="flex items-center">

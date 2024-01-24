@@ -7,6 +7,6 @@ router.post('/newAddesss', CreateNewAddress);
 router.delete('/deleteAddress/:AddressId', DeleteAddressById);
 router.get('/allAddressbyUser', getAllAddressForUser);
 router.get('/AddressbyId/:AddressId', getAddressByAddressID);
-router.put('/update', updateAddress);
+router.put('/update/:AddressId', updateAddress);
 
 export default router;
