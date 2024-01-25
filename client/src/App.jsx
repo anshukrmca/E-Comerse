@@ -13,6 +13,9 @@ import UserAddress from "./Customer/components/userProfileSetting/UserAddress";
 import OrderDetail from "./Customer/components/userProfileSetting/OrderDetail";
 import OrderSummery from "./Customer/components/userProfileSetting/OrderSummery";
 import Dashboard from './admin/component/Dashboard/Dashboard'
+import Products from "./admin/component/product/Products";
+import User from "./admin/component/user/User";
+import Navbar from "./admin/component/Dashboard/Navbar";
 
 const App = () => {
 
@@ -37,7 +40,11 @@ const App = () => {
         </Route>
         <Route path="/order-summery" element={<OrderSummery />} />
 
-        <Route path='/dashboard' element={<Dashboard/>}></Route>
+        <Route path='/admin' element={<Navbar />}>
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/admin/product" element={<Products />} />
+          <Route path="/admin/user" element={<User />} />
+        </Route>
 
       </Routes>
     </div>

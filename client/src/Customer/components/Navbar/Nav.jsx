@@ -8,9 +8,8 @@ import { BsCloudMoon, BsCloudSun } from "react-icons/bs";
 import DailogModel from "../DailogModel.jsx";
 import { GrSettingsOption, GrUserSettings } from "react-icons/gr";
 import { IoIosLogOut } from "react-icons/io";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { logout } from "../../../redux/features/userSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import {  getUserCurrentData, logout, selectUser } from "../../../redux/features/userSlice.js";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -23,8 +22,16 @@ export default function Nav() {
   const [modelopen, setModelopen] = useState(false);
   const [isDrOpen, setIsDrOpen] = useState(false);
   const token = localStorage.getItem("token");
-  const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch()
+  const CurrentUser = useSelector(selectUser);
+
+
+useEffect(()=>{
+  if(token){
+    dispatch(getUserCurrentData());
+  }
+},[dispatch])
+
 
   // profile dropwon section
   const ProfileDropdown = () => {
@@ -41,10 +48,10 @@ export default function Nav() {
             <GrSettingsOption className="mx-1 text-gray-800 font-extrabold text-lg" />
             <span className=" text-gray-800">Account</span>
           </Link>
-          {user.isAdmin === "true" && (
+          {CurrentUser && CurrentUser.isAdmin === "true" && (
             <Link
               onClick={() => {
-                navigate('/dashboard')
+                navigate('/admin/dashboard')
               }}
               style={{ textDecoration: "none" }}
               className="flex cursor-pointer items-center p-2 rounded-sm text-lg  hover:bg-gray-200"
@@ -103,10 +110,6 @@ export default function Nav() {
 
   // logout
   const handleLogOut = async () => {
-    const res = await axios.get("/api/auth/signout");
-    console.log("logout", res.data);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
     dispatch(logout());
     setIsDrOpen(false);
     navigate("/");
@@ -431,7 +434,7 @@ export default function Nav() {
                   <div className="flex lg:ml-6" x-data="{ open: false }">
                     <div onClick={() => setIsDrOpen(!isDrOpen)}>
                       <Avatar
-                        src={user.profilePicture}
+                        src={CurrentUser &&  CurrentUser.profilePicture}
                         sx={{ bgcolor: "lightblue", height: 60, width: 60 }}
                         className="cursor-pointer"
                       />

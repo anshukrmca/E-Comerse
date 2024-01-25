@@ -7,18 +7,6 @@ import { toast } from "react-toastify";
 const Login = () => {
   const navigate = useNavigate();
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("/api/auth/profile", {
-        withCredentials: true,
-      });
-      const data = JSON.stringify(response.data.user);
-      localStorage.setItem("user", data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -31,10 +19,8 @@ const Login = () => {
       const data = response.data;
       toast.success(data.message)
       localStorage.setItem("token", data.Jwt);
-      await fetchData();
       setTimeout(() => {
-      window.location.reload();
-        
+        window.location.reload();
       }, 2000);
 
     } catch (error) {

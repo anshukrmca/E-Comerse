@@ -4,12 +4,23 @@ import { MdOutlineMenu } from "react-icons/md";
 import { BsCloudMoon, BsCloudSun } from "react-icons/bs";
 import { Avatar, Tooltip } from '@mui/material';
 import Sidebar from './Sidebar';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserCurrentData, selectUser } from '../../../redux/features/userSlice';
 
 
 export default function Navbar() {
   const [theme, setTheme] = useState("");
-  const user = JSON.parse(localStorage.getItem("user"));
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const CurrentUser = useSelector(selectUser);
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    if(token){
+      dispatch(getUserCurrentData());
+    }
+  },[dispatch])
+
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -64,7 +75,7 @@ export default function Navbar() {
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               <div>
                 <Avatar
-                 src={user.profilePicture} />
+                 src={CurrentUser && CurrentUser.profilePicture} />
               </div>
               <div className="ml-4 flow-root lg:ml-6 mr-1 text-white">
                 <Tooltip title="Theme">

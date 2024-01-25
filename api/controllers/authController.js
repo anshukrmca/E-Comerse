@@ -44,7 +44,7 @@ export const getuserProfile = async (req, res, next) => {
     }
     const userId = await getUserIdFromToken(token);
     const user = await findUserById(userId);
-    res.status(200).json({ user, message: "User Profile Get SuccessFull !" });
+    res.status(200).json({ user});
   } catch (error) {
     next(error);
   }

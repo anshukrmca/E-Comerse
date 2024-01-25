@@ -1,10 +1,11 @@
 import React from 'react'
-import Navbar from './Navbar'
+import Widget from '../widget/Widget'
+
 
 const Dashboard = () => {
   return (
-    <div className=''>
-      <Navbar/>
+    <div>
+          <Widget  />
     </div>
   )
 }
