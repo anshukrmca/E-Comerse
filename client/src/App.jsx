@@ -16,6 +16,8 @@ import Dashboard from './admin/component/Dashboard/Dashboard'
 import Products from "./admin/component/product/Products";
 import User from "./admin/component/user/User";
 import Navbar from "./admin/component/Dashboard/Navbar";
+import Category from "./admin/component/category/Category";
+import Color from "./admin/component/color/Color";
 
 const App = () => {
 
@@ -44,6 +46,8 @@ const App = () => {
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/product" element={<Products />} />
           <Route path="/admin/user" element={<User />} />
+          <Route path="/admin/category" element={<Category />} />
+          <Route path="/admin/color" element={<Category />} />
         </Route>
 
       </Routes>

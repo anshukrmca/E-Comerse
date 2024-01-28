@@ -26,16 +26,16 @@ const productSchema = new Schema(
     },
     quantity: {
       type: Number,
+      required: true,
     },
     color: {
       type: Array,
+      required: true,
     },
-    size: [
-      {
-        name: { type: String },
-        quantity: { type: Number },
-      },
-    ],
+    size: {
+      type: Array,
+      required: true,
+  },
     mainImage: {
       type: String,
       required: true,
@@ -61,6 +61,10 @@ const productSchema = new Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "categories",
+    },
+    brand: {
+      type: String,
+      required:true
     },
   },
   {

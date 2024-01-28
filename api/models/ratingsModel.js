@@ -7,12 +7,12 @@ const RatingsSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    products: {
+    product: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "products",
       required: true,
     },
-    ratings: {
+    rating: {
       type: Number,
       required: true,
     },

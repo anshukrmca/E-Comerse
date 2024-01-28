@@ -435,7 +435,7 @@ useEffect(()=>{
                     <div onClick={() => setIsDrOpen(!isDrOpen)}>
                       <Avatar
                         src={CurrentUser &&  CurrentUser.profilePicture}
-                        sx={{ bgcolor: "lightblue", height: 60, width: 60 }}
+                        sx={{ bgcolor: "lightblue", height: 45, width: 45 }}
                         className="cursor-pointer"
                       />
                     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import CreatableSelect from 'react-select/creatable';
 
-const Color = () => {
+const FormColor = ({setSelectedColor}) => {
   const [color, setColor] = useState([]);
 
   useEffect(() => {
@@ -11,7 +11,6 @@ const Color = () => {
         const response = await axios.get('/api/color');
         const data = response.data;
         setColor(data);
-        console.log(data);
       } catch (error) {
         console.error('Error fetching color data:', error);
       }
@@ -21,7 +20,7 @@ const Color = () => {
   }, []);
 
   const colorStyles = {
-    control: (styles) => ({ ...styles, backgroundColor: 'white' }),
+    control: (styles) => ({ ...styles, backgroundColor: 'white'}),
     option: (styles, { data }) => ({
       ...styles,
       backgroundColor: data.colorCode,
@@ -37,17 +36,15 @@ const Color = () => {
   };
 
   const getTextColor = (backgroundColor) => {
-    const brightness = parseInt(backgroundColor, 16) > 0xffffff / 2 ? 'black' : 'white';
+    const brightness = parseInt(backgroundColor, 16) > 0xffffff / 2 ? 'black' : 'black';
     return brightness;
   };
+  
 
   const handleChange = (selectedOption) => {
-    console.log('handleChange', selectedOption.selecterlable);
+    const selectedValues = selectedOption.map(option => option.value);
+    setSelectedColor(selectedValues);
   };
-
-//   const handleInputChange = (inputValue, actionMeta) => {
-//     console.log('handleInputChange', inputValue, actionMeta);
-//   };
 
   const optionsWithDisabled = [
     { value: '', label: 'Choose color', isDisabled: true },
@@ -59,14 +56,16 @@ const Color = () => {
   ];
 
   return (
-    <CreatableSelect
+    <div>
+      <CreatableSelect
       options={optionsWithDisabled}
       onChange={handleChange}
     //   onInputChange={handleInputChange}
       isMulti
       styles={colorStyles}
     />
+    </div>
   );
 };
 
-export default Color;
+export default FormColor;
