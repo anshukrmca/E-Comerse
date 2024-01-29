@@ -13,7 +13,7 @@ export const createReview = async(reqData,user)=>{
     return await review.save();
 } 
 
-export const getAllRevire =async(productId)=>{
+export const getAllReview =async(productId)=>{
     const product = await findProductById(reqData.productId);
     return await Reviews.find({product:productId}).populate("user");
 }

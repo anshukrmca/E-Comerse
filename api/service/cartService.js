@@ -39,7 +39,7 @@ export const findUserCart = async (userId) => {
   }
 };
 
-export const addToCart = async (userId, req) => {
+export const addItemToCart = async (userId, req) => {
   try {
     const cart = await Cart.findOne({ user: userId });
     const product = await Product.findById(req.ProductId);

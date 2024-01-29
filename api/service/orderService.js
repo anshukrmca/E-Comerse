@@ -107,7 +107,7 @@ export const UsersOrderHistory = async(userId)=>{
     }
 }
 
-export const getAllOrders = async()=>{
+export const getAllOrder = async()=>{
 return await Order.find()
 .populate({path:"orderItem",populate:{path:"product"}}).lean()
 }
