@@ -1,11 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import userRoutes from '../api/Routes/userRoute.js';
-import authRoutes from '../api/routes/authRoute.js';
-import productRoutes from '../api/Routes/productRoute.js'
-import addressRoute from '../api/Routes/addressRoute.js'
-import colorRoute from '../api/Routes/colorRoute.js'
+
 import cookieParser from 'cookie-parser';
 import path from 'path';
 dotenv.config();
@@ -34,11 +30,46 @@ app.listen(process.env.PORT, () => {
   console.log(`Server listening on port ${process.env.PORT}`);
 });
 
+
+
+import userRoutes from '../api/Routes/userRoute.js';
 app.use('/api/user', userRoutes);
+
+import authRoutes from '../api/routes/authRoute.js';
 app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
+
+
+import addressRoute from '../api/Routes/addressRoute.js'
 app.use('/api/address', addressRoute);
+
+import colorRoute from '../api/Routes/colorRoute.js'
 app.use('/api/color', colorRoute);
+
+import productRoute from '../api/Routes/productsRoute.js'
+app.use('/api/product', productRoute);
+
+import AdminproductRoute from '../api/Routes/adminProductsRoute.js'
+app.use('/api/admin/product', AdminproductRoute);
+
+import cartRoute from '../api/Routes/cartRoute.js'
+app.use('/api/cart', cartRoute);
+
+import cartItemRoute from '../api/Routes/cartItemRoute.js'
+app.use('/api/cartItem', cartItemRoute);
+
+import orderRoute from '../api/Routes/orderRoutes.js'
+app.use('/api/orders', orderRoute);
+
+import AdminorderRoute from '../api/Routes/adminOrderRoute.js'
+app.use('/api/admin/orders', AdminorderRoute);
+
+import reviewRoute from '../api/Routes/reviewRoute.js'
+app.use('/api/review', reviewRoute);
+
+import ratingRoute from '../api/Routes/ratingRoute.js'
+app.use('/api/rating', ratingRoute);
+
+
 
 app.use((err, req, res, next) => {  
   const statusCode = err.statusCode || 500;

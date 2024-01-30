@@ -1,8 +1,10 @@
 import express from 'express';
-import { verifyToken } from '../utils/verifyUser';
-import { addItemCart, findUserCarts } from '../controllers/cartController';
+import { verifyToken } from '../utils/verifyUser.js';
+import { addItemCart, findUserCarts } from '../controllers/cartController.js';
 
 const router = express.Router();
 
 router.get("/",verifyToken,findUserCarts);
-router.put("/add",verifyToken,addItemCart);
+router.post("/add",verifyToken,addItemCart);
+
+export default router;

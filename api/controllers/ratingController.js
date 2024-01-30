@@ -1,4 +1,4 @@
-import { createRating, getProductRating } from "../service/ratingService";
+import { createRating, getProductRating } from "../service/ratingService.js";
 
 export const createRatings = async (req, res, next) => {
   const user = req.user;

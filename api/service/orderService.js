@@ -1,45 +1,46 @@
-import Addresse from "../models/addressModel";
-import Order from "../models/orderModel";
-import { findUserCart } from "./cartService";
+import Addresse from "../models/addressModel.js";
+import OrderItem from "../models/orderItemModel.js";
+import Order from "../models/orderModel.js";
+import { findUserCart } from "./cartService.js";
 
-export const createOrder =async(user,shippAddress)=>{
+export const createOrder =async(userId,shippAddressID)=>{
     try {
-        let address;
-        if(shippAddress._id){
-            let existAddress = await Addresse.findById(shippAddress._id);
-            address = existAddress;
-        }else{
-            address = new Addresse(shippAddress);
-            address.user= user;
-            await address.save();
-            user.addresses.push(address);
-            await user.save();
-        }
+        // let address;
+        // if(shippAddress._id){
+        //     let existAddress = await Addresse.findById(shippAddress._id);
+        //     address = existAddress;
+        // }else{
+        //     address = new Addresse(shippAddress);
+        //     address.user= user;
+        //     await address.save();
+        //     user.addresses.push(address);
+        //     await user.save();
+        // }
 
-        const cart = await findUserCart(user._id);
-        const orderItem=[];
+        const cart = await findUserCart(userId);
+        const orderItems=[];
         for(const item of cart.cartItem){
-            const orderItem = new orderItem({
+            const orderItem = new OrderItem({
                 price:item.price,
                 product:item.product,
                 quantity:item.quantity,
                 size:item.size,
                 userId:item.userId,
-                discountedPrice:item.discountedPrice
+                discountedprice:item.discountsPrice
             })
 
             const createdOrderItem = await orderItem.save();
-            orderItem.push(createdOrderItem);
+             orderItems.push(createdOrderItem);
         }
 
         const createOrder = new Order({
-            user,
-            orderItem,
+            UserId:cart.user,
+            orderItems,
             totalPrice:cart.totalPrice,
             totalDiscountPrice:cart.totalDiscountedPrice,
             discounts:cart.discounts,
             totalItem:cart.totalItem,
-            shippingAddess:address
+            shippingAddess:shippAddressID
         })
 
         const saverOrder= await createOrder.save()

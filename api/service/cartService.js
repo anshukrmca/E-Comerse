@@ -1,6 +1,6 @@
-import Cart from "../models/cartModel";
-import CartItem from "../models/cartItemModel";
-import Product from "../models/productsModel";
+import Cart from "../models/cartModel.js";
+import CartItem from "../models/cartItemModel.js";
+import Product from "../models/productsModel.js";
 
 export const createCart = async (user) => {
   try {
@@ -14,9 +14,8 @@ export const createCart = async (user) => {
 
 export const findUserCart = async (userId) => {
   try {
-    let cart = await Cart.findOne({ user: user });
-
-    let cartItem = await CartItem.find({ cart: cart._id }).populate("products");
+    let cart = await Cart.findOne({ user: userId });
+    let cartItem = await CartItem.find({ cart: cart._id }).populate("product");
     cart.cartItem = cartItem;
 
     let totalPrice = 0;
@@ -44,11 +43,13 @@ export const addItemToCart = async (userId, req) => {
     const cart = await Cart.findOne({ user: userId });
     const product = await Product.findById(req.ProductId);
 
+
     const isPresent = await CartItem.findOne({
       cart: cart._id,
       product: product._id,
       userId,
     });
+
     if (!isPresent) {
       const cartItem = new CartItem({
         product: product._id,
@@ -59,7 +60,10 @@ export const addItemToCart = async (userId, req) => {
         size: req.size,
         discountsPrice: product.discountedPrice,
       });
+
+
       const createdCartItem = await cartItem.save();
+
       cart.cartItem.push(createdCartItem);
       await cart.save();
       return "Item Added to Cart";

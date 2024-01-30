@@ -1,5 +1,5 @@
-import CartItem from "../models/cartItemModel";
-import { findUserById } from "./userService";
+import CartItem from "../models/cartItemModel.js";
+import { findUserById } from "./userService.js";
 
 export const updateCartItem = async (userId, cartItemId, cartItemData) => {
   try {

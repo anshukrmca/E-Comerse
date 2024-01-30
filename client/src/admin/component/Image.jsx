@@ -181,7 +181,7 @@ const Image = ({ setSubImage,setMainImage }) => {
         <SubImage />
       <button
         onClick={handleUpload}
-        className="bg-green-500 flex gap-4 items-center hover:bg-green-700 h-12  py-1 px-4 rounded"
+        className="bg-green-500 flex gap-4 items-center hover:bg-green-700 h-8  py-1 px-4 rounded"
       >
         Upload <IoCloudUploadSharp/>
       </button>

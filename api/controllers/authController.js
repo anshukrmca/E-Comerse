@@ -5,10 +5,12 @@ import {
   findUserByEmail,
   findUserById,
 } from "../service/userService.js";
+import { createCart } from "../service/cartService.js";
 
 export const signup = async (req, res, next) => {
   try {
-    await createUser(req.body);
+    const user = await createUser(req.body);
+    await createCart(user);
     res.status(200).json({ message: "User successful Created !" });
   } catch (error) {
     // Handle errors

@@ -1,4 +1,4 @@
-import { cancleOrder, confirmedOrder, deleteOrder, deliverOrder, getAllOrder, shipOrder } from "../service/orderService";
+import { cancleOrder, confirmedOrder, deleteOrder, deliverOrder, getAllOrder, shipOrder } from "../service/orderService.js";
 
 
 export const getAllOrders = async(req,res,next)=>{

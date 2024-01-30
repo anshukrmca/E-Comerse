@@ -57,6 +57,7 @@ const userSlice = createSlice({
       state.Message= action.payload
       localStorage.removeItem("token");
       toast.success("Logout successful!");
+      window.location.reload();
     });
     builder.addCase(logout.rejected, (state, action) => {
       console.log("Error", action.payload);

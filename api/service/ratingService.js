@@ -1,5 +1,5 @@
-import Ratings from "../models/ratingsModel";
-import { findProductById } from "./productService";
+import Ratings from "../models/ratingsModel.js";
+import { findProductById } from "./productService.js";
 
 export const createRating = async (req, user) => {
   const product = await findProductById(req.productId);

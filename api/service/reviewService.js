@@ -1,5 +1,5 @@
-import Reviews from "../models/reviewsModel";
-import { findProductById } from "./productService"
+import Reviews from "../models/reviewsModel.js";
+import { findProductById } from "./productService.js"
 
 
 export const createReview = async(reqData,user)=>{

@@ -1,4 +1,4 @@
-import { removeCartItem, updateCartItem } from "../service/cartItemService";
+import { removeCartItem, updateCartItem } from "../service/cartItemService.js";
 
 export const updateCartItems = async (req, res, next) => {
   const user = req.user;
