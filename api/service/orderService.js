@@ -16,7 +16,6 @@ export const createOrder =async(userId,shippAddressID)=>{
         //     user.addresses.push(address);
         //     await user.save();
         // }
-
         const cart = await findUserCart(userId);
         const orderItems=[];
         for(const item of cart.cartItem){
@@ -30,17 +29,18 @@ export const createOrder =async(userId,shippAddressID)=>{
             })
 
             const createdOrderItem = await orderItem.save();
+
              orderItems.push(createdOrderItem);
         }
 
         const createOrder = new Order({
             UserId:cart.user,
-            orderItems,
+            orderItem:orderItems,
             totalPrice:cart.totalPrice,
             totalDiscountPrice:cart.totalDiscountedPrice,
             discounts:cart.discounts,
             totalItem:cart.totalItem,
-            shippingAddess:shippAddressID
+            shippingAddess:shippAddressID.shippAddressID
         })
 
         const saverOrder= await createOrder.save()

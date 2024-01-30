@@ -4,7 +4,7 @@ import { findProductByIds, gettAllProducts } from '../controllers/productsContro
 
 const router = express.Router();
 
-router.post("/",verifyToken,gettAllProducts);
+router.get("/",verifyToken,gettAllProducts);
 router.put("/id/:id",verifyToken,findProductByIds);
 
 
