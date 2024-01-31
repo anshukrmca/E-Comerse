@@ -20,7 +20,7 @@ const productSchema = new Schema(
       type: Number,
       required: true,
     },
-    discountedPresentage: {
+    discountedPercentage: {
       type: Number,
       required: true,
     },
@@ -40,7 +40,7 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    SubImage: [
+    subImage: [
       {
         type: String,
         required: true,
@@ -61,6 +61,7 @@ const productSchema = new Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "categories",
+      required:true
     },
     brand: {
       type: String,

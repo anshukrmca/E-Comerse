@@ -69,6 +69,9 @@ app.use('/api/review', reviewRoute);
 import ratingRoute from '../api/Routes/ratingRoute.js'
 app.use('/api/rating', ratingRoute);
 
+import categoryRoute from '../api/Routes/categoryRoute.js'
+app.use('/api/category', categoryRoute);
+
 
 
 app.use((err, req, res, next) => {  

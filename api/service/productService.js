@@ -3,12 +3,14 @@ import Product from "../models/productsModel.js";
 
 // new Product
 export const createProduct = async (reqData) => {
+  
   let topLevel = await Category.findOne({ name: reqData.topLevelCategory });
   if (!topLevel) {
     topLevel = new Category({
       name: reqData.topLevelCategory,
       level: 1,
     });
+    await topLevel.save();
   }
 
   let secondLevel = await Category.findOne({
@@ -21,6 +23,7 @@ export const createProduct = async (reqData) => {
       parentCategory: topLevel._id,
       level: 2,
     });
+    await secondLevel.save();
   }
 
   let thirdLevel = await Category.findOne({
@@ -33,6 +36,7 @@ export const createProduct = async (reqData) => {
       parentCategory: secondLevel._id,
       level: 3,
     });
+    await thirdLevel.save();
   }
 
   const product = new Product({
@@ -40,13 +44,13 @@ export const createProduct = async (reqData) => {
     description: reqData.description,
     price: reqData.price,
     discountedPrice: reqData.discountedPrice,
-    discountedPresentage: reqData.discountedPresentage,
+    discountedPercentage: reqData.discountedPercentage,
     quantity: reqData.quantity,
     color: reqData.color,
     size: reqData.size,
     mainImage: reqData.mainImage,
-    SubImage: reqData.SubImage,
-    category: reqData.category,
+    subImage: reqData.subImage,
+    category: thirdLevel._id,
     brand: reqData.brand,
   });
 

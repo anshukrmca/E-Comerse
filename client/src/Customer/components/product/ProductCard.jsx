@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import './Product.css'
 
 
-const ProductCard = ({ Kid, P_id, P_name, description, price, color, image }) => {
+const ProductCard = ({ Kid, P_id, P_name, description, price, color, image,discountedPrice,discountedPercentage }) => {
   const [isAddToCart, setIsAddToCart] = useState(false)
   const [isAddwishList, setIsAddwishList] = useState(false)
 
@@ -65,7 +65,7 @@ const ProductCard = ({ Kid, P_id, P_name, description, price, color, image }) =>
               </p>
               <div className='flex justify-between items-center mb-4'>
                 <p className="text-lg font-bold text-blue-500 dark:text-blue-300 ">
-                  <span>₹{price}</span>
+                <span className='text-2xl font-semibold'>₹{discountedPrice}</span>&nbsp;<span className='line-through'>{price}</span>&nbsp;<span className='text-green-400 text-sm'>{discountedPercentage}%</span>
                 </p>
                 <div className="flex space-x-2">
                   {

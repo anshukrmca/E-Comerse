@@ -9,7 +9,7 @@ export const verifyToken = async (req, res, next) => {
     }
     const userId = await getUserIdFromToken(token);
     const user = await findUserById(userId);
-    res.user = user;
+    // res.user = user;
   } catch (error) {
     next(error);
   }

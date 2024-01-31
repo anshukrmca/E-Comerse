@@ -3,6 +3,7 @@ import axios from "axios";
 import FormColor from "../FormColor";
 import Image from "../Image";
 import { Button, Grid } from "@mui/material";
+import { toast } from 'react-toastify'
 
 const productField = [
   {
@@ -10,67 +11,53 @@ const productField = [
     lable: "Product Title",
     colSize: 12,
     smColSize: 12,
-    dataType:"text"
+    dataType: "text",
+    placeholder: "Enter Product Title"
+
   },
   {
     id: "brand",
     lable: "Product Brand",
     colSize: 12,
     smColSize: 6,
-    dataType:"text"
+    dataType: "text",
+    placeholder: "Enter Product Brand"
   },
   {
     id: "price",
     lable: "Product Price",
     colSize: 12,
     smColSize: 6,
-    dataType:"number"
+    dataType: "number",
+    placeholder: "Enter Product Price"
   },
   {
     id: "discountedPrice",
     lable: "Discounted Price",
     colSize: 12,
     smColSize: 6,
-    dataType:"number"
+    dataType: "number",
+    placeholder: "Enter Discounted Price"
   },
   {
     id: "discountedPercentage",
     lable: "Discounted Percentage",
     colSize: 12,
     smColSize: 6,
-    dataType:"number"
-  },
-  {
-    id: "topCategory",
-    lable: "Top Category",
-    colSize: 12,
-    smColSize: 6,
-    dataType:"text"
-  },
-  {
-    id: "secondCategory",
-    lable: "Second Category",
-    colSize: 12,
-    smColSize: 6,
-    dataType:"text"
-  },
-  {
-    id: "thirdCategory",
-    lable: "Third Category",
-    colSize: 12,
-    smColSize: 6,
-    dataType:"text"
+    dataType: "number",
+    placeholder: "Enter Discounted Percentage"
   },
   {
     id: "quantity",
     lable: "Quantity",
     colSize: 12,
     smColSize: 6,
-    dataType:"number"
-  },
+    dataType: "number",
+    placeholder: "Enter product Quantity"
+  }
 ];
 
-// Helper function to calculate the discount percentage
+//  function to calculate the discount percentage
 function calculateDiscountPercentage(price, discountedPrice) {
   if (price && discountedPrice) {
     const percentage = ((price - discountedPrice) / price) * 100;
@@ -80,19 +67,24 @@ function calculateDiscountPercentage(price, discountedPrice) {
 }
 
 const Products = () => {
+  const [FstLevel, setFstLevel] = useState([])
+  const [SndLevel, setSndLevel] = useState([])
   const [selectedColor, setSelectedColor] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [subImage, setSubImage] = useState([]);
   const [mainImage, setMainImage] = useState([]);
+  const [topLevelCategory, settopLevelCategory] = useState('');
+  const [secondLevelCategory, setsecondLevelCategory] = useState('');
+  const [thirdLevelCategory, setthirdLevelCategory] = useState('');
   const [productData, setProductData] = useState({
     title: "",
     brand: "",
     price: 0,
     discountedPrice: 0,
     discountedPercentage: 0,
-    topCategory: "",
-    secondCategory: "",
-    thirdCategory: "",
+    topLevelCategory: "",
+    secondLevelCategory: "",
+    thirdLevelCategory: "",
     quantity: 0,
     description: "",
     color: [],
@@ -100,6 +92,24 @@ const Products = () => {
     mainImage: "",
     subImages: [],
   });
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fstLevelresponse = await axios.get("/api/category/topLevelCategory");
+        const data1 = fstLevelresponse.data;
+        setFstLevel(data1);
+        const sndLevelresponse = await axios.get("/api/category/secondLevelCategory");
+        const data2 = sndLevelresponse.data;
+        setSndLevel(data2);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, [])
+
 
 
   const handleInputChange = (e) => {
@@ -121,23 +131,29 @@ const Products = () => {
     });
   };
 
-  // Update productData.color with selectedColor
-  const handlesubmit = () => {
+  const handlesubmit = async() => {
     const updatedProductData = {
       ...productData,
       color: selectedColor,
       size: selectedSizes,
-      subImages: subImage,
-      mainImage:mainImage
+      subImage: subImage,
+      mainImage: mainImage,
+      topLevelCategory: topLevelCategory,
+      secondLevelCategory: secondLevelCategory,
+      thirdLevelCategory: thirdLevelCategory,
     };
 
-    // Add logic to handle form submission with updatedProductData
-    console.log("Form submitted with data:", updatedProductData);
+    const response = await axios.post('/api/admin/product', updatedProductData);
+    const data = response.data.message;
+    toast.success(data);
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   return (
     <>
-      <div className="bg-[#f0f5ff] dark:bg-slate-400 p-4">
+      <div className="bg-[#f0f5ff] dark:bg-slate-400 p-4 text-sm">
         <p className="text-indigo-700  font-semibold mb-4">ADD A NEW ADDRESS</p>
         {/* <form onSubmit={handlesubmit}> */}
         <Grid container spacing={1}>
@@ -145,7 +161,7 @@ const Products = () => {
             return (
               <Grid key={i} item xs={item.colSize} sm={item.smColSize}>
                 <div className="mb-2">
-                  <label className="block text-gray-600 text-sm font-bold mb-2">
+                  <label className="block text-gray-600 font-bold mb-2">
                     {item.lable}
                   </label>
                   <input
@@ -153,7 +169,7 @@ const Products = () => {
                     type={item.dataType}
                     name={item.id}
                     className="w-full px-3 h-[38px] text-black py-2 border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-                    placeholder={`Enter ${item.lable}`}
+                    placeholder={item.placeholder}
                     value={productData[item.id]}
                     onChange={handleInputChange}
                   />
@@ -161,9 +177,63 @@ const Products = () => {
               </Grid>
             );
           })}
+
+          <Grid item xs={12} sm={6}>
+            <label className="block text-gray-600  font-bold mb-2">
+              Top Level Category
+            </label>
+            <select
+              value={topLevelCategory}
+              onChange={(e) => { settopLevelCategory(e.target.value) }}
+              className="block w-full p-2 border text-black border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+            >
+              <option value="" disabled>Choose top level</option>
+              {FstLevel.map((item, index) => (
+                <option key={index} value={item.name}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <label className="block text-gray-600 font-bold mb-2">
+              Second Level Category
+            </label>
+            <select
+              value={secondLevelCategory}
+              onChange={(e) => { setsecondLevelCategory(e.target.value) }}
+              className="block w-full p-2 border text-black border-gray-300 rounded-md focus:outline-none focus:border-slate-500"
+            >
+              <option value="" disabled>Choose second level</option>
+              {SndLevel.map((item, index) => (
+                <option key={index} value={item.name}>
+                  {item.name} ({item.parentCategory.name})
+                </option>
+              ))}
+            </select>
+
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <div className="mb-2">
+              <label className="block text-gray-600 font-bold mb-2">
+                Third Level Category
+              </label>
+              <input
+                required
+                type="text"
+                name="thirdLevelCategory"
+                className="w-full px-3 h-[38px] text-black py-2 border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                placeholder='Enter third Level category'
+                value={thirdLevelCategory}
+                onChange={(e) => { setthirdLevelCategory(e.target.value) }}
+              />
+            </div>
+
+          </Grid>
           <Grid item xs={12}>
             <div>
-              <label className="block text-gray-600 text-sm font-bold mb-2">
+              <label className="block text-gray-600 font-bold mb-2">
                 Description
               </label>
               <textarea
@@ -178,7 +248,7 @@ const Products = () => {
 
           <Grid item xs={12} sm={6}>
             <div className="mb-4">
-              <label className="block text-gray-600 text-sm font-bold mb-2">
+              <label className="block text-gray-600 font-bold mb-2">
                 Size
               </label>
               <input
@@ -192,18 +262,18 @@ const Products = () => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <label className="block text-gray-600 text-sm font-bold mb-2">
+            <label className="block text-gray-600 font-bold mb-2">
               Color
             </label>
             <FormColor setSelectedColor={setSelectedColor} />
           </Grid>
 
           <Grid item xs={12}>
-            <Image setSubImage={setSubImage} setMainImage={setMainImage}/>
+            <Image setSubImage={setSubImage} setMainImage={setMainImage} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <Button
-            onClick={handlesubmit}
+              onClick={handlesubmit}
               className="w-full"
               type="submit"
               variant="contained"
@@ -244,27 +314,4 @@ const Products = () => {
 
 export default Products;
 
-{
-  /* Add your form fields here */
-}
-{
-  /* <FormColor setSelectedColor={setSelectedColor}/>
 
-       <div className="mb-4">
-          <label htmlFor="sizes" className="block text-gray-700">
-            Sizes:
-          </label>
-          <input
-            type="text"
-            id="sizes"
-            className="w-full p-2 border rounded text-black"
-            placeholder="Enter sizes (S,M,L)"
-            value={selectedSizes.join(',')}
-            onChange={(e) => setSelectedSizes(e.target.value.split(','))}
-          />
-        </div> */
-}
-
-{
-  /* <Image setSubImage={setSubImage}/> */
-}

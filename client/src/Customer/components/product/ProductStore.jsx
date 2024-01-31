@@ -31,8 +31,9 @@ export default function ProductStore() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('/api/products/category/allproduct');
-                setProducts(response.data);
+                const response = await axios.get('/api/product');
+                console.log(response)
+                setProducts(response.data.content);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -461,9 +462,11 @@ export default function ProductStore() {
                                                 P_name={item.title}
                                                 description={item.description}
                                                 price={item.price}
+                                                discountedPrice={item.discountedPrice}
+                                                discountedPercentage={item.discountedPercentage}
                                                 color={item.color}
                                                 size={item.size}
-                                                image={item.image}
+                                                image={item.mainImage}
 
                                             />
                                         ))}

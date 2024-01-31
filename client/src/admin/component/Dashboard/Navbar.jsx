@@ -6,6 +6,7 @@ import { Avatar, Tooltip } from '@mui/material';
 import Sidebar from './Sidebar';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserCurrentData, selectUser } from '../../../redux/features/userSlice';
+import {ToastContainer} from 'react-toastify'
 
 
 export default function Navbar() {
@@ -52,6 +53,7 @@ export default function Navbar() {
 
   return (
     <>
+    <ToastContainer/>
       <Disclosure as="nav" className="bg-gray-800 fixed w-full z-50">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">

@@ -17,7 +17,6 @@ import Products from "./admin/component/product/Products";
 import User from "./admin/component/user/User";
 import Navbar from "./admin/component/Dashboard/Navbar";
 import Category from "./admin/component/category/Category";
-import Color from "./admin/component/color/Color";
 
 const App = () => {
 

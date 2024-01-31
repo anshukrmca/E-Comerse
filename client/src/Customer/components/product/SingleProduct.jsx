@@ -16,12 +16,12 @@ const SingleProduct = () => {
     const [products, setProducts] = useState({})
     const [Relatedproducts, setRelatedproducts] = useState([])
     const P_ID = useParams()
-
+console.log(products)
     // product data 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`/api/products/${P_ID.id}`);
+                const response = await axios.get(`/api/product/id/${P_ID.id}`);
                 setProducts(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -43,7 +43,7 @@ const SingleProduct = () => {
             }
         };
 
-        if(products.category != undefined){
+        if (products.category != undefined) {
             fetchProducts();
         }
     }, [products.category]);
@@ -71,45 +71,28 @@ const SingleProduct = () => {
                             <div className="w-full px-4 md:w-1/2 ">
                                 <div className="sticky top-0 z-20 overflow-hidden ">
                                     <div className="relative mb-6 lg:mb-10 lg:h-2/4 ">
-                                        <img src={products.image} alt="Product Image"
+                                        <img src={products.mainImage} alt="Product Image"
                                             className="object-cover object-left-top w-full lg:h-[80dvh] " />
                                     </div>
                                     <div className="flex-wrap hidden md:flex ">
-                                        <div className="w-1/2 p-2 sm:w-1/4">
-                                            <a href="#"
-                                                className="block border border-blue-300 dark:border-transparent dark:hover:border-blue-300 hover:border-blue-300">
-                                                <img src="https://i.postimg.cc/PqYpFTfy/pexels-melvin-buezo-2529148.jpg" alt=""
-                                                    className="object-cover w-full lg:h-20" />
-                                            </a>
-                                        </div>
-                                        <div className="w-1/2 p-2 sm:w-1/4">
-                                            <a href="#"
-                                                className="block border border-transparent dark:border-transparent dark:hover:border-blue-300 hover:border-blue-300">
-                                                <img src="https://i.postimg.cc/PqYpFTfy/pexels-melvin-buezo-2529148.jpg" alt=""
-                                                    className="object-cover w-full lg:h-20" />
-                                            </a>
-                                        </div>
-                                        <div className="w-1/2 p-2 sm:w-1/4">
-                                            <a href="#"
-                                                className="block border border-transparent dark:border-transparent dark:hover:border-blue-300 hover:border-blue-300">
-                                                <img src="https://i.postimg.cc/PqYpFTfy/pexels-melvin-buezo-2529148.jpg" alt=""
-                                                    className="object-cover w-full lg:h-20" />
-                                            </a>
-                                        </div>
-                                        <div className="w-1/2 p-2 sm:w-1/4">
-                                            <a href="#"
-                                                className="block border border-transparent dark:border-transparent dark:hover:border-blue-300 hover:border-blue-300">
-                                                <img src="https://i.postimg.cc/PqYpFTfy/pexels-melvin-buezo-2529148.jpg" alt=""
-                                                    className="object-cover w-full lg:h-20" />
-                                            </a>
-                                        </div>
+                                        {products.subImage &&   products.subImage.map((img,index) =>{
+                                            return(
+                                                <div className="w-1/2 p-2 sm:w-1/4" key={index}>
+                                                <a href="#"
+                                                    className="block border border-blue-300 dark:border-transparent dark:hover:border-blue-300 hover:border-blue-300">
+                                                    <img src={img} alt=""
+                                                        className="w-full object-left-top object-cover h-20" />
+                                                </a>
+                                            </div>
+                                            )
+                                        })}
                                     </div>
                                 </div>
                             </div>
                             <div className="w-full px-4 md:w-1/2 ">
                                 <div className="lg:pl-20">
                                     <div className="mb-8 ">
-                                        <h2 className="max-w-xl mt-2 mb-6 text-2xl font-bold dark:text-gray-400 md:text-4xl">
+                                        <h2 className="max-w-xl mt-2 mb-4 text-xl font-bold dark:text-gray-400 md:text-2xl">
                                             {products.title}</h2>
                                         <div className="flex items-center mb-6">
                                             <ul className="flex mr-2">
@@ -160,17 +143,17 @@ const SingleProduct = () => {
                                             </ul>
                                             <p className="text-xs dark:text-gray-400 ">(2 customer reviews)</p>
                                         </div>
-                                        <p className="max-w-md mb-8 text-gray-700 dark:text-gray-400">
+                                        <p className="max-w-md mb-5 text-gray-700 dark:text-gray-400">
                                             {products.description}
                                         </p>
-                                        <p className="inline-block mb-8 text-4xl font-bold text-gray-700 dark:text-gray-400 ">
-                                            <span>₹{products.price}</span>
+                                        <p className="inline-block mb-4 font-bold text-gray-700 dark:text-gray-400">
+                                          <span className='text-2xl font-semibold'>₹{products.discountedPrice}</span>&nbsp;<span className='line-through'>{products.price}</span>&nbsp;<span className='text-green-400 text-sm'>{products.discountedPercentage}%</span>
                                         </p>
-                                        {products.inStock ? <p className="text-green-600 dark:text-green-300 ">In Stock</p>
+                                        {products.quantity !== 0 ? <p className="text-green-600 dark:text-green-300 ">In Stock</p>
                                             : <p className="text-red-700 dark:text-red-600 ">Out of Stock</p>}
                                     </div>
                                     {products.color && products.color.length !== 0 ?
-                                        <div className="mb-8">
+                                        <div className="mb-4">
                                             <h2 className="mb-2 text-xl font-bold dark:text-gray-400">
                                                 Color</h2>
                                             <div className="flex flex-wrap -mb-2">
@@ -189,7 +172,7 @@ const SingleProduct = () => {
                                         : ""
                                     }
                                     {products.size && products.size.length !== 0 ?
-                                        <div className="flex items-center mb-8">
+                                        <div className="flex items-center mb-4">
                                             <h2 className="w-16 text-xl font-bold dark:text-gray-400">
                                                 Size:</h2>
                                             <div className="flex flex-wrap -mx-2 -mb-2">
@@ -226,8 +209,8 @@ const SingleProduct = () => {
                                         </div>
                                         <div className="mb-4 mr-4 lg:mb-0">
                                             <button
-                                                onClick={products.inStock ? handleAddToCart : null}
-                                                className={`${products.inStock ? 'cursor-pointer bg-blue-500' : 'cursor-no-drop bg-red-600'} w-full h-10 p-2 mr-4`}>
+                                                onClick={products.quantity !== 0 ? handleAddToCart : null}
+                                                className={`${products.quantity !== 0 ? 'cursor-pointer bg-blue-500' : 'cursor-no-drop bg-red-600'} w-full h-10 p-2 mr-4`}>
                                                 Buy Now</button>
                                         </div>
                                         <div className="mb-4 mr-4 lg:mb-0 flex gap-3">
@@ -237,8 +220,8 @@ const SingleProduct = () => {
                                                 {isAddwishList ? <GoHeartFill size={28} className='text-red-600' /> : <GoHeart size={28} />}
                                             </div>
                                             <div
-                                                onClick={products.inStock ? handleAddToCart : null}
-                                                className={`${products.inStock ? 'cursor-pointer' : 'cursor-no-drop'}   p-2 rounded ${isAddToCart ? 'bg-green-500/80 transition duration-500' : ""}`}>
+                                                onClick={products.quantity !== 0 ? handleAddToCart : null}
+                                                className={`${products.quantity !== 0 ? 'cursor-pointer' : 'cursor-no-drop'}   p-2 rounded ${isAddToCart ? 'bg-green-500/80 transition duration-500' : ""}`}>
                                                 {isAddToCart ? <FaCheck size={28} /> : <BsCart3 size={28} />}
                                             </div>
                                         </div>

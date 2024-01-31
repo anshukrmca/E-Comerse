@@ -46,7 +46,7 @@ const Products = ({ Categories }) => {
             price={item.price}
             color={item.color}
             size={item.size}
-            image={item.image}
+            image={item.mainImage}
           />
         ))}
       </div>

@@ -5,7 +5,7 @@ import { findProductByIds, gettAllProducts } from '../controllers/productsContro
 const router = express.Router();
 
 router.get("/",verifyToken,gettAllProducts);
-router.put("/id/:id",verifyToken,findProductByIds);
+router.get("/id/:id",verifyToken,findProductByIds);
 
 
 export default router;

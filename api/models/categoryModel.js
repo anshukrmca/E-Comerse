@@ -10,7 +10,6 @@ const categorySchema = new mongoose.Schema(
     parentCategory: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "categories",
-      required: true,
     },
     level: {
       type: Number,
