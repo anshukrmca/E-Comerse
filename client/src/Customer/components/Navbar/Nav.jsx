@@ -116,9 +116,12 @@ useEffect(()=>{
   };
 
 
-  // const handleCategoryClick = (category, section, item) => {
-  //     alert("1st :", category.id, "2nd :", section.id, "3rd :", item.id);
-  // }
+  const handleCategoryClick = (item,section,category,close) => {
+    console.log(item.id,"",section.id,"",category.id)
+    navigate(`/${category.id}/${section.id}/${item.id}`);
+    close()
+      // alert("1st :", category.id, "2nd :", section.id, "3rd :", item.id);
+  }
 
   return (
     <div className="bg-white z-30 fixed w-full">
@@ -302,7 +305,7 @@ useEffect(()=>{
                 <div className="flex h-full space-x-8">
                   {navigation.categories.map((category) => (
                     <Popover key={category.name} className="flex">
-                      {({ open }) => (
+                      {({ open,close }) => (
                         <>
                           <div className="relative flex">
                             <Popover.Button
@@ -387,7 +390,8 @@ useEffect(()=>{
                                                 key={item.name}
                                                 className="flex"
                                               >
-                                                <a className="hover:text-gray-800 cursor-pointer">
+                                                <a className="hover:text-gray-800 cursor-pointer" 
+                                                onClick={(e)=>{handleCategoryClick(item,section,category,close)}}>
                                                   {item.name}
                                                 </a>
                                               </li>

@@ -3,7 +3,7 @@ import Product from "../models/productsModel.js";
 
 // new Product
 export const createProduct = async (reqData) => {
-  
+
   let topLevel = await Category.findOne({ name: reqData.topLevelCategory });
   if (!topLevel) {
     topLevel = new Category({
@@ -83,7 +83,8 @@ export const findProductById = async (Id) => {
 
 // get product
 
-export const gettAllProduct = async (reqQuery) => {
+export const getAllProduct = async (reqQuery) => {
+  // console.log(reqQuery);
   let {
     category,
     color,
@@ -98,7 +99,8 @@ export const gettAllProduct = async (reqQuery) => {
     pageSize,
   } = reqQuery;
 
-  pageSize = pageSize || 10;
+  pageSize = pageSize || 12;
+  pageNumber = pageNumber || 1;
 
   let query = Product.find().populate("category");
 
@@ -121,43 +123,60 @@ export const gettAllProduct = async (reqQuery) => {
     query = query.where("color").regex(colorRegex);
   }
   if (size) {
-    const sizeSet = new Set(size);
-    query = (await query.where("size.name")).includes([...sizeSet]);
-  }
-  if (minPrice) {
-    query = await query.where("discountedPrice").get(minPrice).lte(maxPrice);
+    const sizeArray = size.split(","); // Assuming size is a comma-separated string
+    query = query.where("size").in(sizeArray);
   }
 
-  if (minDiscount) {
-    query = await query.where("discountedPersent").gt(minDiscount);
+  if (minPrice !== undefined) {
+    query = query.where("discountedPrice").gte(minPrice);
   }
+
+  if (maxPrice !== undefined) {
+    query = query.where("discountedPrice").lte(maxPrice);
+  }
+
+
+  // if (minDiscount) {
+  //   query = await query.where("discountedPercentage").gte(minDiscount);
+  // }
 
   if (stock) {
-    if (stock == "in_stock") {
-      query = query.where("quentity").gt(0);
-    } else if (stock == "out_of_stock") {
-      query = query.where("quentity").gt(1);
+    if (stock === "in_stock") {
+      query = query.where("quantity").gte(0);
+    } else if (stock === "out_of_stock") {
+      query = query.where("quantity").lt(1);
     }
   }
+  
 
   if (sort) {
-    const sortDirection = sort === "price_height" ? -1 : 1;
+    const sortDirection = sort === "price_heigh" ? -1 : 1;
     query = query.sort({ discountedPrice: sortDirection });
   }
 
   const totalProduct = await Product.countDocuments(query);
+  if (pageNumber <= 0 || pageSize <= 0) {
+    throw new Error("Invalid page number or page size");
+  }
   const skip = (pageNumber - 1) * pageSize;
+  if (skip < 0) {
+    throw new Error("Invalid skip value");
+  }
 
   query = query.skip(skip).limit(pageSize);
   const products = await query.exec();
+
   const totalPage = Math.ceil(totalProduct / pageSize);
 
   return { content: products, currrentPage: pageNumber, totalPage };
 };
 
 
-// create multiple product for admin
+
 export const createMultipleProduct = async (products) => {
+  if (!Array.isArray(products)) {
+    throw new Error("Products must be an array");
+  }
   for (let product of products) {
     await createProduct(product);
   }

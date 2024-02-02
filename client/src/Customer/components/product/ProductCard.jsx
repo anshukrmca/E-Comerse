@@ -36,7 +36,7 @@ const ProductCard = ({ Kid, P_id, P_name, description, price, color, image,disco
         <div className="p-4 rounded shadow  group">
           <div className="block mb-2" href="#">
             <div className="relative overflow-hidden">
-              <div className="mb-5 overflow-hidden h-[12rem]">
+              <div className="mb-5 overflow-hidden h-[20rem]">
                 <img className="object-cover w-full mx-auto transition-all rounded h-full group-hover:scale-110"
                   src={image}
                   alt="Product image" />
@@ -44,13 +44,8 @@ const ProductCard = ({ Kid, P_id, P_name, description, price, color, image,disco
               <div className="absolute flex flex-col top-4 right-4">
                 <div
                   onClick={handleAddToWish}
-                  className={`cursor-pointer p-2 mb-3 transition-all translate-x-20 rounded group-hover:translate-x-0   group ${isAddwishList ? 'bg-slate-500 transition duration-500' : 'bg-slate-400'}`}>
+                  className={`cursor-pointer p-2 mb-3 transition-all translate-x-20 rounded group-hover:translate-x-0   group ${isAddwishList ? 'bg-slate-300 transition duration-500' : 'bg-slate-300'}`}>
                   {isAddwishList ? <GoHeartFill size={23} className='text-red-600 size={20}' /> : <GoHeart size={20} />}
-                </div>
-                <div
-                  onClick={handleAddToCart}
-                  className={`cursor-pointer p-2 mb-3 transition-all translate-x-20 rounded group-hover:translate-x-0   group ${isAddToCart ? 'bg-green-500/80 transition duration-500' : 'bg-slate-400'}`}>
-                  {isAddToCart ? <FaCheck size={20} /> : <BsCart3 size={20} />}
                 </div>
               </div>
             </div>
@@ -69,7 +64,7 @@ const ProductCard = ({ Kid, P_id, P_name, description, price, color, image,disco
                 </p>
                 <div className="flex space-x-2">
                   {
-                    color.map((color, index) => {
+                    color.slice(0,4).map((color, index) => {
                       return (
                         <div key={index} style={{ backgroundColor: color }} className="w-6 h-6 rounded-full" title={color}></div>
                       )

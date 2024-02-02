@@ -11,7 +11,7 @@ import {
     Radio,
     RadioGroup,
 } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { IoIosRemove } from "react-icons/io";
 import Product from './ProductCard.jsx'
@@ -26,13 +26,51 @@ export default function ProductStore() {
     const location = useLocation();
     const navigate = useNavigate();
     const [products, setProducts] = useState([])
+    const param = useParams()
+
+    const decodedQueryString = decodeURIComponent(location.search);
+    const searchParamms = new URLSearchParams(decodedQueryString);
+    const colorValue = searchParamms.get("color");
+    const sizeValue = searchParamms.get("size");
+    const priceValue = searchParamms.get("price");
+    const discount = searchParamms.get("discount");
+    const sortValue = searchParamms.get("sort");
+    const pageNumber = searchParamms.get("page") || 1;
+    const stock = searchParamms.get("stock");
+
 
     // product data 
     useEffect(() => {
+        const [minPrice, maxPrice] = priceValue === null ? [0, 0] : priceValue.split("-").map(Number)
+        const data = {
+            category: param.levelThree,
+            color: colorValue || [],
+            size: sizeValue || [],
+            minPrice,
+            maxPrice,
+            minDiscount: discount || 0,
+            sort: sortValue || "price_low",
+           // pageNumber: pageNumber - 1,
+            pageSize: 12,
+            stock: stock
+        }
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('/api/product');
-                console.log(response)
+                const response = await axios.get('/api/product', {
+                    params: {
+                        color: data.color, 
+                        size: data.size, 
+                        minPrice: data.minPrice, 
+                        maxPrice: data.maxPrice, 
+                        minDiscount: data.minDiscount, 
+                        category: data.category, 
+                        stock: data.stock, 
+                        sort: data.sort, 
+                        pageNumber: data.pageNumber, 
+                        pageSize: data.pageSize, 
+                    }
+                });
+                console.log(response);
                 setProducts(response.data.content);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -40,7 +78,7 @@ export default function ProductStore() {
         };
 
         fetchProducts();
-    }, []);
+    }, [param.levelThree, colorValue, sizeValue, priceValue, discount, sortValue, pageNumber, stock]);
 
     const handleFilter = (value, sectionID) => {
         const searchParamms = new URLSearchParams(location.search);
@@ -318,7 +356,7 @@ export default function ProductStore() {
                         </div>
 
                         <section aria-labelledby="products-heading" className="pb-24 pt-6 ">
-                           
+
                             <div className="grid grid-cols-1 gap-x-8 gap-y-5 lg:grid-cols-4">
                                 {/* Filters */}
                                 <div className=''>
@@ -455,7 +493,7 @@ export default function ProductStore() {
                                 <div className="lg:col-span-3 w-full bg-slate-100 dark:bg-slate-700">
                                     {/* Your content */}
                                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 mb-2">
-                                        {products.map((item, index) => (
+                                        {products && products.map((item, index) => (
                                             <Product
                                                 key={item._id}
                                                 P_id={item._id}

@@ -62,6 +62,6 @@ export const singleFilter = [
 ]
 
 export const sortOptions = [
-    { name: "Price: Low to High", href: "#", current: false },
-    { name: "Price: High to Low", href: "#", current: false },
+    { name: "Price: Low to High", href: "price_low", current: false },
+    { name: "Price: High to Low", href: "price_height", current: false },
   ];
