@@ -1,12 +1,16 @@
 import { removeCartItem, updateCartItem } from "../service/cartItemService.js";
+import { getUserIdFromToken } from "../utils/JwtProvide.js";
 
 export const updateCartItems = async (req, res, next) => {
-  const user = req.user;
+  const token = req.cookies.token;
   try {
+    if (!token) {
+      return res.status(401).json({ message: "You are not authenticated!" });
+    }
+    const userId = await getUserIdFromToken(token);
     const updatedCartItem = await updateCartItem(
-      user._id,
-      req.params.id,
-      req.body
+      userId,
+            req.body
     );
     res.status(200).json(updatedCartItem);
   } catch (error) {
@@ -15,10 +19,14 @@ export const updateCartItems = async (req, res, next) => {
 };
 
 export const removeCartItems = async (req, res, next) => {
-  const user = req.user;
+  const token = req.cookies.token;
   try {
-    await removeCartItem(user._id, req.params.id);
-    res.status(200).json({ message: "Cart Item remove successfull !" });
+    if (!token) {
+      return res.status(401).json({ message: "You are not authenticated!" });
+    }
+    const userId = await getUserIdFromToken(token);
+    await removeCartItem(userId, req.params.id);
+    return res.status(200).json({ message: "Cart Item remove successfull !" });
   } catch (error) {
     next(error);
   }

@@ -1,7 +1,8 @@
 import CartItem from "../models/cartItemModel.js";
 import { findUserById } from "./userService.js";
 
-export const updateCartItem = async (userId, cartItemId, cartItemData) => {
+export const updateCartItem = async (userId, cartItemData) => {
+  let {cartItemId} = cartItemData;
   try {
     const item = await findCartItemById(cartItemId);
     if (!item) {
@@ -15,7 +16,7 @@ export const updateCartItem = async (userId, cartItemId, cartItemData) => {
     if (user._id.toString() === userId.toString()) {
       item.quantity = cartItemData.quantity;
       item.price = item.quantity * item.product.price;
-      item.discountedPrice = item.quantity * item.product.discountedPrice;
+      item.discountsPrice = item.quantity * item.product.discountedPrice;
       const updateCartItem = await item.save();
       return updateCartItem;
     } else {
@@ -33,17 +34,19 @@ export const removeCartItem = async (userId, cartItemId) => {
 
     if (user._id.toString() === cartItem.userId.toString()) {
       await CartItem.findByIdAndDelete(cartItemId);
+    } else {
+      throw new Error("You cannot remove another user's item from your cart");
     }
-    throw new Error("you cart remove another uoser's item");
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
+
 export const findCartItemById = async (cartItemId) => {
   try {
-    //  const cartItem = await CartItem.findById(cartItemId);
-    const cartItem = await findCartItemById(cartItemId);
+     const cartItem = await CartItem.findById(cartItemId);
+    // const cartItem = await findCartItemById(cartItemId);
     if (cartItem) {
       return cartItem;
     } else {

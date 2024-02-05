@@ -9,7 +9,9 @@ import DailogModel from "../DailogModel.jsx";
 import { GrSettingsOption, GrUserSettings } from "react-icons/gr";
 import { IoIosLogOut } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import {  getUserCurrentData, logout, selectUser } from "../../../redux/features/userSlice.js";
+import { getUserCurrentData, logout, selectUser } from "../../../redux/features/userSlice.js";
+import axios from "axios";
+import { getUserCart, selectCart } from "../../../redux/features/cartSlice.js";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -24,13 +26,22 @@ export default function Nav() {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch()
   const CurrentUser = useSelector(selectUser);
+  const CartItems = useSelector(selectCart);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (token) {
+        try {
+          dispatch(getUserCurrentData());
+          dispatch(getUserCart());
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+    };
 
-useEffect(()=>{
-  if(token){
-    dispatch(getUserCurrentData());
-  }
-},[dispatch])
+    fetchData();
+  }, [dispatch])
 
 
   // profile dropwon section
@@ -116,11 +127,11 @@ useEffect(()=>{
   };
 
 
-  const handleCategoryClick = (item,section,category,close) => {
-    console.log(item.id,"",section.id,"",category.id)
+  const handleCategoryClick = (item, section, category, close) => {
+    console.log(item.id, "", section.id, "", category.id)
     navigate(`/${category.id}/${section.id}/${item.id}`);
     close()
-      // alert("1st :", category.id, "2nd :", section.id, "3rd :", item.id);
+    // alert("1st :", category.id, "2nd :", section.id, "3rd :", item.id);
   }
 
   return (
@@ -305,7 +316,7 @@ useEffect(()=>{
                 <div className="flex h-full space-x-8">
                   {navigation.categories.map((category) => (
                     <Popover key={category.name} className="flex">
-                      {({ open,close }) => (
+                      {({ open, close }) => (
                         <>
                           <div className="relative flex">
                             <Popover.Button
@@ -390,8 +401,8 @@ useEffect(()=>{
                                                 key={item.name}
                                                 className="flex"
                                               >
-                                                <a className="hover:text-gray-800 cursor-pointer" 
-                                                onClick={(e)=>{handleCategoryClick(item,section,category,close)}}>
+                                                <a className="hover:text-gray-800 cursor-pointer"
+                                                  onClick={(e) => { handleCategoryClick(item, section, category, close) }}>
                                                   {item.name}
                                                 </a>
                                               </li>
@@ -438,7 +449,7 @@ useEffect(()=>{
                   <div className="flex lg:ml-6" x-data="{ open: false }">
                     <div onClick={() => setIsDrOpen(!isDrOpen)}>
                       <Avatar
-                        src={CurrentUser &&  CurrentUser.profilePicture}
+                        src={CurrentUser && CurrentUser.profilePicture}
                         sx={{ bgcolor: "lightblue", height: 45, width: 45 }}
                         className="cursor-pointer"
                       />
@@ -455,7 +466,7 @@ useEffect(()=>{
                     className="cursor-pointer"
                   >
                     <Tooltip title="Cart">
-                      <Badge badgeContent={1} color="error">
+                      <Badge badgeContent={CartItems && CartItems.totalItem} color="error">
                         <FaShoppingBag className="h-6 w-6 flex-shrink-0 text-gray-600 group-hover:text-gray-500" />
                       </Badge>
                     </Tooltip>

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../layout/Layout'
-import { FaCheck } from "react-icons/fa";
-import { BsCart3 } from "react-icons/bs";
 import { GoHeartFill, GoHeart } from "react-icons/go";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ProductReview from '../ProductReview/ProductReview';
 import HeaderTittle from '../HeaderTittle';
 import Product from './ProductCard';
+import { Rating } from '@mui/material';
+import { toast } from 'react-toastify';
 
 const SingleProduct = () => {
 
@@ -15,9 +15,13 @@ const SingleProduct = () => {
     const [isAddwishList, setIsAddwishList] = useState(false)
     const [products, setProducts] = useState({})
     const [Relatedproducts, setRelatedproducts] = useState([])
+    const [selectedColor, setSelecetedColor] = useState("")
+    const [selectedSize, setSelecetedSize] = useState("")
+    const [selectedQuantity, setSelecetedQuantity] = useState(1)
     const P_ID = useParams()
-console.log(products)
     // product data 
+
+
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -34,10 +38,15 @@ console.log(products)
     // Related product data 
     useEffect(() => {
         const fetchProducts = async () => {
-            const category = products.category;
+            const category = products.category.name;
             try {
-                const response = await axios.get(`/api/products/category/${category}`);
-                setRelatedproducts(response.data);
+                const response = await axios.get('/api/product', {
+                    params: {
+                        category: category,
+                    }
+                });
+                //    console.log(response);
+                // setRelatedproducts(response);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -49,11 +58,17 @@ console.log(products)
     }, [products.category]);
 
 
-    const handleAddToCart = () => {
-        setIsAddToCart(true)
-        setTimeout(() => {
-            setIsAddToCart(false)
-        }, 2000) // Reset success message after 2 seconds
+    const handleAddToCart = async() => {
+        let data = {
+            color: selectedColor,
+            size: selectedSize,
+            quantity: selectedQuantity,
+            ProductId:products._id
+        }
+        console.log(data)
+        const res= await axios.post('/api/cart/add',data);
+        console.log(res)
+        toast.success(res.data)
     }
     const handleAddToWish = () => {
         setIsAddwishList(true)
@@ -61,7 +76,6 @@ console.log(products)
             setIsAddwishList(false)
         }, 2000) // Reset success message after 2 seconds
     }
-
     return (
         <>
             <Layout>
@@ -75,15 +89,15 @@ console.log(products)
                                             className="object-cover object-left-top w-full lg:h-[80dvh] " />
                                     </div>
                                     <div className="flex-wrap hidden md:flex ">
-                                        {products.subImage &&   products.subImage.map((img,index) =>{
-                                            return(
+                                        {products.subImage && products.subImage.map((img, index) => {
+                                            return (
                                                 <div className="w-1/2 p-2 sm:w-1/4" key={index}>
-                                                <a href="#"
-                                                    className="block border border-blue-300 dark:border-transparent dark:hover:border-blue-300 hover:border-blue-300">
-                                                    <img src={img} alt=""
-                                                        className="w-full object-left-top object-cover h-20" />
-                                                </a>
-                                            </div>
+                                                    <a href="#"
+                                                        className="block border border-blue-300 dark:border-transparent dark:hover:border-blue-300 hover:border-blue-300">
+                                                        <img src={img} alt=""
+                                                            className="w-full object-left-top object-cover h-20" />
+                                                    </a>
+                                                </div>
                                             )
                                         })}
                                     </div>
@@ -95,59 +109,14 @@ console.log(products)
                                         <h2 className="max-w-xl mt-2 mb-4 text-xl font-bold dark:text-gray-400 md:text-2xl">
                                             {products.title}</h2>
                                         <div className="flex items-center mb-6">
-                                            <ul className="flex mr-2">
-                                                <li>
-                                                    <a href="#">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor"
-                                                            className="w-4 mr-1 text-red-500 dark:text-gray-400 bi bi-star "
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                        </svg>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor"
-                                                            className="w-4 mr-1 text-red-500 dark:text-gray-400 bi bi-star "
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                        </svg>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor"
-                                                            className="w-4 mr-1 text-red-500 dark:text-gray-400 bi bi-star "
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                        </svg>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor"
-                                                            className="w-4 mr-1 text-red-500 dark:text-gray-400 bi bi-star "
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                                        </svg>
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                            <Rating sx={{ borderColor: 'green' }} name="half-rating" defaultValue={2.5} precision={0.5} />
                                             <p className="text-xs dark:text-gray-400 ">(2 customer reviews)</p>
                                         </div>
                                         <p className="max-w-md mb-5 text-gray-700 dark:text-gray-400">
                                             {products.description}
                                         </p>
                                         <p className="inline-block mb-4 font-bold text-gray-700 dark:text-gray-400">
-                                          <span className='text-2xl font-semibold'>₹{products.discountedPrice}</span>&nbsp;<span className='line-through'>{products.price}</span>&nbsp;<span className='text-green-400 text-sm'>{products.discountedPercentage}%</span>
+                                            <span className='text-2xl font-semibold'>₹{products.discountedPrice}</span>&nbsp;<span className='line-through'>{products.price}</span>&nbsp;<span className='text-green-400 text-sm'>{products.discountedPercentage}%</span>
                                         </p>
                                         {products.quantity !== 0 ? <p className="text-green-600 dark:text-green-300 ">In Stock</p>
                                             : <p className="text-red-700 dark:text-red-600 ">Out of Stock</p>}
@@ -160,13 +129,12 @@ console.log(products)
                                                 {products.color.map((c) => {
                                                     return (
                                                         <button key={c}
+                                                            onClick={() => setSelecetedColor(c)}
                                                             className="p-1 mb-2 mr-2 border border-transparent rounded-full hover:border-gray-400 dark:border-gray-800 dark:hover:border-gray-400 ">
                                                             <div className="w-6 h-6 rounded-full" style={{ backgroundColor: c }}></div>
                                                         </button>
                                                     )
                                                 })}
-
-
                                             </div>
                                         </div>
                                         : ""
@@ -179,6 +147,7 @@ console.log(products)
                                                 {products.size.map((s) => {
                                                     return (
                                                         <button key={s}
+                                                            onClick={() => setSelecetedSize(s)}
                                                             className="py-1 mb-2 mr-1 border w-11 hover:border-blue-400 dark:border-gray-400 hover:text-blue-600 dark:hover:border-gray-300 dark:text-gray-400">
                                                             {s}
                                                         </button>
@@ -193,14 +162,19 @@ console.log(products)
                                         <div className="mb-4 mr-4 lg:mb-0">
                                             <div className="w-28">
                                                 <div className="relative flex flex-row w-full h-10 bg-transparent rounded-lg">
-                                                    <button
+                                                    <button onClick={(e) => {
+                                                        if (selectedQuantity > 1) {
+                                                            setSelecetedQuantity(selectedQuantity - 1);
+                                                        }
+                                                    }}
                                                         className="w-20 h-full text-gray-600 bg-gray-100 border-r rounded-l outline-none cursor-pointer dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-400 hover:text-gray-700 dark:bg-gray-900 hover:bg-gray-300">
                                                         <span className="m-auto text-2xl font-thin">-</span>
                                                     </button>
                                                     <input type="number"
                                                         className="flex items-center w-full font-semibold text-center text-gray-700 placeholder-gray-700 bg-gray-100 outline-none dark:text-gray-400 dark:placeholder-gray-400 dark:bg-gray-900 focus:outline-none text-md hover:text-black"
-                                                        placeholder="1" />
+                                                        value={selectedQuantity} readOnly />
                                                     <button
+                                                        onClick={(e) => { setSelecetedQuantity(selectedQuantity + 1) }}
                                                         className="w-20 h-full text-gray-600 bg-gray-100 border-l rounded-r outline-none cursor-pointer dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-400 dark:bg-gray-900 hover:text-gray-700 hover:bg-gray-300">
                                                         <span className="m-auto text-2xl font-thin">+</span>
                                                     </button>
@@ -210,19 +184,17 @@ console.log(products)
                                         <div className="mb-4 mr-4 lg:mb-0">
                                             <button
                                                 onClick={products.quantity !== 0 ? handleAddToCart : null}
-                                                className={`${products.quantity !== 0 ? 'cursor-pointer bg-blue-500' : 'cursor-no-drop bg-red-600'} w-full h-10 p-2 mr-4`}>
-                                                Buy Now</button>
+                                                className={`${products.quantity !== 0 ? 'cursor-pointer bg-blue-500' : 'cursor-not-allowed bg-red-600'} w-full h-10 p-2 mr-4`}
+                                            >
+                                                Add to Bag
+                                            </button>
+
                                         </div>
                                         <div className="mb-4 mr-4 lg:mb-0 flex gap-3">
                                             <div
                                                 onClick={handleAddToWish}
                                                 className={` cursor-pointer p-2 rounded ${isAddwishList ? 'bg-slate-500 transition duration-500' : ""}`}>
                                                 {isAddwishList ? <GoHeartFill size={28} className='text-red-600' /> : <GoHeart size={28} />}
-                                            </div>
-                                            <div
-                                                onClick={products.quantity !== 0 ? handleAddToCart : null}
-                                                className={`${products.quantity !== 0 ? 'cursor-pointer' : 'cursor-no-drop'}   p-2 rounded ${isAddToCart ? 'bg-green-500/80 transition duration-500' : ""}`}>
-                                                {isAddToCart ? <FaCheck size={28} /> : <BsCart3 size={28} />}
                                             </div>
                                         </div>
                                     </div>
@@ -240,7 +212,7 @@ console.log(products)
                     <div className='px-4'>
                         <HeaderTittle tittle="Related Products" />
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:grid-cols-4 mb-2">
-                            {Relatedproducts && Relatedproducts.map((item) => {
+                            {/* {Relatedproducts && Relatedproducts.map((item) => {
                                 return (
                                     <Product
                                         key={item._id}
@@ -254,7 +226,7 @@ console.log(products)
 
                                     />
                                 )
-                            })}
+                            })} */}
                         </div >
                     </div>
                 </section>

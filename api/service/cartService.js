@@ -18,18 +18,20 @@ export const findUserCart = async (userId) => {
     let cartItem = await CartItem.find({ cart: cart._id }).populate("product");
     cart.cartItem = cartItem;
 
+    // console.log(totalProduct);
+
     let totalPrice = 0;
     let totalDiscountedPrice = 0;
     let totalItem = 0;
 
     for (let cartItem of cart.cartItem) {
       totalPrice += cartItem.price;
-      totalDiscountedPrice += cartItem.discountsPrice;
-      totalItem += cartItem.quantity;
+      totalDiscountedPrice += cartItem.discountsPrice*cartItem.quantity;
+     // totalItem += cartItem.quantity;
     }
 
     cart.totalPrice = totalPrice;
-    cart.totalItem = totalItem;
+    cart.totalItem = cartItem.length;
     cart.totalDiscountedPrice = totalDiscountedPrice;
 
     return cart;
@@ -54,16 +56,14 @@ export const addItemToCart = async (userId, req) => {
       const cartItem = new CartItem({
         product: product._id,
         cart: cart._id,
-        quantity: 1,
+        quantity: req.quantity,
+        color:req.color,
         userId,
         price: product.price,
         size: req.size,
         discountsPrice: product.discountedPrice,
       });
-
-
       const createdCartItem = await cartItem.save();
-
       cart.cartItem.push(createdCartItem);
       await cart.save();
       return "Item Added to Cart";

@@ -9,7 +9,7 @@ export const findUserCarts = async (req, res, next) => {
         }
         const userId = await getUserIdFromToken(token);
         const cart = await findUserCart(userId);
-        res.status(200).json(cart);
+        res.status(200).json({cart});
     } catch (error) {
         next(error)
     }

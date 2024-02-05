@@ -8,6 +8,7 @@ import {
     FormControl,
     FormControlLabel,
     FormLabel,
+    Pagination,
     Radio,
     RadioGroup,
 } from "@mui/material";
@@ -26,8 +27,8 @@ export default function ProductStore() {
     const location = useLocation();
     const navigate = useNavigate();
     const [products, setProducts] = useState([])
+    const [pageNum, setPageNum] = useState(1);
     const param = useParams()
-
     const decodedQueryString = decodeURIComponent(location.search);
     const searchParamms = new URLSearchParams(decodedQueryString);
     const colorValue = searchParamms.get("color");
@@ -50,7 +51,7 @@ export default function ProductStore() {
             maxPrice,
             minDiscount: discount || 0,
             sort: sortValue || "price_low",
-           // pageNumber: pageNumber - 1,
+            pageNumber: pageNumber,
             pageSize: 12,
             stock: stock
         }
@@ -58,20 +59,20 @@ export default function ProductStore() {
             try {
                 const response = await axios.get('/api/product', {
                     params: {
-                        color: data.color, 
-                        size: data.size, 
-                        minPrice: data.minPrice, 
-                        maxPrice: data.maxPrice, 
-                        minDiscount: data.minDiscount, 
-                        category: data.category, 
-                        stock: data.stock, 
-                        sort: data.sort, 
-                        pageNumber: data.pageNumber, 
-                        pageSize: data.pageSize, 
+                        color: data.color,
+                        size: data.size,
+                        minPrice: data.minPrice,
+                        maxPrice: data.maxPrice,
+                        minDiscount: data.minDiscount,
+                        category: data.category,
+                        stock: data.stock,
+                        sort: data.sort,
+                        pageNumber: data.pageNumber,
+                        pageSize: data.pageSize,
                     }
                 });
-                console.log(response);
                 setProducts(response.data.content);
+                setPageNum(response.data.totalPage);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -79,6 +80,21 @@ export default function ProductStore() {
 
         fetchProducts();
     }, [param.levelThree, colorValue, sizeValue, priceValue, discount, sortValue, pageNumber, stock]);
+
+
+    const handlePageChnage = (event, value) => {
+        const searchParamms = new URLSearchParams(location.search);
+        searchParamms.set("page", value);
+        const quary = searchParamms.toString();
+        navigate({ search: `?${quary}` });
+    }
+
+    const handleSortChange = (value) => {
+        const searchParamms = new URLSearchParams(location.search);
+        searchParamms.set("sort", value);
+        const quary = searchParamms.toString();
+        navigate({ search: `?${quary}` });
+    }
 
     const handleFilter = (value, sectionID) => {
         const searchParamms = new URLSearchParams(location.search);
@@ -196,6 +212,7 @@ export default function ProductStore() {
                                                                             className="flex items-center"
                                                                         >
                                                                             <input
+                                                                                onClick={() => { handleFilter(option.value, section.id) }}
                                                                                 id={`filter-${section.id}-${optionIdx}`}
                                                                                 name={`${section.id}[]`}
                                                                                 defaultValue={option.value}
@@ -267,6 +284,7 @@ export default function ProductStore() {
                                                                                         control={<Radio />}
                                                                                         label={option.label}
                                                                                         sx={{ color: "black" }}
+                                                                                        onChange={(e) => handleRadioFilterChange(e, section.id)}
                                                                                     />
                                                                                 )
                                                                             )}
@@ -313,12 +331,12 @@ export default function ProductStore() {
                                         leaveTo="transform opacity-0 scale-95"
                                     >
                                         <Menu.Items className="absolute bg-slate-100 dark:bg-slate-700 right-0 z-10 mt-2 w-40 origin-top-right rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                            <div className="py-1">
+                                            <div className="py-1 cursor-pointer">
                                                 {sortOptions.map((option) => (
                                                     <Menu.Item key={option.name}>
                                                         {({ active }) => (
                                                             <a
-                                                                href={option.href}
+                                                                onClick={(e) => handleSortChange(option.value)}
                                                                 className={classNames(
                                                                     option.current
                                                                         ? "font-medium"
@@ -492,7 +510,7 @@ export default function ProductStore() {
                                 {/* Product grid */}
                                 <div className="lg:col-span-3 w-full bg-slate-100 dark:bg-slate-700">
                                     {/* Your content */}
-                                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 mb-2">
+                                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 mb-3">
                                         {products && products.map((item, index) => (
                                             <Product
                                                 key={item._id}
@@ -509,9 +527,17 @@ export default function ProductStore() {
                                             />
                                         ))}
                                     </div>
+
+                                    <section className='w-full px-[1.6rem] bg-slate-300 dark:bg-slate-600'>
+                                        <div className='px-4 py-3 flex justify-center'>
+                                            <Pagination count={pageNum} color='secondary'
+                                                onChange={handlePageChnage} />
+                                        </div>
+                                    </section>
                                 </div>
                             </div>
                         </section>
+
                     </main>
                 </div>
             </div>

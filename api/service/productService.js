@@ -84,7 +84,7 @@ export const findProductById = async (Id) => {
 // get product
 
 export const getAllProduct = async (reqQuery) => {
-  // console.log(reqQuery);
+  //  console.log(reqQuery);
   let {
     category,
     color,
@@ -100,8 +100,6 @@ export const getAllProduct = async (reqQuery) => {
   } = reqQuery;
 
   pageSize = pageSize || 12;
-  pageNumber = pageNumber || 1;
-
   let query = Product.find().populate("category");
 
   if (category) {
@@ -127,17 +125,19 @@ export const getAllProduct = async (reqQuery) => {
     query = query.where("size").in(sizeArray);
   }
 
-  if (minPrice !== undefined) {
+  if (minPrice) {
     query = query.where("discountedPrice").gte(minPrice);
   }
 
-  if (maxPrice !== undefined) {
+  if (maxPrice != 0) {
     query = query.where("discountedPrice").lte(maxPrice);
   }
 
 
+
   // if (minDiscount) {
-  //   query = await query.where("discountedPercentage").gte(minDiscount);
+  // console.log(minDiscount)
+  // query = await query.where("discountedPercentage").gt(minDiscount);
   // }
 
   if (stock) {
@@ -147,7 +147,7 @@ export const getAllProduct = async (reqQuery) => {
       query = query.where("quantity").lt(1);
     }
   }
-  
+
 
   if (sort) {
     const sortDirection = sort === "price_heigh" ? -1 : 1;
@@ -155,6 +155,7 @@ export const getAllProduct = async (reqQuery) => {
   }
 
   const totalProduct = await Product.countDocuments(query);
+
   if (pageNumber <= 0 || pageSize <= 0) {
     throw new Error("Invalid page number or page size");
   }
@@ -165,6 +166,8 @@ export const getAllProduct = async (reqQuery) => {
 
   query = query.skip(skip).limit(pageSize);
   const products = await query.exec();
+ 
+
 
   const totalPage = Math.ceil(totalProduct / pageSize);
 
