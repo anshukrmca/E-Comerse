@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
       <ToastContainer />
         {/* <Navbar /> */}
         <Nav/>
-        <div className='flex-1 mt-32 z-10 min-h-[35rem]'>
+        <div className='flex-1 mt-32 z-10 min-h-[30rem]'>
           {children}
         </div>
         <div className='bottom-0 bg-gray-600 dark:bg-gray-800 mx-4'>

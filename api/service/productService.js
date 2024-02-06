@@ -84,7 +84,7 @@ export const findProductById = async (Id) => {
 // get product
 
 export const getAllProduct = async (reqQuery) => {
-  //  console.log(reqQuery);
+  
   let {
     category,
     color,
@@ -133,8 +133,6 @@ export const getAllProduct = async (reqQuery) => {
     query = query.where("discountedPrice").lte(maxPrice);
   }
 
-
-
   // if (minDiscount) {
   // console.log(minDiscount)
   // query = await query.where("discountedPercentage").gt(minDiscount);
@@ -148,10 +146,14 @@ export const getAllProduct = async (reqQuery) => {
     }
   }
 
-
   if (sort) {
     const sortDirection = sort === "price_heigh" ? -1 : 1;
     query = query.sort({ discountedPrice: sortDirection });
+  }
+
+  if (!category && !color && !size && !minPrice && !maxPrice && !minDiscount && !maxDiscount && !stock) {
+    // No filters provided, return all products
+    query = Product.find().populate("category");
   }
 
   const totalProduct = await Product.countDocuments(query);
@@ -166,9 +168,6 @@ export const getAllProduct = async (reqQuery) => {
 
   query = query.skip(skip).limit(pageSize);
   const products = await query.exec();
- 
-
-
   const totalPage = Math.ceil(totalProduct / pageSize);
 
   return { content: products, currrentPage: pageNumber, totalPage };

@@ -17,6 +17,7 @@ import { GoPlus } from "react-icons/go";
 import { IoIosRemove } from "react-icons/io";
 import Product from './ProductCard.jsx'
 import axios from 'axios'
+import DataLoading from '../Loding/DataLoading.jsx';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -103,9 +104,7 @@ export default function ProductStore() {
             filterValue = filterValue[0].split(",").filter((item) => item != value);
             if (filterValue.length === 0) {
                 searchParamms.delete(sectionID);
-                console.log("yes deletes");
             }
-            console.log("include", value, sectionID, filterValue);
         } else {
             filterValue.push(value);
         }
@@ -117,10 +116,7 @@ export default function ProductStore() {
     };
 
     const handleRadioFilterChange = (e, sectionID) => {
-        console.log(sectionID)
-
         const searchParamms = new URLSearchParams(location.search);
-
         searchParamms.set(sectionID, e.target.value);
         const quary = searchParamms.toString();
         navigate({ search: `?${quary}` });
@@ -509,31 +505,33 @@ export default function ProductStore() {
                                 </div>
                                 {/* Product grid */}
                                 <div className="lg:col-span-3 w-full bg-slate-100 dark:bg-slate-700">
-                                    {/* Your content */}
-                                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 mb-3">
-                                        {products && products.map((item, index) => (
-                                            <Product
-                                                key={item._id}
-                                                P_id={item._id}
-                                                P_name={item.title}
-                                                description={item.description}
-                                                price={item.price}
-                                                discountedPrice={item.discountedPrice}
-                                                discountedPercentage={item.discountedPercentage}
-                                                color={item.color}
-                                                size={item.size}
-                                                image={item.mainImage}
+                                    {products && products.length > 0 ? <>
+                                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 mb-3">
+                                            {products && products.map((item, index) => (
+                                                <Product
+                                                    key={item._id}
+                                                    P_id={item._id}
+                                                    P_name={item.title}
+                                                    description={item.description}
+                                                    price={item.price}
+                                                    discountedPrice={item.discountedPrice}
+                                                    discountedPercentage={item.discountedPercentage}
+                                                    color={item.color}
+                                                    size={item.size}
+                                                    image={item.mainImage}
 
-                                            />
-                                        ))}
-                                    </div>
-
-                                    <section className='w-full px-[1.6rem] bg-slate-300 dark:bg-slate-600'>
-                                        <div className='px-4 py-3 flex justify-center'>
-                                            <Pagination count={pageNum} color='secondary'
-                                                onChange={handlePageChnage} />
+                                                />
+                                            ))}
                                         </div>
-                                    </section>
+
+                                        <section className='w-full px-[1.6rem] bg-slate-300 dark:bg-slate-600'>
+                                            <div className='px-4 py-3 flex justify-center'>
+                                                <Pagination count={pageNum} color='secondary'
+                                                    onChange={handlePageChnage} />
+                                            </div>
+                                        </section>
+                                    </>
+                                        : <DataLoading/>}
                                 </div>
                             </div>
                         </section>

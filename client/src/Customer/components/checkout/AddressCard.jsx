@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 
 const AddressCard = ({ index, item, fetchData, setIsFormOpen, setId }) => {
   const [isDrOpen, setIsDrOpen] = useState({});
+  
   const toggleDropdown = (index) => {
     setIsDrOpen((prevStates) => ({
       ...prevStates,
@@ -50,7 +51,7 @@ const AddressCard = ({ index, item, fetchData, setIsFormOpen, setId }) => {
 
   return (
     <div>
-      <div className='flex justify-between items-center p-4  dark:bg-slate-900 bg-slate-300'>
+      <div className='flex justify-between items-center p-4  dark:bg-gray-800 bg-slate-300 mb-2'>
         <div>
           <div className='flex gap-4 font-semibold'>
             <p>{item.name}</p>

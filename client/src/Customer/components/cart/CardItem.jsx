@@ -27,19 +27,19 @@ const CardItem = ({ item }) => {
       quantity: parseInt(item.quantity, 10) + num,
     }
     const res  = await axios.put("/api/cartItem",data);
-    console.log(res.data);
+    dispatch(getUserCart())
+    toast.success(res.data.message);
 
   }
   return (
     <>
       <div className="p-5 shadow-lg rounded-md mb-2 bg-white dark:bg-gray-800">
-        <p>{item._id}</p>
         <div className="flex items-center">
           <div className="w-[5rem] h-[5rem] lg:w-[9rem] lg:h-[9rem]">
             <img
               className="w-full h-full object-cover object-top"
               src={item.product.mainImage}
-              alt=""
+              alt="product image"
             />
           </div>
           <div className="ml-5 space-y-1">

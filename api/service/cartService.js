@@ -25,7 +25,7 @@ export const findUserCart = async (userId) => {
     let totalItem = 0;
 
     for (let cartItem of cart.cartItem) {
-      totalPrice += cartItem.price;
+      totalPrice += cartItem.price*cartItem.quantity;
       totalDiscountedPrice += cartItem.discountsPrice*cartItem.quantity;
      // totalItem += cartItem.quantity;
     }
@@ -33,6 +33,7 @@ export const findUserCart = async (userId) => {
     cart.totalPrice = totalPrice;
     cart.totalItem = cartItem.length;
     cart.totalDiscountedPrice = totalDiscountedPrice;
+    cart.discounts= totalPrice - totalDiscountedPrice
 
     return cart;
   } catch (error) {

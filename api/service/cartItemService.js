@@ -15,8 +15,6 @@ export const updateCartItem = async (userId, cartItemData) => {
 
     if (user._id.toString() === userId.toString()) {
       item.quantity = cartItemData.quantity;
-      item.price = item.quantity * item.product.price;
-      item.discountsPrice = item.quantity * item.product.discountedPrice;
       const updateCartItem = await item.save();
       return updateCartItem;
     } else {
