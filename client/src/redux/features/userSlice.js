@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 export const getUserCurrentData = createAsyncThunk("getUserCurrentData", async () => {
   try {
     const response = await axios.get("/api/auth/profile");
+    // console.log(response.data)
     return response.data; // Return the entire response
   } catch (error) {
     throw new Error(`Error in getUserCurrentData: ${error.message}`);
@@ -41,6 +42,9 @@ const userSlice = createSlice({
     });
     builder.addCase(getUserCurrentData.rejected, (state, action) => {
       console.log("Error", action.payload);
+      state.Message= action.payload;
+    //  alert("Session Expired !")
+      //localStorage.removeItem('token');
       state.isLoading = false;
       state.isError = true;
     });

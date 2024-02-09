@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserCurrentData, logout, selectUser } from "../../../redux/features/userSlice.js";
 import axios from "axios";
 import { getUserCart, selectCart } from "../../../redux/features/cartSlice.js";
+import { getUserOrder } from "../../../redux/features/orderSlice.js";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -34,6 +35,7 @@ export default function Nav() {
         try {
           dispatch(getUserCurrentData());
           dispatch(getUserCart());
+          dispatch(getUserOrder());
         } catch (error) {
           console.error('Error fetching data:', error);
         }

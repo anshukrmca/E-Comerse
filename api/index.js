@@ -72,6 +72,8 @@ app.use('/api/rating', ratingRoute);
 import categoryRoute from '../api/Routes/categoryRoute.js'
 app.use('/api/category', categoryRoute);
 
+import paymentRoute from '../api/Routes/paymentRoute.js'
+app.use('/api/payment', paymentRoute);
 
 
 app.use((err, req, res, next) => {  

@@ -5,7 +5,7 @@ import { cancleOrders, confirmedOrders, deleteOrders, deliverOrders, getAllOrder
 const router = express.Router();
 
 router.get("/",verifyToken,getAllOrders);
-router.put("/:orderId/confirmed",verifyToken,confirmedOrders)
+// router.put("/:orderId/confirmed",verifyToken,confirmedOrders)
 router.put("/:orderId/ship",verifyToken,shipOrders)
 router.put("/:orderId/deliver",verifyToken,deliverOrders)
 router.put("/:orderId/confirmed",verifyToken,confirmedOrders)

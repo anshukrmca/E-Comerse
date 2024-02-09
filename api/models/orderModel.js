@@ -23,11 +23,13 @@ const OrderSchema = new mongoose.Schema(
     },
     shippingAddess: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "addresse",
+      ref: "Address",
+      required:true
     },
     paymentDetails: {
       paymentMethod: {
         type: String,
+        required:true
       },
       TransectionId: {
         type: String,

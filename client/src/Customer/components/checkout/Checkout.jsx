@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -7,7 +6,8 @@ import { useLocation } from 'react-router-dom';
 import CartSummery from './CartSummery';
 import DeleveryAddress from './DeleveryAddress';
 import Layout from '../layout/Layout';
-import Payment from './Payment'
+import Payment from '../paymentMode/Payment'
+import { useState } from 'react';
 
 
 const steps = ['Address', 'Summary', 'Payment'];
@@ -34,11 +34,11 @@ export default function Checkout() {
             </Stepper>
                 <div>
                   {step == 1 ?
-                    <DeleveryAddress /> :
+                    <DeleveryAddress/> :
                     step == 2 ?
-                      <CartSummery />
+                      <CartSummery/>
                       : step == 3 ?
-                        <Payment />
+                        <Payment/>
                         : ''}
                 </div>
           </Box>

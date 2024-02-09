@@ -65,8 +65,7 @@ const DeleveryAddress = () => {
               <button
                 className='w-48 p-2 rounded-md bg-slate-500'
                 onClick={() => {
-                  // Handle the action when the button is clicked for the selected address
-                  console.log('Button clicked for address:', selectedAddress);
+                  sessionStorage.setItem("addressID",selectedAddress)
                   navigate(`/checkout/?step=2`)
                 }}
               >

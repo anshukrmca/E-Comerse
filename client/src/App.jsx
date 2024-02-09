@@ -17,6 +17,7 @@ import Products from "./admin/component/product/Products";
 import User from "./admin/component/user/User";
 import Navbar from "./admin/component/Dashboard/Navbar";
 import Category from "./admin/component/category/Category";
+import PaymentSuccess from "./Customer/components/paymentMode/PaymentSuccess";
 
 const App = () => {
 
@@ -33,6 +34,8 @@ const App = () => {
         <Route path="/store" element={<ProductStore />} />
         <Route path="/checkout/" element={<Checkout />} />
         <Route path="/:levelOne/:levelTwo/:levelThree" element={<ProductStore />} />
+        <Route path="/payment/order/:orderid/payment/:paymentid" element={<PaymentSuccess />} />
+
 
         {/* profile  */}
         <Route path="/Setting" element={<UProfileSetting />} >
@@ -40,7 +43,7 @@ const App = () => {
           <Route path="/Setting/address" element={<UserAddress />} />
           <Route path="/Setting/order" element={<OrderDetail />} />
         </Route>
-        <Route path="/order-summery" element={<OrderSummery />} />
+        <Route path="/order-summery/:orderid" element={<OrderSummery />} />
 
         <Route path='/admin' element={<Navbar />}>
           <Route path="/admin/dashboard" element={<Dashboard />} />

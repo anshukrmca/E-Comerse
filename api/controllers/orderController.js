@@ -20,9 +20,13 @@ export const createOrders = async (req, res, next) => {
 };
 
 export const findOrderByIds = async (req, res, next) => {
-  const user = req.user;
+  const token = req.cookies.token;
   try {
-    const createdOrder = await findOrderById(req.params.id);
+    if (!token) {
+      return res.status(401).json({ message: "You are not authenticated!" });
+    }
+    const userId = await getUserIdFromToken(token);
+    const createdOrder = await findOrderById(userId);
     res.status(200).json(createdOrder);
   } catch (error) {
     next(error);
@@ -30,10 +34,14 @@ export const findOrderByIds = async (req, res, next) => {
 };
 
 export const UsersOrderHistorys = async (req, res, next) => {
-  const user = req.user;
+  const token = req.cookies.token;
   try {
-    const historyOrder = await UsersOrderHistory(user._id);
-    res.status(200).json(historyOrder);
+    if (!token) {
+      return res.status(401).json({ message: "You are not authenticated!" });
+    }
+    const userId = await getUserIdFromToken(token);
+    const order = await UsersOrderHistory(userId);
+    res.status(200).json({order});
   } catch (error) {
     next(error);
   }

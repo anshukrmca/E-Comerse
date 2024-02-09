@@ -3,19 +3,9 @@ import OrderItem from "../models/orderItemModel.js";
 import Order from "../models/orderModel.js";
 import { findUserCart } from "./cartService.js";
 
-export const createOrder =async(userId,shippAddressID)=>{
+export const createOrder =async(userId,resDate)=>{
     try {
-        // let address;
-        // if(shippAddress._id){
-        //     let existAddress = await Addresse.findById(shippAddress._id);
-        //     address = existAddress;
-        // }else{
-        //     address = new Addresse(shippAddress);
-        //     address.user= user;
-        //     await address.save();
-        //     user.addresses.push(address);
-        //     await user.save();
-        // }
+      
         const cart = await findUserCart(userId);
         const orderItems=[];
         for(const item of cart.cartItem){
@@ -40,11 +30,14 @@ export const createOrder =async(userId,shippAddressID)=>{
             totalDiscountPrice:cart.totalDiscountedPrice,
             discounts:cart.discounts,
             totalItem:cart.totalItem,
-            shippingAddess:shippAddressID.shippAddressID
+            shippingAddess:resDate.shippingAddess,
+            paymentDetails: {
+                paymentMethod: resDate.paymentMethod
+              }
         })
-
-        const saverOrder= await createOrder.save()
-        return saverOrder
+        const saverOrders= await createOrder.save();
+        const saveOrder = await saverOrders.populate('UserId');
+        return await saveOrder.populate('shippingAddess');
     } catch (error) {
         throw new Error(error.message)
     }
@@ -89,22 +82,25 @@ export const cancleOrder = async(orderId)=>{
 
 export const findOrderById = async(orderId)=>{
     const order = await Order.findById(orderId)
-    .populate("user")
+    .populate("UserId")
     .populate({path:"orderItem",populate:{path:"product"}})
     .populate("shippingAddess")
 
     return order;
 }
 
-export const UsersOrderHistory = async(userId)=>{
+export const UsersOrderHistory = async(UserId)=>{
     try {
-        const orders = await Order.find({user:userId,orderStatus:"PLACED"})
-        .populate({path:"orderItem",populate:{path:"product"}}).lean()
-
-        return orders;
+       
+        const orders = await Order.find({ UserId: UserId, orderStatus: "PLACED" })
+        .populate({ path: "orderItem", populate: { path: "product" } })
+        .populate('shippingAddess')
+        .lean();
+    return orders;
 
     } catch (error) {
-     throw new Error(error.message)   
+        console.error('Error fetching user order history:', error.message);
+        throw new Error(error.message); 
     }
 }
 

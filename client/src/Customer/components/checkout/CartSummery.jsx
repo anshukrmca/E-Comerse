@@ -1,28 +1,55 @@
 import { Button } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CardItem from '../cart/CardItem'
 import { useSelector } from 'react-redux'
 import { selectCart } from '../../../redux/features/cartSlice'
 import HeaderTittle from '../HeaderTittle'
 import { IoCloudDownloadOutline } from 'react-icons/io5'
+import { selectUser } from '../../../redux/features/userSlice'
 
 const CartSummery = () => {
   const navigate = useNavigate()
   const cartData = useSelector(selectCart)
+  const addressID = sessionStorage.getItem("addressID");
+  const currentUser = useSelector(selectUser);
+  const [address, setAddress] = useState()
+
+  useEffect(() => {
+    const filterById = (addressID) => {
+      const filteredData = currentUser && currentUser.Useraddress.filter(item => item._id === addressID);
+      setAddress(filteredData)
+    };
+    if (addressID !== undefined) {
+      filterById(addressID);
+    }
+  }, [addressID, currentUser])
+
   return (
     <div>
+
       <div className='mx-4'>
-        <div className='p-4 mt-4 mb-4 rounded-md shadow-md sm:mb-0 bg-white dark:bg-gray-800 w-[auto]'>
-          <div className='flex flex-col sm:flex-row gap-4 font-semibold'>
-            <p>Anshu Kumar</p>
-            <p>8210500193</p>
-          </div>
-          <p className='text-sm'>
-            KKS Balaji Mens Hostel, 5, Lakshmikanthan St, Pondy Bazaar, Parthasarathi Puram, T. Nagar, Chennai,
-            Tamil Nadu 600017, CHENNAI, Tamil Nadu - 600018
-          </p>
+        <div className='mt-4'>
+          <HeaderTittle tittle={"Order Summery"} />
         </div>
+        {address && address.length !=0 && <div className='p-4 mt-4 mb-4 rounded-md shadow-md sm:mb-0 bg-white dark:bg-gray-800 w-[auto]'>
+          {
+            address && address.map((item) => {
+              return (
+                <div key={item._id}>
+                  <div className='flex flex-col sm:flex-row gap-3 font-semibold'>
+                    <p>{item.name}</p>
+                    <p>({item.mobile})</p>
+                  </div>
+                  <p className='text-sm'>
+                  Street : {item.streetAddress}, City : {item.city}, State : {item.state}, Landmark : {item.landmarks},{item.zipCode}
+                  </p>
+                </div>
+              )
+            })
+          }
+
+        </div>}
       </div>
       <div className="md:flex justify-between m-4 gap-2">
         <div className='sm:w-3/4'>
@@ -56,16 +83,18 @@ const CartSummery = () => {
             </div>
           </div>
           <div className="p-4 mt-2 min-w-80 h-[auto] sticky shadow-lg bg-white dark:bg-gray-800">
-            
+
             <Button
               onClick={() => { navigate(`/checkout/?step=3`) }}
               variant="contained"
               className="w-full"
               sx={{ mt: " 1rem", px: "2rem", py: ".7rem", bgcolor: "#9155fd" }}
-            >Make Payment
+            >Continue
             </Button>
             <Button
-              onClick={() => { navigate(`/checkout/?step=1`) }}
+              onClick={() => { 
+                sessionStorage.removeItem("addressID");
+                navigate(`/checkout/?step=1`) }}
               variant="contained"
               className="w-full"
               sx={{ mt: " 1rem", px: "2rem", py: ".7rem", bgcolor: "#9155fd" }}
