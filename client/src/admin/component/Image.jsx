@@ -104,7 +104,7 @@ const Image = ({ setSubImage,setMainImage }) => {
     return (
       <div className="block">
         <div>
-        <label className="flex gap-3 text-gray-700  cursor-pointer">
+        <label className="flex gap-3 cursor-pointer">
           <input
             type="file"
             onChange={handleChangeMain}
@@ -140,7 +140,7 @@ const Image = ({ setSubImage,setMainImage }) => {
     return (
       <div className="block">
         <div>
-        <label className="flex gap-3 text-gray-700  cursor-pointer">
+        <label className="flex gap-3  cursor-pointer">
           <input
             type="file"
             multiple

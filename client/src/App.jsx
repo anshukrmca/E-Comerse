@@ -18,43 +18,55 @@ import User from "./admin/component/user/User";
 import Navbar from "./admin/component/Dashboard/Navbar";
 import Category from "./admin/component/category/Category";
 import PaymentSuccess from "./Customer/components/paymentMode/PaymentSuccess";
+import Sidebar from "./admin/component/Dashboard/Sidebar";
+import { ColorModeContext, useMode } from './theme.js'
+import { CssBaseline, ThemeProvider } from "@mui/material";
 
 const App = () => {
-
+  const [theme, colorMode] = useMode();
   return (
-    <div className="dark:bg-black text-black dark:text-white bg-white h-full w-[160dvw] md:w-full">
-      <Routes>
-        <Route path="/login" element={<Home />} />
-        <Route path="/signup" element={<Home />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/products/:id" element={<SingleProduct />} />
-        <Route path="/category/:name" element={<ProductStore />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/store" element={<ProductStore />} />
-        <Route path="/checkout/" element={<Checkout />} />
-        <Route path="/:levelOne/:levelTwo/:levelThree" element={<ProductStore />} />
-        <Route path="/payment/order/:orderid/payment/:paymentid" element={<PaymentSuccess />} />
+    <>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          
+          <div>
+            <Routes>
+              <Route path="/login" element={<Home />} />
+              <Route path="/signup" element={<Home />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/products/:id" element={<SingleProduct />} />
+              <Route path="/:levelThree" element={<ProductStore />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/store" element={<ProductStore />} />
+              <Route path="/checkout/" element={<Checkout />} />
+              <Route path="/:levelOne/:levelTwo/:levelThree" element={<ProductStore />} />
+              <Route path="/payment/order/:orderid/payment/:paymentid" element={<PaymentSuccess />} />
 
 
-        {/* profile  */}
-        <Route path="/Setting" element={<UProfileSetting />} >
-          <Route path="/Setting/profile" element={<UserProfile />} />
-          <Route path="/Setting/address" element={<UserAddress />} />
-          <Route path="/Setting/order" element={<OrderDetail />} />
-        </Route>
-        <Route path="/order-summery/:orderid" element={<OrderSummery />} />
+              {/* profile  */}
+              <Route path="/Setting" element={<UProfileSetting />} >
+                <Route path="/Setting/profile" element={<UserProfile />} />
+                <Route path="/Setting/address" element={<UserAddress />} />
+                <Route path="/Setting/order" element={<OrderDetail />} />
+              </Route>
+              <Route path="/order-summery/:orderid" element={<OrderSummery />} />
 
-        <Route path='/admin' element={<Navbar />}>
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/product" element={<Products />} />
-          <Route path="/admin/user" element={<User />} />
-          <Route path="/admin/category" element={<Category />} />
-          <Route path="/admin/color" element={<Category />} />
-        </Route>
+              {/* admin  */}
+              <Route path='/admin' element={<Sidebar />}>
+                <Route path="/admin/dashboard" element={<Dashboard />} />
+                <Route path="/admin/product" element={<Products />} />
+                <Route path="/admin/user" element={<User />} />
+                <Route path="/admin/category" element={<Category />} />
+                <Route path="/admin/color" element={<Category />} />
+              </Route>
 
-      </Routes>
-    </div>
+            </Routes>
+          </div>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </>
   );
 };
 

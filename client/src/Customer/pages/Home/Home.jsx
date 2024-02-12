@@ -1,7 +1,6 @@
 import React from 'react'
 import Layout from '../../components/layout/Layout'
 import Categories from '../../components/category/Categories'
-import Products from '../../components/product/Products'
 import Newsletter from '../../components/Newsletter'
 import DileveryDel from '../../components/DileveryDel'
 import MainCarousel from '../../components/Carousels/MainCarousel'
@@ -15,10 +14,10 @@ const Home = () => {
           <MainCarousel/>
           <Categories/>
           <DileveryDel/>
-          <HomeProductCarousels Categories="Shoes"/>
-          <HomeProductCarousels Categories="Mobile"/>
-          <HomeProductCarousels Categories="Furniture"/>
-          <HomeProductCarousels Categories="Others"/>
+          <HomeProductCarousels category="mens_kurta"/>
+          <HomeProductCarousels category="top"/>
+          <HomeProductCarousels category="men_jeans"/>
+          <HomeProductCarousels category="shirt"/>
           {/* <Products Categories="Electronics"/> */}
           <Newsletter/>
         </div>

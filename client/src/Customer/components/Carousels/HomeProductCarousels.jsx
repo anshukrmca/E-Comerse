@@ -6,8 +6,8 @@ import { Button } from "@mui/material";
 // import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Product from "../product/ProductCard";
 import axios from 'axios';
-import { MdChevronLeft,MdChevronRight } from "react-icons/md";
-import { FaAngleUp,FaAngleDown } from "react-icons/fa6";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { FaAngleUp, FaAngleDown } from "react-icons/fa6";
 import HeaderTittle from "../HeaderTittle";
 
 const responsive = {
@@ -16,39 +16,30 @@ const responsive = {
     1024: { items: 4.5 },
 };
 
-const HomeProductCarousels = ({ Categories }) => {
+const HomeProductCarousels = ({ category }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const carouselRef = useRef(null);
     const [products, setProducts] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
 
-
-    // get data from API
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchProducts = async (category) => {
             try {
-                const response = await axios.get('/api/products/category/allproduct');
+                const response = await axios.get('/api/product/category', {
+                    params: {
+                        category: category
+                    }
+                });
                 setProducts(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
         };
 
-        fetchProducts();
-    }, []);
+        if (category) {
+            fetchProducts(category);
+        }
 
-    // filter date by category 
-
-    useEffect(() => {
-        const filterAndMapData = (Categories) => {
-            const filteredProducts = products.filter(
-                (products) => products.category === Categories.toLowerCase()
-            );
-            setFilteredData(filteredProducts);
-        };
-        filterAndMapData(Categories);
-
-    }, [Categories, products]);
+    }, [category]);
 
 
     const slidePrev = () => {
@@ -68,7 +59,7 @@ const HomeProductCarousels = ({ Categories }) => {
 
 
 
-    const items = filteredData.map((item) =>
+    const items = products && products.map((item) =>
         <Product
             key={item._id}
             P_id={item._id}
@@ -77,7 +68,7 @@ const HomeProductCarousels = ({ Categories }) => {
             price={item.price}
             color={item.color}
             size={item.size}
-            image={item.image}
+            image={item.mainImage}
 
         />
     );
@@ -86,7 +77,7 @@ const HomeProductCarousels = ({ Categories }) => {
         <>
             <div className="px-2 mb-3 bg-slate-300 dark:bg-slate-700 h-[auto]">
                 {/* <h3 className="text-2xl font-bold">Product from {`${Categories}`}</h3> */}
-                <HeaderTittle tittle={`Product from ${Categories}`}/>
+                <HeaderTittle tittle={`Product from ${category}`} />
                 <div className="relative p-5">
                     <AliceCarousel
                         items={items}
@@ -111,7 +102,7 @@ const HomeProductCarousels = ({ Categories }) => {
                             }}
                         >
                             <FaAngleUp size={20} color="black"
-                                // sx={{ transform: "rotate(90deg)" }}
+                            // sx={{ transform: "rotate(90deg)" }}
                             />
                         </Button>
                     )}
@@ -131,7 +122,7 @@ const HomeProductCarousels = ({ Categories }) => {
                             }}
                         >
                             <FaAngleDown size={20} color="black"
-                                // sx={{ transform: "rotate(90deg)", }}
+                            // sx={{ transform: "rotate(90deg)", }}
                             />
                         </Button>
                     )}

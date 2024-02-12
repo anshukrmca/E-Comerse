@@ -84,7 +84,7 @@ export const findProductById = async (Id) => {
 // get product
 
 export const getAllProduct = async (reqQuery) => {
-  
+
   let {
     category,
     color,
@@ -173,6 +173,16 @@ export const getAllProduct = async (reqQuery) => {
   return { content: products, currrentPage: pageNumber, totalPage };
 };
 
+
+export const getProductByCategory = async ({ category }) => {
+  try {
+    const existCategory = await Category.findOne({ name: category });
+    const product = await Product.find({ category: existCategory._id }).populate("category") .limit(15);
+    return product;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
 
 export const createMultipleProduct = async (products) => {

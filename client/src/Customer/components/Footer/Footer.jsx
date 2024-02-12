@@ -3,12 +3,17 @@ import { MdOutlineMarkEmailUnread } from "react-icons/md";
 import { FaBlenderPhone } from "react-icons/fa6";
 import { MdOutlinePlace } from "react-icons/md";
 import { Link } from 'react-router-dom';
+import {tokens} from '../../../theme'
+import { useTheme } from '@mui/material';
+
 
 
 const Footer = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   return (
     <>
-      <footer className='p-8 grid gap-x-16 gap-y-4 md:grid-cols-2 lg:grid-cols-3'>
+      <footer style={{backgroundColor:`${colors.primary[400]}`}} className='p-8 grid gap-x-16 gap-y-4 md:grid-cols-2 lg:grid-cols-3'>
         <div>
           <h1 className='font-bold text-2xl uppercase mb-4 tracking-wider'>
             <Link to='/'>E-Comerse__:)</Link>

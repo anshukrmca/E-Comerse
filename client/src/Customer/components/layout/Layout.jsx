@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
         <div className='flex-1 mt-32 z-10'>
           {children}
         </div>
-        <div className='bottom-0 bg-gray-600 dark:bg-gray-800 mx-4'>
+        <div className='bottom-0 mx-4'>
           <hr/>
           <Footer />
         </div>

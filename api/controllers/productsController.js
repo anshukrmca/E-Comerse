@@ -1,4 +1,4 @@
-import { createMultipleProduct, createProduct, deleteProduct, findProductById, getAllProduct, updateProduct } from "../service/productService.js"
+import { createMultipleProduct, createProduct, deleteProduct, findProductById, getAllProduct, getProductByCategory, updateProduct } from "../service/productService.js"
 
 
 export const createProducts =async(req,res,next)=>{
@@ -48,6 +48,15 @@ export const gettAllProducts =async(req,res,next)=>{
         res.status(200).json(product);
     } catch (error) {
         next(error)
+    }
+}
+
+export const gettallProductByCatergory =async(req,res,next)=>{
+    try {
+        const product = await getProductByCategory(req.query);
+        res.status(200).json(product);
+    } catch (error) {
+        next(error);
     }
 }
 

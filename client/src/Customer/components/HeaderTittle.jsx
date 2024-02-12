@@ -1,13 +1,25 @@
 import React from 'react'
+import { Typography, Box, useTheme } from "@mui/material";
+import { tokens } from '../../theme';
 
-const HeaderTittle = ({tittle}) => {
+const HeaderTittle = ({tittle,subtitle}) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
     return (
         <>
-            <div className='mb-3 p-2'>
-                <p className='md:text-2xl cursor-pointer underline font-bold hover:text-lime-700'>
-                    {tittle}
-                </p>
-            </div>
+            <Box mb="30px">
+      <Typography
+        variant="h4"
+        color={colors.grey[100]}
+        fontWeight="bold"
+        sx={{ m: "0 0 5px 0" }}
+      >
+        {tittle}
+      </Typography>
+      <Typography  color={colors.greenAccent[400]}>
+        {subtitle}
+      </Typography>
+    </Box>
         </>
     )
 }

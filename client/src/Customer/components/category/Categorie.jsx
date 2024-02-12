@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Categorie = ({ name, image }) => {
   return (
-    <Link to={`/category/${name}`}>
+    <Link to={`/${name}`}>
       <figure className='relative'>
         <img
           src={image}

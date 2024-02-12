@@ -8,11 +8,11 @@ const Categories = () => {
       <HeaderTittle tittle='Our top Categories'/>
       <div className='grid gap-2 md:grid-cols-3 mb-2'>
         <Categorie
-          name='Clothes'
+          name='mens_kurta'
           image='https://api.lorem.space/image/fashion?w=640&h=480&r=3529'
         />
         <Categorie
-          name='Shoes'
+          name='top'
           image='https://www.campusshoes.com/cdn/shop/products/FIRST_11G-787_WHT-SIL-B.ORG_720x.jpg?v=1670326183'
         />
         <Categorie

@@ -1,317 +1,153 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import FormColor from "../FormColor";
-import Image from "../Image";
-import { Button, Grid } from "@mui/material";
-import { toast } from 'react-toastify'
+import React, { useEffect, useState } from 'react'
+import NewProduct from './NewProduct'
+import HeaderTittle from '../../../Customer/components/HeaderTittle';
+import { mockDataContacts } from './data';
+import { Avatar, Box, useTheme } from '@mui/material';
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { tokens } from '../../../theme';
+import BtnAction from './BtnAction';
+import axios from 'axios';
 
-const productField = [
-  {
-    id: "title",
-    lable: "Product Title",
-    colSize: 12,
-    smColSize: 12,
-    dataType: "text",
-    placeholder: "Enter Product Title"
-
-  },
-  {
-    id: "brand",
-    lable: "Product Brand",
-    colSize: 12,
-    smColSize: 6,
-    dataType: "text",
-    placeholder: "Enter Product Brand"
-  },
-  {
-    id: "price",
-    lable: "Product Price",
-    colSize: 12,
-    smColSize: 6,
-    dataType: "number",
-    placeholder: "Enter Product Price"
-  },
-  {
-    id: "discountedPrice",
-    lable: "Discounted Price",
-    colSize: 12,
-    smColSize: 6,
-    dataType: "number",
-    placeholder: "Enter Discounted Price"
-  },
-  {
-    id: "discountedPercentage",
-    lable: "Discounted Percentage",
-    colSize: 12,
-    smColSize: 6,
-    dataType: "number",
-    placeholder: "Enter Discounted Percentage"
-  },
-  {
-    id: "quantity",
-    lable: "Quantity",
-    colSize: 12,
-    smColSize: 6,
-    dataType: "number",
-    placeholder: "Enter product Quantity"
-  }
-];
-
-//  function to calculate the discount percentage
-function calculateDiscountPercentage(price, discountedPrice) {
-  if (price && discountedPrice) {
-    const percentage = ((price - discountedPrice) / price) * 100;
-    return Math.round(percentage);
-  }
-  return 0;
-}
 
 const Products = () => {
-  const [FstLevel, setFstLevel] = useState([])
-  const [SndLevel, setSndLevel] = useState([])
-  const [selectedColor, setSelectedColor] = useState([]);
-  const [selectedSizes, setSelectedSizes] = useState([]);
-  const [subImage, setSubImage] = useState([]);
-  const [mainImage, setMainImage] = useState([]);
-  const [topLevelCategory, settopLevelCategory] = useState('');
-  const [secondLevelCategory, setsecondLevelCategory] = useState('');
-  const [thirdLevelCategory, setthirdLevelCategory] = useState('');
-  const [productData, setProductData] = useState({
-    title: "",
-    brand: "",
-    price: 0,
-    discountedPrice: 0,
-    discountedPercentage: 0,
-    topLevelCategory: "",
-    secondLevelCategory: "",
-    thirdLevelCategory: "",
-    quantity: 0,
-    description: "",
-    color: [],
-    size: [],
-    mainImage: "",
-    subImages: [],
-  });
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
+  const closeForm = () => {
+    setIsFormOpen(false)
+  }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const fstLevelresponse = await axios.get("/api/category/topLevelCategory");
-        const data1 = fstLevelresponse.data;
-        setFstLevel(data1);
-        const sndLevelresponse = await axios.get("/api/category/secondLevelCategory");
-        const data2 = sndLevelresponse.data;
-        setSndLevel(data2);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    fetchData();
-  }, [])
+  const columns = [
+    { field: "avatar", headerName: "Avatar", width: 100, headerAlign: "center", align: "center", renderCell: (params) => <Avatar alt="Avatar" src={params.value} /> },
+    { field: "id", headerName: "ID", headerAlign: "center", flex: 0.5, align: "center" },
+    { field: "registrarId", headerName: "Registrar ID", headerAlign: "center", align: "center" },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      headerAlign: "center",
+      align: "center"
+    },
+    {
+      field: "age",
+      headerName: "Age",
+      type: "number",
+      headerAlign: "center",
+      align: "center"
+    },
+    {
+      field: "phone",
+      headerName: "Phone Number",
+      flex: 1,
+      headerAlign: "center",
+      align: "center"
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      flex: 1,
+      headerAlign: "center",
+      align: "center"
+    },
+    {
+      field: "address",
+      headerName: "Address",
+      flex: 1,
+      headerAlign: "center",
+      align: "center"
+    },
+    {
+      field: "city",
+      headerName: "City",
+      flex: 1,
+      headerAlign: "center",
+      align: "center"
+    },
+    {
+      field: "zipCode",
+      headerName: "Zip Code",
+      flex: 1,
+      headerAlign: "center",
+      align: "center"
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      headerAlign: "center",
+      align: "center",
+      width: 150,
+      renderCell: (params) => (
+        <BtnAction idd={params.row.id} closeForm={closeForm} setIsFormOpen={setIsFormOpen} />
+      )
+    }
+  ];
 
+useEffect(()=>{
+ const fetchdata = async()=>{
+ const response = await axios.get('/api/product');
+ console.log(response.data);
+ };
 
+ fetchdata();
+},[])
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    setProductData((prevData) => {
-      let updatedData = {
-        ...prevData,
-        [name]: value,
-      };
-
-      // Calculate discountedPercentage if both price and discountedPrice are present
-      if ((name === 'price' || name === 'discountedPrice') && updatedData.price && updatedData.discountedPrice) {
-        const calculatedPercentage = calculateDiscountPercentage(updatedData.price, updatedData.discountedPrice);
-        updatedData.discountedPercentage = calculatedPercentage;
-      }
-
-      return updatedData;
-    });
-  };
-
-  const handlesubmit = async() => {
-    const updatedProductData = {
-      ...productData,
-      color: selectedColor,
-      size: selectedSizes,
-      subImage: subImage,
-      mainImage: mainImage,
-      topLevelCategory: topLevelCategory,
-      secondLevelCategory: secondLevelCategory,
-      thirdLevelCategory: thirdLevelCategory,
-    };
-
-    const response = await axios.post('/api/admin/product', updatedProductData);
-    const data = response.data.message;
-    toast.success(data);
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
-  };
 
   return (
-    <>
-      <div className="bg-[#f0f5ff] dark:bg-slate-400 p-4 text-sm">
-        <p className="text-indigo-700  font-semibold mb-4">ADD A NEW ADDRESS</p>
-        {/* <form onSubmit={handlesubmit}> */}
-        <Grid container spacing={1}>
-          {productField.map((item, i) => {
-            return (
-              <Grid key={i} item xs={item.colSize} sm={item.smColSize}>
-                <div className="mb-2">
-                  <label className="block text-gray-600 font-bold mb-2">
-                    {item.lable}
-                  </label>
-                  <input
-                    required
-                    type={item.dataType}
-                    name={item.id}
-                    className="w-full px-3 h-[38px] text-black py-2 border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-                    placeholder={item.placeholder}
-                    value={productData[item.id]}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </Grid>
-            );
-          })}
+    <div>
 
-          <Grid item xs={12} sm={6}>
-            <label className="block text-gray-600  font-bold mb-2">
-              Top Level Category
-            </label>
-            <select
-              value={topLevelCategory}
-              onChange={(e) => { settopLevelCategory(e.target.value) }}
-              className="block w-full p-2 border text-black border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-            >
-              <option value="" disabled>Choose top level</option>
-              {FstLevel.map((item, index) => (
-                <option key={index} value={item.name}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
 
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <label className="block text-gray-600 font-bold mb-2">
-              Second Level Category
-            </label>
-            <select
-              value={secondLevelCategory}
-              onChange={(e) => { setsecondLevelCategory(e.target.value) }}
-              className="block w-full p-2 border text-black border-gray-300 rounded-md focus:outline-none focus:border-slate-500"
-            >
-              <option value="" disabled>Choose second level</option>
-              {SndLevel.map((item, index) => (
-                <option key={index} value={item.name}>
-                  {item.name} ({item.parentCategory.name})
-                </option>
-              ))}
-            </select>
+      <div className=' mb-4 p-2'>
+        <HeaderTittle tittle={"Product"} subtitle={"List of Product"} />
+        <div className='mb-4'>
+          <div style={{ backgroundColor: `${colors.primary[400]}` }} onClick={() => { setIsFormOpen(!isFormOpen) }}
+            className='font-bold cursor-pointer shadow-md p-3'> + Add New Product</div>
+          <div className='mt-2'>
+            {isFormOpen && <NewProduct closeForm={closeForm} />}
+          </div>
+        </div>
+        <Box
+          height="90vh"
+          sx={{
+            "& .MuiDataGrid-root": {
+              border: "none",
+            },
+            "& .MuiDataGrid-cell": {
+              borderBottom: "none",
+            },
+            "& .name-column--cell": {
+              color: colors.greenAccent[300],
+            },
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: colors.blueAccent[700],
+              borderBottom: "none",
+            },
+            "& .MuiDataGrid-virtualScroller": {
+              backgroundColor: colors.primary[400],
+            },
+            "& .MuiDataGrid-footerContainer": {
+              borderTop: "none",
+              backgroundColor: colors.blueAccent[700],
+            },
+            "& .MuiCheckbox-root": {
+              color: `${colors.greenAccent[200]} !important`,
+            },
+            "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+              color: `${colors.grey[100]} !important`,
+            },
+          }}
+        >
+          <DataGrid
+            rows={mockDataContacts}
+            columns={columns}
+            components={{ Toolbar: GridToolbar }}
+          />
+        </Box>
 
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <div className="mb-2">
-              <label className="block text-gray-600 font-bold mb-2">
-                Third Level Category
-              </label>
-              <input
-                required
-                type="text"
-                name="thirdLevelCategory"
-                className="w-full px-3 h-[38px] text-black py-2 border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-                placeholder='Enter third Level category'
-                value={thirdLevelCategory}
-                onChange={(e) => { setthirdLevelCategory(e.target.value) }}
-              />
-            </div>
-
-          </Grid>
-          <Grid item xs={12}>
-            <div>
-              <label className="block text-gray-600 font-bold mb-2">
-                Description
-              </label>
-              <textarea
-                type="text"
-                className="w-full px-3 text-black py-2 border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-                placeholder="product description"
-                value={productData.description}
-                onChange={(e) => setProductData((prevData) => ({ ...prevData, description: e.target.value }))}
-              />
-            </div>
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <div className="mb-4">
-              <label className="block text-gray-600 font-bold mb-2">
-                Size
-              </label>
-              <input
-                type="text"
-                className="w-full px-3 h-[38px] text-black py-2 border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-                placeholder="Enter sizes (S,M,L)"
-                value={selectedSizes.join(",")}
-                onChange={(e) => setSelectedSizes(e.target.value.split(","))}
-              />
-            </div>
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <label className="block text-gray-600 font-bold mb-2">
-              Color
-            </label>
-            <FormColor setSelectedColor={setSelectedColor} />
-          </Grid>
-
-          <Grid item xs={12}>
-            <Image setSubImage={setSubImage} setMainImage={setMainImage} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Button
-              onClick={handlesubmit}
-              className="w-full"
-              type="submit"
-              variant="contained"
-              sx={{
-                mt: 1,
-                padding: ".4rem 0",
-                bgcolor: "#9155FD",
-                "&:hover": {
-                  bgcolor: "#9175FD",
-                },
-              }}
-            >
-              Save
-            </Button>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Button
-              className="w-full"
-              variant="contained"
-              sx={{
-                mt: 1,
-                padding: ".4rem 0",
-                bgcolor: "#9155FD",
-                "&:hover": {
-                  bgcolor: "#9175FD",
-                },
-              }}
-            >
-              Cancel
-            </Button>
-          </Grid>
-        </Grid>
-        {/* </form> */}
       </div>
-    </>
-  );
-};
+    </div>
+  )
+}
 
-export default Products;
-
-
+export default Products
