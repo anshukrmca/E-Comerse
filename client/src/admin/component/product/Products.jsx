@@ -7,100 +7,51 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from '../../../theme';
 import BtnAction from './BtnAction';
 import axios from 'axios';
+import {Link} from 'react-router-dom'
 
 
 const Products = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [Products, setProducts] = useState('')
 
   const closeForm = () => {
     setIsFormOpen(false)
   }
 
   const columns = [
-    { field: "avatar", headerName: "Avatar", width: 100, headerAlign: "center", align: "center", renderCell: (params) => <Avatar alt="Avatar" src={params.value} /> },
-    { field: "id", headerName: "ID", headerAlign: "center", flex: 0.5, align: "center" },
-    { field: "registrarId", headerName: "Registrar ID", headerAlign: "center", align: "center" },
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
-      cellClassName: "name-column--cell",
-      headerAlign: "center",
-      align: "center"
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "center",
-      align: "center"
-    },
-    {
-      field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
-      headerAlign: "center",
-      align: "center"
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-      headerAlign: "center",
-      align: "center"
-    },
-    {
-      field: "address",
-      headerName: "Address",
-      flex: 1,
-      headerAlign: "center",
-      align: "center"
-    },
-    {
-      field: "city",
-      headerName: "City",
-      flex: 1,
-      headerAlign: "center",
-      align: "center"
-    },
-    {
-      field: "zipCode",
-      headerName: "Zip Code",
-      flex: 1,
-      headerAlign: "center",
-      align: "center"
-    },
-    {
-      field: "action",
-      headerName: "Action",
-      headerAlign: "center",
-      align: "center",
-      width: 150,
-      renderCell: (params) => (
-        <BtnAction idd={params.row.id} closeForm={closeForm} setIsFormOpen={setIsFormOpen} />
+    { field: "mainImage", headerName: "Image", width: 100, headerAlign: "center", align: "center",flex: 1, renderCell: (params) => <Link to={`/products/${params.row._id}`}><Avatar alt="Avatar" src={params.value} /></Link> },
+    { field: "title", headerName: "Title",headerAlign: "center", align: "center",flex: 1,},
+    { field: "brand", headerName: "Brand",headerAlign: "center", align: "center",flex: 1, },
+    { field: 'categoryName', headerName: 'Category', headerAlign: "center",align: "center",flex: 1, valueGetter: (params) => params.row.category.name },
+    { field: "price", headerName: "Price",headerAlign: "center", align: "center" },
+    { field: "discountedPercentage", headerName: "Discounted Percentage",headerAlign: "center", align: "center",flex: 1, },
+    { field: "discountedPrice", headerName: "Discounted Price",headerAlign: "center", align: "center",flex: 1, },
+    { field: "quantity", headerName: "Quantity",headerAlign: "center", align: "center",flex: 1, },
+    { field: "action",headerName: "Action",headerAlign: "center",align: "center", width: 150, flex: 1,renderCell: (params) => (
+        <BtnAction idd={params.row._id} closeForm={closeForm} setIsFormOpen={setIsFormOpen} />
       )
     }
   ];
 
-useEffect(()=>{
- const fetchdata = async()=>{
- const response = await axios.get('/api/product');
- console.log(response.data);
- };
+  useEffect(() => {
+    const fetchdata = async () => {
+      const response = await axios.get('/api/product');
+      setProducts(response.data);
+    };
 
- fetchdata();
-},[])
+    fetchdata();
+  }, [])
 
 
   return (
     <div>
 
 
-      <div className=' mb-4 p-2'>
+      <div className='mb-4 p-2'>
         <HeaderTittle tittle={"Product"} subtitle={"List of Product"} />
-        <div className='mb-4'>
+        <div className='mb-6'>
           <div style={{ backgroundColor: `${colors.primary[400]}` }} onClick={() => { setIsFormOpen(!isFormOpen) }}
             className='font-bold cursor-pointer shadow-md p-3'> + Add New Product</div>
           <div className='mt-2'>
@@ -108,7 +59,7 @@ useEffect(()=>{
           </div>
         </div>
         <Box
-          height="90vh"
+          height="90dvh"
           sx={{
             "& .MuiDataGrid-root": {
               border: "none",
@@ -138,11 +89,12 @@ useEffect(()=>{
             },
           }}
         >
-          <DataGrid
-            rows={mockDataContacts}
+          {Products && <DataGrid
+            rows={Products}
             columns={columns}
             components={{ Toolbar: GridToolbar }}
-          />
+            getRowId={(row) => row._id}
+          />}
         </Box>
 
       </div>

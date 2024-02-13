@@ -1,0 +1,24 @@
+.custom-menu-item-placed {
+    color: yellow;
+    background-color: yellow;
+}
+
+.custom-menu-item-confirmed {
+    color: blue;
+    background-color: lightblue;
+}
+
+.custom-menu-item-shipped {
+    color: purple;
+    background-color: lavender;
+}
+
+.custom-menu-item-delivered {
+    color: green;
+    background-color: lightgreen;
+}
+
+.custom-menu-item-cancelled {
+    color: red;
+    background-color: lightcoral;
+}

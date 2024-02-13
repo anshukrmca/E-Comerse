@@ -100,7 +100,7 @@ export const getAllProduct = async (reqQuery) => {
   } = reqQuery;
 
   pageSize = pageSize || 12;
-  let query = Product.find().populate("category");
+  let query = Product.find().populate("category").sort({ createdAt: -1 });
 
   if (category) {
     const existCategory = await Category.findOne({ name: category });
@@ -153,7 +153,9 @@ export const getAllProduct = async (reqQuery) => {
 
   if (!category && !color && !size && !minPrice && !maxPrice && !minDiscount && !maxDiscount && !stock) {
     // No filters provided, return all products
-    query = Product.find().populate("category");
+    query = Product.find().populate("category").sort({ createdAt: -1 });
+    const products = await query.exec();
+    return products;
   }
 
   const totalProduct = await Product.countDocuments(query);

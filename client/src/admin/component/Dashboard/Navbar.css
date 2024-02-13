@@ -1,0 +1,16 @@
+.MenuBtnNav {
+  display: none;
+}
+
+.MenuBtnSide {
+  display: none;
+}
+
+@media screen and (max-width: 639px) {
+  .MenuBtnNav {
+    display: block;
+  }
+  .MenuBtnSide {
+    display: block;
+  }
+}

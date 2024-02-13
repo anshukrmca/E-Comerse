@@ -11,10 +11,16 @@ import { BiCategory } from "react-icons/bi";
 import Category from "../category/Category";
 import Color from "../color/Color";
 import Navbar from "./Navbar";
-import { useTheme } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
+import { MdMenu } from "react-icons/md";
+import './Navbar.css'
+import { RiLuggageCartLine } from "react-icons/ri";
+import Order from "../order/Order";
 
-const Sidebar = ({ isSidebarOpen }) => {
+
+const Sidebar = () => {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -22,6 +28,10 @@ const Sidebar = ({ isSidebarOpen }) => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  const sidebarToggle = () => {
+    setSidebarOpen(!isSidebarOpen)
+  }
 
   return (
     <>
@@ -31,9 +41,40 @@ const Sidebar = ({ isSidebarOpen }) => {
         aria-label="Sidebar"
         style={{ background: `${colors.primary[400]}`, transition: "transform 0.3s ease" }}
       >
-        <div className={`h-full  px-3 py-4 overflow-y-auto ${colors.primary[400]}`}>
-          <ul className="space-y-2 font-medium">
-            <li>
+        <div className={`h-full py-4 overflow-y-auto`} style={{color:`${colors.grey[200]}`}}>
+          <Box mb="25px">
+            <div className='MenuBtnSide'>
+              <Tooltip title="Close Menu">
+                <IconButton onClick={() => sidebarToggle()}>
+                  <MdMenu />
+                </IconButton>
+              </Tooltip>
+            </div>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <img
+                alt="profile-user"
+                width="100px"
+                height="100px"
+                src="https://firebasestorage.googleapis.com/v0/b/linkedin-clone-d79a1.appspot.com/o/man.png?alt=media&token=4b126130-032a-45b5-bea4-87adb0d096dc"
+                style={{ cursor: "pointer", borderRadius: "50%" }}
+              />
+            </Box>
+            <Box textAlign="center">
+              <Typography
+                variant="h2"
+                color={colors.grey[100]}
+                fontWeight="bold"
+                sx={{ m: "10px 0 0 0" }}
+              >
+                Anshu Kumar
+              </Typography>
+              <Typography variant="h5" color={colors.greenAccent[500]}>
+                Fancy Admin
+              </Typography>
+            </Box>
+          </Box>
+          <ul className="font-medium space-y-0">
+            <li className={`p-1 hover:bg-slate-400/20 hover:text-[#4cceac]`}>
               <Link
                 to="/admin/dashboard"
                 className="flex items-center p-2 rounded-lg group"
@@ -51,25 +92,34 @@ const Sidebar = ({ isSidebarOpen }) => {
                 <span className="ms-3">Dashboard</span>
               </Link>
             </li>
-            <li>
+            <li className="p-1 hover:bg-slate-400/20 hover:text-[#4cceac]">
               <Link
                 to="/admin/product"
                 className="flex items-center p-2"
               >
-                <HiShoppingBag />
+                <HiShoppingBag size={20} className="hover:text-[#4cceac]"/>
                 <span className="flex-1 ms-3 whitespace-nowrap">Products</span>
               </Link>
             </li>
-            <li>
+            <li className="p-1 hover:bg-slate-400/20 hover:text-[#4cceac]">
               <Link
                 to="/admin/user"
                 className="flex items-center p-2"
               >
-                <FaUserAlt />
+                <FaUserAlt size={20} className="hover:text-[#4cceac]"/>
                 <span className="flex-1 ms-3 whitespace-nowrap">Users</span>
               </Link>
             </li>
-            <li>
+            <li className="p-1 hover:bg-slate-400/20 hover:text-[#4cceac]">
+              <Link
+                to="/admin/order"
+                className="flex items-center p-2"
+              >
+                <RiLuggageCartLine size={20} className="hover:text-[#4cceac]"/>
+                <span className="flex-1 ms-3 whitespace-nowrap">Order</span>
+              </Link>
+            </li>
+            <li className="p-1 hover:bg-slate-400/20 hover:text-[#4cceac]">
               <button
                 onClick={toggleDropdown}
                 type="button"
@@ -77,7 +127,7 @@ const Sidebar = ({ isSidebarOpen }) => {
                 aria-controls="dropdown-example"
                 data-collapse-toggle="dropdown-example"
               >
-                <IoMdSettings />
+                <IoMdSettings size={20} className="hover:text-[#4cceac]"/>
                 <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
                   Settings
                 </span>
@@ -89,7 +139,7 @@ const Sidebar = ({ isSidebarOpen }) => {
                     <li>
                       <Link to="/admin/color"
                         className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11">
-                        <IoIosColorPalette />
+                        <IoIosColorPalette className="hover:text-[#4cceac]"/>
                         <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
                           Color
                         </span>
@@ -98,7 +148,7 @@ const Sidebar = ({ isSidebarOpen }) => {
                     <li>
                       <Link to="/admin/category"
                         className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11">
-                        <BiCategory />
+                        <BiCategory className="hover:text-[#4cceac]"/>
                         <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
                           Categary
                         </span>
@@ -109,12 +159,12 @@ const Sidebar = ({ isSidebarOpen }) => {
               )}
             </li>
 
-            <li>
+            <li className="p-1 hover:bg-slate-400/20 hover:text-[#4cceac]">
               <Link
                 to="/"
                 className="flex items-center p-2"
               >
-                <FaEye />
+                <FaEye size={20} className="hover:text-[#4cceac]"/>
                 <span className="flex-1 ms-3 whitespace-nowrap">
                   View as Customer
                 </span>
@@ -124,7 +174,7 @@ const Sidebar = ({ isSidebarOpen }) => {
         </div>
       </aside>
       <div className="sm:ml-64 h-[100%]">
-        <Navbar />
+        <Navbar sidebarToggle={sidebarToggle} />
         <div className="p-3 rounded-lg mb-4">
           <Routes>
             <Route path="dashboard" element={<Dashboard />} />
@@ -132,6 +182,7 @@ const Sidebar = ({ isSidebarOpen }) => {
             <Route path="user" element={<User />} />
             <Route path="color" element={<Color />} />
             <Route path="category" element={<Category />} />
+            <Route path="order" element={<Order />} />
           </Routes>
         </div>
         <div>

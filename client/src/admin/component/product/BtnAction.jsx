@@ -10,7 +10,6 @@ const BtnAction = ({ idd, setIsFormOpen }) => {
 
     const handleEdit = async (id) => {
         setIsFormOpen(true);
-        alert(id);
     }
     return (
         <>

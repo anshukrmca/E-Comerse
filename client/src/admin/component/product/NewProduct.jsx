@@ -97,7 +97,7 @@ const NewProduct = ({closeForm}) => {
     subImages: [],
   });
 
-
+// for getting Category 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -157,7 +157,7 @@ const NewProduct = ({closeForm}) => {
 
   return (
     <>
-      <div className="p-4 text-sm" style={{ backgroundColor: `${colors.primary[400]}`,color:`${colors.primary[100]}` }}>
+      <div className="p-4 text-sm" style={{ backgroundColor: `${colors.primary[400]}`,color:`${colors.grey[300]}` }}>
         <HeaderTittle tittle={"Product"} subtitle={"add new product"}/>
         {/* <form onSubmit={handlesubmit}> */}
         <Grid container spacing={1} >

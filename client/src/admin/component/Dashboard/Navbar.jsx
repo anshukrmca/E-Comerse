@@ -1,9 +1,7 @@
-import { useContext, useEffect, useState } from 'react'
-import { Disclosure } from '@headlessui/react'
-import { MdOutlineMenu } from "react-icons/md";
+import { useContext, useEffect } from 'react'
+import { MdMenu } from "react-icons/md";
 import { BsCloudMoon, BsCloudSun } from "react-icons/bs";
-import { Avatar, InputBase, Tooltip, useTheme } from '@mui/material';
-import Sidebar from './Sidebar';
+import { InputBase, Tooltip, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserCurrentData, selectUser } from '../../../redux/features/userSlice';
 import { ToastContainer } from 'react-toastify'
@@ -11,21 +9,22 @@ import { Box, IconButton } from "@mui/material";
 import { IoIosSearch } from "react-icons/io";
 import { IoNotificationsCircle } from "react-icons/io5";
 import { CiSettings } from "react-icons/ci";
-import { FaUser } from 'react-icons/fa6';
+import { MdOutlineNotifications } from "react-icons/md";
 import { ColorModeContext, tokens } from "../../../theme";
+import './Navbar.css'
 
 
-export default function Navbar() {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+export default function Navbar({ sidebarToggle }) {
+
   const CurrentUser = useSelector(selectUser);
-  const tokenn = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const dispatch = useDispatch()
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
 
   useEffect(() => {
-    if (tokenn) {
+    if (token) {
       dispatch(getUserCurrentData());
     }
   }, [dispatch])
@@ -35,6 +34,13 @@ export default function Navbar() {
     <>
       <ToastContainer />
       <Box display="flex" justifyContent="space-between" p={2}>
+        <div className='MenuBtnNav'>
+          <Tooltip title="Open Menu">
+            <IconButton onClick={() => sidebarToggle()}>
+              <MdMenu />
+            </IconButton>
+          </Tooltip>
+        </div>
         {/* SEARCH BAR */}
         <Box
           display="flex"
@@ -49,25 +55,36 @@ export default function Navbar() {
 
         {/* ICONS */}
         <Box display="flex">
-          <IconButton
-            onClick={colorMode.toggleColorMode}
-          >
-            {theme.palette.mode === "dark" ? (
-              <BsCloudSun />
-            ) : (
-              <BsCloudMoon />
+          {theme.palette.mode === "dark" ? (
+            <Tooltip title="Light">
+              <IconButton
+                onClick={colorMode.toggleColorMode}
+              >
+                <BsCloudSun />
+              </IconButton>
+            </Tooltip>
 
-            )}
-          </IconButton>
-          <IconButton>
-            <IoNotificationsCircle />
-          </IconButton>
-          <IconButton>
-            <CiSettings />
-          </IconButton>
-          <IconButton>
-            <FaUser />
-          </IconButton>
+          ) : (
+            <Tooltip title="Dark">
+              <IconButton
+                onClick={colorMode.toggleColorMode}
+              >
+                <BsCloudMoon />
+              </IconButton>
+            </Tooltip>
+          )}
+
+          <Tooltip title="Notification">
+            <IconButton>
+              <MdOutlineNotifications />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Setting">
+            <IconButton>
+              <CiSettings />
+            </IconButton>
+          </Tooltip>
+
         </Box>
       </Box>
 

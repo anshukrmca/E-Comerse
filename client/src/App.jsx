@@ -19,18 +19,21 @@ import Navbar from "./admin/component/Dashboard/Navbar";
 import Category from "./admin/component/category/Category";
 import PaymentSuccess from "./Customer/components/paymentMode/PaymentSuccess";
 import Sidebar from "./admin/component/Dashboard/Sidebar";
-import { ColorModeContext, useMode } from './theme.js'
+import { ColorModeContext, tokens, useMode } from './theme.js'
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import Order from "./admin/component/order/Order.jsx";
 
 const App = () => {
   const [theme, colorMode] = useMode();
+  // const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   return (
     <>
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           
-          <div>
+          <div style={{color:`${colors.grey[200]}`}}>
             <Routes>
               <Route path="/login" element={<Home />} />
               <Route path="/signup" element={<Home />} />
@@ -60,6 +63,7 @@ const App = () => {
                 <Route path="/admin/user" element={<User />} />
                 <Route path="/admin/category" element={<Category />} />
                 <Route path="/admin/color" element={<Category />} />
+                <Route path="/admin/order" element={<Order />} />
               </Route>
 
             </Routes>

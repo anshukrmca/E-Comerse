@@ -1,9 +1,12 @@
-import { Button, Grid, TextField } from '@mui/material'
+import { Button, Grid, TextField, useTheme } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
+import { tokens } from '../../../theme'
 
 const AddCategory = ({ closeForm }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const [category, setCategory] = useState({});
   const [selectedCategory, setSelectedCategory] = useState({
     topLevelCategory: '',
@@ -30,8 +33,8 @@ const AddCategory = ({ closeForm }) => {
   };
   console.log(category)
   return (
-    <div className='dark:bg-slate-400 bg-[#f0f5ff] p-3 mt-4 rounded-sm'>
-      <p className='mb-2 font-semibold dark:text-gray-700'>New Category</p>
+    <div className='p-3 mt-4 rounded-sm' style={{background:`${colors.primary[400]}`,color:`${colors.grey[200]}`}}>
+      <p className='mb-2 font-semibold'>New Category</p>
       {/* <form onSubmit={handleSubmit}> */}
 
       <Grid container spacing={1}>
