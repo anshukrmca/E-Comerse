@@ -3,7 +3,7 @@ import { MdMenu } from "react-icons/md";
 import { BsCloudMoon, BsCloudSun } from "react-icons/bs";
 import { InputBase, Tooltip, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserCurrentData, selectUser } from '../../../redux/features/userSlice';
+import {  selectUser } from '../../../redux/features/userSlice';
 import { ToastContainer } from 'react-toastify'
 import { Box, IconButton } from "@mui/material";
 import { IoIosSearch } from "react-icons/io";
@@ -23,11 +23,11 @@ export default function Navbar({ sidebarToggle }) {
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
 
-  useEffect(() => {
-    if (token) {
-      dispatch(getUserCurrentData());
-    }
-  }, [dispatch])
+  // useEffect(() => {
+  //   if (token) {
+  //     dispatch(getUserCurrentData());
+  //   }
+  // }, [dispatch])
 
 
   return (

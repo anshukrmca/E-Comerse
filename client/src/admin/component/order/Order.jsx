@@ -6,6 +6,8 @@ import { tokens } from '../../../theme';
 import { Box, useTheme } from '@mui/material';
 import axios from 'axios';
 import OrderDropdown from './OrderDropdown';
+import { useDispatch } from 'react-redux';
+import { getAdminOrder } from '../../../redux/features/adminOrderSlice';
 
 const columns = [
     { field: 'CustomerName', headerName: 'Customer Name',headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.shippingAddess.name },
@@ -16,14 +18,11 @@ const columns = [
         field: 'orderStatus',
         headerName: 'Order Status',
         headerAlign: "center", align: "center",
-        width:150,
+        width:200,
         renderCell: (params) => (
             <OrderDropdown Status={params.row.orderStatus} orderId={params.row._id}/>
         ),
     },
-    { field: 'action', headerName: 'Action',headerAlign: "center", align: "center", flex: 1, renderCell: (params) => (
-        <OrderDropdown Status={params.row.orderStatus} />
-    ), },
 ];
 
 
@@ -31,15 +30,10 @@ const Order = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [order, setOrder] = useState("")
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        const fetchdata = async () => {
-            const response = await axios.get('/api/admin/orders');
-            console.log(response.data)
-            setOrder(response.data);
-        };
-
-        fetchdata();
+        dispatch(getAdminOrder());
     }, [])
 
 

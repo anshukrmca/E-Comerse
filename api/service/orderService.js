@@ -31,6 +31,7 @@ export const createOrder = async (userId, resDate) => {
             discounts: cart.discounts,
             totalItem: cart.totalItem,
             shippingAddess: resDate.shippingAddess,
+            orderStatus:"PLACED",
             paymentDetails: {
                 paymentMethod: resDate.paymentMethod
             }
@@ -57,35 +58,6 @@ export const UpdateOrderStatus = async (reqData) => {
     return await order.save();
 }
 
-export const placeOrder = async (orderId) => {
-    const order = await findOrderById(orderId);
-    order.orderStatus = "PLACED";
-    order.paymentDetails.status = "CPMPLETED";
-
-    return await order.save();
-}
-
-export const confirmedOrder = async (orderId) => {
-    const order = await findOrderById(orderId);
-    order.orderStatus = "COMFIRMED";
-
-    return await order.save();
-}
-
-export const shipOrder = async (orderId) => {
-    const order = await findOrderById(orderId);
-    order.orderStatus = "SHIPPED";
-
-    return await order.save();
-}
-
-
-export const deliverOrder = async (orderId) => {
-    const order = await findOrderById(orderId);
-    order.orderStatus = "DELEVIRED";
-
-    return await order.save();
-}
 
 export const cancleOrder = async (orderId) => {
     const order = await findOrderById(orderId);
@@ -129,4 +101,5 @@ export const getAllOrder = async () => {
 export const deleteOrder = async (orderId) => {
     const order = await findOrderById(orderId);
     await Order.findByIdAndDelete(order._id);
+    return {message:"Order is Deleted !"}
 }

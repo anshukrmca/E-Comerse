@@ -1,4 +1,4 @@
-import { UpdateOrderStatus, cancleOrder, confirmedOrder, deleteOrder, deliverOrder, getAllOrder, shipOrder } from "../service/orderService.js";
+import { UpdateOrderStatus, cancleOrder, deleteOrder,getAllOrder } from "../service/orderService.js";
 
 
 export const getAllOrders = async(req,res,next)=>{
@@ -21,26 +21,6 @@ export const updateOrderStatus = async(req,res,next)=>{
     } catch (error) {
         console.error('Error updating order status:', error.message);
         next(error);
-    }
-}
-
-export const shipOrders = async(req,res,next)=>{
-    const orderId = req.params.orderId;
-    try {
-        const orders =await shipOrder(orderId);
-        res.status(200).json(orders);
-    } catch (error) {
-       next(error); 
-    }
-}
-
-export const deliverOrders = async(req,res,next)=>{
-    const orderId = req.params.orderId;
-    try {
-        const orders =await deliverOrder(orderId);
-        res.status(200).json(orders);
-    } catch (error) {
-       next(error); 
     }
 }
 

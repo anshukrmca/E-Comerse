@@ -2,14 +2,18 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-// Action
-export const getUserCurrentData = createAsyncThunk("getUserCurrentData", async () => {
+export const getUserCurrentData = createAsyncThunk("getUserCurrentData", async (_, thunkAPI) => {
   try {
-    const response = await axios.get("/api/auth/profile");
+    // Fetch user data
+    const response = await axios.get("/api/auth/profile"); // Replace with your actual API endpoint
     // console.log(response.data)
-    return response.data; // Return the entire response
+    return response.data;
   } catch (error) {
-    throw new Error(`Error in getUserCurrentData: ${error.message}`);
+    if (axios.isAxiosError(error) && error.response && error.response.status === 401) {
+      thunkAPI.dispatch(logout()); // Dispatching logout action to reset user state
+    } else {
+      throw new Error(`Error in getUserData: ${error.message}`);
+    }
   }
 });
 
@@ -41,7 +45,7 @@ const userSlice = createSlice({
       state.user = action.payload.user; // Access the 'user' property in the payload
     });
     builder.addCase(getUserCurrentData.rejected, (state, action) => {
-      console.log("Error", action.payload);
+      console.log("Error", action.payload.user);
       state.Message= action.payload;
     //  alert("Session Expired !")
       //localStorage.removeItem('token');

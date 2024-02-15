@@ -1,11 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField, useTheme } from "@mui/material";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { tokens } from "../../../theme";
 
 const Login = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,10 +31,13 @@ const Login = () => {
       // Handle other errors or network issues
     }
   };
+  const labelColorStyle = {
+    color: colors.grey[300], // Replace 'green' with your desired label color
+  };
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="text-black">
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <p className="text-center text-3xl font-bold underline animate-bounce dark:text-indigo-600 text-indigo-900 hover:text-lime-500">
@@ -48,6 +54,12 @@ const Login = () => {
               type="email"
               variant="standard"
               autoComplete="given email"
+              // InputProps={{
+              //   style: textColorStyle,
+              // }}
+              InputLabelProps={{
+                style: labelColorStyle,
+              }}
             />
           </Grid>
           <Grid item xs={12}>
@@ -60,6 +72,9 @@ const Login = () => {
               fullWidth
               variant="standard"
               autoComplete="off"
+              InputLabelProps={{
+                style: labelColorStyle,
+              }}
             />
           </Grid>
 

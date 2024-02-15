@@ -6,11 +6,10 @@ import { Avatar, Badge, Link, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { BsCloudMoon, BsCloudSun } from "react-icons/bs";
 import DailogModel from "../DailogModel.jsx";
-import { GrSettingsOption, GrUserSettings } from "react-icons/gr";
+import { GrSettingsOption } from "react-icons/gr";
 import { IoIosLogOut } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserCurrentData, logout, selectUser } from "../../../redux/features/userSlice.js";
-import axios from "axios";
 import { getUserCart, selectCart } from "../../../redux/features/cartSlice.js";
 import { getUserOrder } from "../../../redux/features/orderSlice.js";
 

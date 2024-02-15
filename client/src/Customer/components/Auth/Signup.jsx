@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, TextField, useTheme } from '@mui/material';
 import axios from 'axios'
 import { FcGoogle } from "react-icons/fc";
 import { toast } from 'react-toastify';
+import { tokens } from '../../../theme';
 
 const Signup = () => {
     const navigate = useNavigate()
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+
 
     const handleSubmitData = async (e) => {
         e.preventDefault()
@@ -33,6 +37,10 @@ const Signup = () => {
     }
 
 
+    const labelColorStyle = {
+        color: colors.grey[300], // Replace 'green' with your desired label color
+      };
+
     return (
         <>
             <form onSubmit={handleSubmitData}>
@@ -49,6 +57,9 @@ const Signup = () => {
                             fullWidth
                             variant="standard"
                             autoComplete="off"
+                            InputLabelProps={{
+                                style: labelColorStyle,
+                              }}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -61,6 +72,9 @@ const Signup = () => {
                             type='email'
                             autoComplete='given email'
                             variant="standard"
+                            InputLabelProps={{
+                                style: labelColorStyle,
+                              }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -72,6 +86,9 @@ const Signup = () => {
                             fullWidth
                             type='password'
                             variant="standard"
+                            InputLabelProps={{
+                                style: labelColorStyle,
+                              }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -83,6 +100,9 @@ const Signup = () => {
                             fullWidth
                             type='password'
                             variant="standard"
+                            InputLabelProps={{
+                                style: labelColorStyle,
+                              }}
                         />
                     </Grid>
                     <Grid item xs={12}>
