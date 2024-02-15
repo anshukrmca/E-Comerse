@@ -5,19 +5,18 @@ import axios from "axios";
 export const getAdminOrder = createAsyncThunk("getAdminOrder", async () => {
   try {
     const response = await axios.get("/api/admin/orders");
-   // console.log(response.data);
-    return response.data; // Return the entire response
+   //console.log(response.data.orders);
+    return response.data.orders; // Return the entire response
   } catch (error) {
     throw new Error(`Error in getAdminOrder: ${error.message}`);
   }
 });
 
-
-const adminorderSlice = createSlice({
-  name: "Adminorder",
+const ordersSlice = createSlice({
+  name: "orders",
   initialState: {
     isLoading: false,
-    Adminorder: null,
+    orders: null,
     isError: false,
     Message:null
   },
@@ -28,7 +27,7 @@ const adminorderSlice = createSlice({
     });
     builder.addCase(getAdminOrder.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.Adminorder = action.payload.Adminorder; 
+      state.orders = action.payload; 
     });
     builder.addCase(getAdminOrder.rejected, (state, action) => {
         console.log("Error", action.payload);
@@ -40,5 +39,5 @@ const adminorderSlice = createSlice({
 });
 
 // selector 
-export const selectAdminorder = (state) => state.Adminorder.Adminorder;
-export default adminorderSlice.reducer;
+export const selectorders = (state) => state.orders.orders;
+export default ordersSlice.reducer;

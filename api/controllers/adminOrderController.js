@@ -4,7 +4,7 @@ import { UpdateOrderStatus, cancleOrder, deleteOrder,getAllOrder } from "../serv
 export const getAllOrders = async(req,res,next)=>{
     try {
         const orders =await getAllOrder();
-        res.status(200).json(orders);
+        res.status(200).json({orders});
     } catch (error) {
        next(error); 
     }

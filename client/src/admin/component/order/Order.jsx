@@ -6,8 +6,9 @@ import { tokens } from '../../../theme';
 import { Box, useTheme } from '@mui/material';
 import axios from 'axios';
 import OrderDropdown from './OrderDropdown';
-import { useDispatch } from 'react-redux';
-import { getAdminOrder } from '../../../redux/features/adminOrderSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAdminOrder, selectorders } from '../../../redux/features/adminOrderSlice';
+import DataLoading from '../../../Customer/components/Loding/DataLoading';
 
 const columns = [
     { field: 'CustomerName', headerName: 'Customer Name',headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.shippingAddess.name },
@@ -30,11 +31,27 @@ const Order = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [order, setOrder] = useState("")
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const adminOrderss = useSelector(selectorders);
+    const token = localStorage.getItem("token");
+    console.log(adminOrderss);
 
     useEffect(() => {
-        dispatch(getAdminOrder());
-    }, [])
+        if (token) {
+            try {
+                dispatch(getAdminOrder());
+            } catch (error) {
+              console.error('Error fetching data:', error);
+            }
+          }
+        
+    }, [token])
+
+    useEffect(()=>{
+        if(adminOrderss){
+            setOrder(adminOrderss);
+        }
+    })
 
 
     return (
@@ -69,12 +86,12 @@ const Order = () => {
                 },
             }}
         >
-            {order && <DataGrid
+            {order && order.length >0 ? <DataGrid
                 rows={order}
                 columns={columns}
                 components={{ Toolbar: GridToolbar }}
                 getRowId={(row) => row._id}
-            />}
+            /> : <DataLoading/>}
         </Box>
     );
 };

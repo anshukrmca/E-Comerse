@@ -9,4 +9,5 @@ router.post("/creates",verifyToken,createMultipleProducts);
 router.delete("/:id",verifyToken,deleteProducts);
 router.put("/:id",verifyToken,updateProducts);
 
+
 export default router;

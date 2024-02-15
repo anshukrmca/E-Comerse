@@ -8,6 +8,7 @@ import { tokens } from '../../../theme';
 import BtnAction from './BtnAction';
 import axios from 'axios';
 import {Link} from 'react-router-dom'
+import DataLoading from '../../../Customer/components/Loding/DataLoading';
 
 
 const Products = () => {
@@ -89,12 +90,12 @@ const Products = () => {
             },
           }}
         >
-          {Products && <DataGrid
+          {Products && Products.length >0 ? <DataGrid
             rows={Products}
             columns={columns}
             components={{ Toolbar: GridToolbar }}
             getRowId={(row) => row._id}
-          />}
+          /> :<DataLoading/>}
         </Box>
 
       </div>

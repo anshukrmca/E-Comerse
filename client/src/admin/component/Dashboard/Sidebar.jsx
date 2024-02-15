@@ -133,10 +133,11 @@ const Sidebar = () => {
                 </span>
                 <IoIosArrowDown />
               </button>
+              </li>
               {isDropdownOpen && (
                 <div>
                   <ul>
-                    <li>
+                    <li className="hover:bg-slate-400/10 hover:text-[#4cceac]">
                       <Link to="/admin/color"
                         className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11">
                         <IoIosColorPalette className="hover:text-[#4cceac]"/>
@@ -145,7 +146,7 @@ const Sidebar = () => {
                         </span>
                       </Link>
                     </li>
-                    <li>
+                    <li className="hover:bg-slate-400/10 hover:text-[#4cceac]">
                       <Link to="/admin/category"
                         className="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11">
                         <BiCategory className="hover:text-[#4cceac]"/>
@@ -157,7 +158,7 @@ const Sidebar = () => {
                   </ul>
                 </div>
               )}
-            </li>
+           
 
             <li className="p-1 hover:bg-slate-400/20 hover:text-[#4cceac]">
               <Link
