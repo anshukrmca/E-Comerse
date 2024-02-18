@@ -3,8 +3,12 @@ import { AiOutlineUser, AiOutlineShoppingCart } from 'react-icons/ai';
 import { SiFuturelearn } from 'react-icons/si';
 import { RiLuggageCartLine } from "react-icons/ri";
 import { Link } from 'react-router-dom';
+import { useTheme } from '@mui/material';
+import { tokens } from '../../../theme';
 
 const Widget = ({ DashoBoardData }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
  
   const diff = 35;
 
@@ -20,10 +24,11 @@ const Widget = ({ DashoBoardData }) => {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
         {DashoBoardData && DashoBoardData.map((item, index) => (
           <div
             key={index}
+            style={{backgroundColor : `${colors.primary[400]}`}}
             className={`p-3 flex justify-between cursor-pointer hover:h-150 transition duration-300 ease-in-out shadow-md border border-gray-300 rounded-md`}
           >
             <div className="flex flex-col justify-between">

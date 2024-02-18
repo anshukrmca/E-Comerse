@@ -5,10 +5,13 @@ import axios from 'axios';
 import { FaTrashAlt } from "react-icons/fa";
 import { IconButton, Tooltip } from '@mui/material';
 import {toast} from 'react-toastify'
+import { useDispatch } from 'react-redux';
+import { getAdminOrder } from '../../../redux/features/adminOrderSlice';
 
 
 const OrderDropdown = ({ Status, orderId }) => {
     const [OrderStatus, setOrderStatus] = useState('')
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (Status) {
@@ -25,6 +28,8 @@ const OrderDropdown = ({ Status, orderId }) => {
                 orderId: orderId
             });
             console.log(response.data);
+            toast.success("Order Updated !")
+            dispatch(getAdminOrder());
         }
     };
 
@@ -33,6 +38,7 @@ const OrderDropdown = ({ Status, orderId }) => {
             const response = await axios.delete(`/api/admin/orders/${orderId}`, {
                 orderId: orderId
             });
+            dispatch(getAdminOrder());
             toast.success(response.data.message);
         }
     }
