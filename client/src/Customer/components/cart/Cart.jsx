@@ -1,25 +1,29 @@
 import React, { useEffect } from "react";
 import CardItem from "./CardItem";
-import { Button } from "@mui/material";
+import { Button, useTheme } from "@mui/material";
 import Layout from '../layout/Layout'
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCart } from "../../../redux/features/cartSlice";
+import { tokens } from "../../../theme";
 
 const Cart = () => {
   const navigate = useNavigate()
-  const cartData = useSelector(selectCart)
+  const cartData = useSelector(selectCart);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   return (
     <>
       <Layout>
         {cartData && cartData.cartItem.length ? 
-        <div className="lg:grid grid-cols-3 lg:px-16 relative h-full mx-4">
+        <div className="lg:grid grid-cols-3 gap-2 lg:px-16 relative h-full mx-4">
           <div className="col-span-2">
             {cartData && cartData.cartItem.map((item, i) =>
               <CardItem key={i} item={item} />)}
           </div>
-          <div className="px-5 sticky top-0 mt-5 lg:mt-0 mb-4">
-            <div className="p-4 bg-white dark:bg-gray-800 mb-4">
+          <div className="px-5 sticky top-0 mt-5 lg:mt-0 mb-4" >
+            <div className="p-4 mb-4" style={{backgroundColor:`${colors.primary[400]}`}}>
               <p className="upppercase font-bold opacity-60 pb-4">
                 Add Coupon code
               </p>
@@ -37,7 +41,7 @@ const Cart = () => {
                 Apply
               </Button>
             </div>
-            <div className=" p-4 bg-white dark:bg-gray-800">
+            <div className="p-4 mt-4" style={{backgroundColor:`${colors.primary[400]}`}}>
               <p className="upppercase font-bold opacity-60 pb-4">
                 Price Details
               </p>

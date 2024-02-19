@@ -1,4 +1,4 @@
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, useTheme } from "@mui/material";
 import axios from "axios";
 import React from "react";
 import { IoMdAddCircleOutline } from "react-icons/io";
@@ -6,10 +6,14 @@ import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getUserCart } from "../../../redux/features/cartSlice";
+import { tokens } from "../../../theme";
 
 const CardItem = ({ item }) => {
-
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
+
+
   const handleRemoveToCart = async (cartItemId) => {
     try {
       const response = await axios.delete(`/api/cartItem/${cartItemId}`);
@@ -33,7 +37,7 @@ const CardItem = ({ item }) => {
   }
   return (
     <>
-      <div className="p-5 shadow-lg rounded-md mb-2 bg-white dark:bg-gray-800">
+      <div className="p-5 shadow-lg rounded-md mb-2" style={{backgroundColor:`${colors.primary[400]}`}}>
         <div className="flex items-center">
           <div className="w-[5rem] h-[5rem] lg:w-[9rem] lg:h-[9rem]">
             <img

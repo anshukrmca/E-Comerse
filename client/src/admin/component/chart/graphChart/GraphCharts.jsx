@@ -58,8 +58,8 @@ const GraphCharts = () => {
     <>
       <div className="bigChartBox w-full h-full flex flex-col justify-between">
         <h1 className="xxl:text-24">Revenue Analytics</h1>
-        <div className="chart w-full h-96">
-  <ResponsiveContainer width="100%" height="100%">
+        <div className="chart w-full h-72">
+          <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={data}
               margin={{

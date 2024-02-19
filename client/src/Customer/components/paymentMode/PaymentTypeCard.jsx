@@ -1,8 +1,12 @@
+import { useTheme } from "@mui/material";
+import { tokens } from "../../../theme";
 
 const PaymentTypeCard = ({ tittle, icon,setpaymentMethod}) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   return (
     <>
-      <div className='flex gap-3 mt-4 bg-white shadow-lg mb-2 p-3 dark:bg-gray-800 items-center'>
+      <div className='flex gap-3 mt-4 shadow-lg mb-2 p-3  items-center' style={{backgroundColor:`${colors.primary[400]}`}}>
         <input
           type="radio"
           name="paymentSubMode"

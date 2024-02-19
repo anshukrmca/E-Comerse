@@ -8,12 +8,15 @@ import DeleveryAddress from './DeleveryAddress';
 import Layout from '../layout/Layout';
 import Payment from '../paymentMode/Payment'
 import { useState } from 'react';
+import { useTheme } from '@mui/material';
+import { tokens } from '../../../theme';
 
 
 const steps = ['Address', 'Summary', 'Payment'];
 
 export default function Checkout() {
-
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const location = useLocation()
   const querySerch = new URLSearchParams(location.search)
   const step = querySerch.get("step")
@@ -21,7 +24,7 @@ export default function Checkout() {
   return (
     <>
       <Layout>
-        <div className='mb-4 pt-8 mx-4 p-1 lg:px-20 dark:bg-slate-800 bg-slate-300'>
+        <div className='mb-4 pt-8 mx-4 p-1 lg:px-20' style={{backgroundColor:`${colors.primary[400]}`}}>
           <Box sx={{ width: '100%' }}>
             <Stepper activeStep={step}>
               {steps.map((label, index) => {

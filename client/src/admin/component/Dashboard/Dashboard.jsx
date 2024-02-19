@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import Widget from "../widget/Widget";
 import axios from "axios";
 import Chart from "../chart/Chart";
-import PaiChart from "../chart/paiChart/PaiChart";
+import PaiChart from "../chart/pieChart/PieChart";
 import BarCharts from "../chart/BarChart/BarCharts";
 import GraphCharts from "../chart/graphChart/GraphCharts";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
+import LineCharts from "../chart/lineChart/LineCharts";
+import DonotChart from "../chart/DonotChart/DonotChart";
+import PieChart from "../chart/pieChart/PieChart";
+import Order4Dashboard from "../order/Order4Dashboard";
 
 const Dashboard = () => {
   const [DashoBoardData, setDashoBoardData] = useState([]);
@@ -24,37 +28,52 @@ const Dashboard = () => {
     };
     fetchData();
   }, []);
+    
 
   return (
-    <div>
+    <div style={{color:`${colors.greenAccent[400]}`}}>
       <Widget DashoBoardData={DashoBoardData} />
       {/* <Chart/> */}
       <div className="md:flex gap-3 justify-between mt-4">
         <div
-          className="mb-4 w-full md:w-1/2 border p-4"
+          className="mb-4 w-full md:w-1/2  p-4"
           style={{ backgroundColor: `${colors.primary[400]}` }}
         >
-          <PaiChart />
+          <DonotChart />
         </div>
         <div
-          className="mb-4  w-full md:w-1/2 border p-4"
+          className="mb-4  w-full md:w-1/2  p-4"
           style={{ backgroundColor: `${colors.primary[400]}` }}
         >
-          <BarCharts />
+          <PieChart />
         </div>
       </div>
       <div className="md:flex gap-3 justify-between mt-4">
         <div
-          className="mb-4  w-full md:w-1/2 border p-4"
+          className="mb-4  w-full md:w-1/2  p-4"
+          style={{ backgroundColor: `${colors.primary[400]}` }}
+        >
+          <LineCharts />
+        </div>
+        <div
+          className="mb-4 w-full md:w-1/2  p-4"
           style={{ backgroundColor: `${colors.primary[400]}` }}
         >
           <GraphCharts />
         </div>
+      </div>
+      <div className="md:flex gap-3 justify-between mt-4">
         <div
-          className="mb-4  w-full md:w-1/2 border p-4"
+          className="mb-4  w-full md:w-3/4  p-4"
           style={{ backgroundColor: `${colors.primary[400]}` }}
         >
-          <GraphCharts />
+         <Order4Dashboard />
+        </div>
+        <div
+          className="mb-4 w-full md:w-1/3 p-4"
+          style={{ backgroundColor: `${colors.primary[400]}` }}
+        >
+          <BarCharts />
         </div>
       </div>
     </div>

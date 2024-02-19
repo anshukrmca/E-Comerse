@@ -18,17 +18,9 @@ export default function Navbar({ sidebarToggle }) {
 
   const CurrentUser = useSelector(selectUser);
   const token = localStorage.getItem("token");
-  const dispatch = useDispatch()
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
-
-  // useEffect(() => {
-  //   if (token) {
-  //     dispatch(getUserCurrentData());
-  //   }
-  // }, [dispatch])
-
 
   return (
     <>

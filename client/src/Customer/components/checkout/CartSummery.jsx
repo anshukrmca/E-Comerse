@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CardItem from '../cart/CardItem'
@@ -7,6 +7,7 @@ import { selectCart } from '../../../redux/features/cartSlice'
 import HeaderTittle from '../HeaderTittle'
 import { IoCloudDownloadOutline } from 'react-icons/io5'
 import { selectUser } from '../../../redux/features/userSlice'
+import { tokens } from '../../../theme'
 
 const CartSummery = () => {
   const navigate = useNavigate()
@@ -14,6 +15,9 @@ const CartSummery = () => {
   const addressID = sessionStorage.getItem("addressID");
   const currentUser = useSelector(selectUser);
   const [address, setAddress] = useState()
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
 
   useEffect(() => {
     const filterById = (addressID) => {
@@ -28,11 +32,11 @@ const CartSummery = () => {
   return (
     <div>
 
-      <div className='mx-4'>
+      <div className='mx-4' style={{backgroundColor:`${colors.primary[400]}`}}>
         <div className='mt-4'>
           <HeaderTittle tittle={"Order Summery"} />
         </div>
-        {address && address.length !=0 && <div className='p-4 mt-4 mb-4 rounded-md shadow-md sm:mb-0 bg-white dark:bg-gray-800 w-[auto]'>
+        {address && address.length !=0 && <div className='p-4 mt-4 mb-4 rounded-md shadow-md sm:mb-0 w-[auto]'>
           {
             address && address.map((item) => {
               return (
@@ -57,7 +61,7 @@ const CartSummery = () => {
             <CardItem key={i} item={item} />)}
         </div>
         <div>
-          <div className="p-4 pb-6 min-w-80 h-[auto] sticky shadow-lg bg-white dark:bg-gray-800">
+          <div className="p-4 pb-6 min-w-80 h-[auto] sticky shadow-lg " style={{backgroundColor:`${colors.primary[400]}`}}>
             <p className="upppercase font-bold opacity-60 pb-4">
               Price Details
             </p>
@@ -82,7 +86,7 @@ const CartSummery = () => {
               </div>
             </div>
           </div>
-          <div className="p-4 mt-2 min-w-80 h-[auto] sticky shadow-lg bg-white dark:bg-gray-800">
+          <div className="p-4 mt-2 min-w-80 h-[auto] sticky shadow-lg" style={{backgroundColor:`${colors.primary[400]}`}}>
 
             <Button
               onClick={() => { navigate(`/checkout/?step=3`) }}

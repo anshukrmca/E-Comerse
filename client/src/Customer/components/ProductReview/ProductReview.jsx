@@ -1,38 +1,44 @@
 import React from 'react'
-import { Box, Grid, LinearProgress, Rating } from "@mui/material";
+import { Box, Button, Grid, LinearProgress, Rating, useTheme } from "@mui/material";
 import ProductRevirewCard from './ProductRevirewCard';
+import { tokens } from '../../../theme';
+import { useNavigate } from 'react-router-dom';
 
 const ratingdata = [
-    {
-      reviewTitle: "Excellent",
-      value: 90,
-      reviewNo: 33564,
-      color: "success",
-    },
-    {
-      reviewTitle: "Good",
-      value: 60,
-      reviewNo: 33564,
-      color: "primary",
-    },
-    {
-      reviewTitle: "Average",
-      value: 50,
-      reviewNo: 33564,
-      color: "warning",
-    },
-    {
-      reviewTitle: "Poor",
-      value: 30,
-      reviewNo: 33564,
-      color: "error",
-    },
-  ];
+  {
+    reviewTitle: "Excellent",
+    value: 90,
+    reviewNo: 33564,
+    color: "success",
+  },
+  {
+    reviewTitle: "Good",
+    value: 60,
+    reviewNo: 33564,
+    color: "primary",
+  },
+  {
+    reviewTitle: "Average",
+    value: 50,
+    reviewNo: 33564,
+    color: "warning",
+  },
+  {
+    reviewTitle: "Poor",
+    value: 30,
+    reviewNo: 33564,
+    color: "error",
+  },
+];
 
-const ProductReview = () => {
+const ProductReview = ({id}) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+const navigate = useNavigate();
+  console.log(id)
   return (
     <>
-<section className=" p-4">
+      <section className=" p-4 mb-4">
         <h1 className="font-semiblod text-lg pb-4">Recent Review & Rating</h1>
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/2">
@@ -43,7 +49,10 @@ const ProductReview = () => {
             </div>
           </div>
           <div className="md:w-1/2 md:pl-8">
-            <h1 className="text-xl font-semibold pb-2">Product Rating</h1>
+           <div className='flex justify-between mr-4'>
+           <h1 className="text-xl font-semibold pb-2 ">Product Rating</h1>
+           <button onClick={()=>{navigate(`/review/${id}`)}}  className='p-2 cursor-pointer rounded-sm' style={{backgroundColor:`${colors.blueAccent[700]}`}}>Rate Product</button>
+           </div>
             <div className="flex items-center space-x-3">
               <Rating value={4.5} precision={0.5} readOnly />
             </div>

@@ -1,9 +1,13 @@
 import { createRating, getProductRating } from "../service/ratingService.js";
 
 export const createRatings = async (req, res, next) => {
-  const user = req.user;
+  const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ message: "You are not authenticated!" });
+    }
+    const userId = await getUserIdFromToken(token);
   try {
-    const review = await createRating(req.body, user);
+    const review = await createRating(req.body, userId);
     res.status(200).json(review);
   } catch (error) {
     next(error);
@@ -11,7 +15,11 @@ export const createRatings = async (req, res, next) => {
 };
 
 export const getProductRatings = async (req, res, next) => {
-  const user = req.user;
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ message: "You are not authenticated!" });
+  }
+  const userId = await getUserIdFromToken(token);
   const productId = req.params.productId;
   try {
     const review = await getProductRating(productId);

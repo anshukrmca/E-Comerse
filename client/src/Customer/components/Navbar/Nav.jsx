@@ -1,8 +1,8 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import { FaBars, FaShoppingBag, FaTimes, FaUser } from "react-icons/fa";
 import { navigation } from "./NavigationData.js";
-import { Avatar, Badge, Link, Tooltip } from "@mui/material";
+import { Avatar, Badge, IconButton, Link, Tooltip, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { BsCloudMoon, BsCloudSun } from "react-icons/bs";
 import DailogModel from "../DailogModel.jsx";
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserCurrentData, logout, selectUser } from "../../../redux/features/userSlice.js";
 import { getUserCart, selectCart } from "../../../redux/features/cartSlice.js";
 import { getUserOrder } from "../../../redux/features/orderSlice.js";
+import { ColorModeContext, tokens } from "../../../theme.js";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -20,13 +21,15 @@ function classNames(...classes) {
 export default function Nav() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const [theme, setTheme] = useState("");
   const [modelopen, setModelopen] = useState(false);
   const [isDrOpen, setIsDrOpen] = useState(false);
   const token = localStorage.getItem("token");
   const dispatch = useDispatch()
   const CurrentUser = useSelector(selectUser);
   const CartItems = useSelector(selectCart);
+
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,29 +89,6 @@ export default function Nav() {
     );
   };
 
-
-
-  // theme information  start
-  useEffect(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  }, []);
-
-  const handleThemeSwitch = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
-  // theme information  end
 
   // Authmodel information  start
   const handleClickOpenModel = () => {
@@ -249,7 +229,7 @@ export default function Nav() {
                                   <a
                                     href={item.href}
                                     className="-m-2 block p-2 text-gray-500"
-                                  >
+                                    onClick={(e) => { handleCategoryClick(item, section, category, close) }}>
                                     {item.name}
                                   </a>
                                 </li>
@@ -474,19 +454,25 @@ export default function Nav() {
                   </Link>
                 </div>
                 {/* Theme */}
-                <div className="ml-4 flow-root lg:ml-6 mr-1 text-black">
-                  <Tooltip title="Theme">
-                    <span
-                      className="text-[30px] cursor-pointer"
-                      onClick={handleThemeSwitch}
-                    >
-                      {theme === "dark" ? (
-                        <BsCloudSun size={30} />
-                      ) : (
-                        <BsCloudMoon size={30} />
-                      )}
-                    </span>
-                  </Tooltip>
+                <div className="ml-4 flow-root lg:ml-6 mr-1">
+                    {theme.palette.mode === "dark" ? (
+                      <Tooltip title="Light">
+                        <IconButton
+                          onClick={colorMode.toggleColorMode}
+                        >
+                          <BsCloudSun size={30} color="black"/>
+                        </IconButton>
+                      </Tooltip>
+
+                    ) : (
+                      <Tooltip title="Dark">
+                        <IconButton
+                          onClick={colorMode.toggleColorMode}
+                        >
+                          <BsCloudMoon size={30} color="black"/>
+                        </IconButton>
+                      </Tooltip>
+                    )}
                 </div>
               </div>
             </div>

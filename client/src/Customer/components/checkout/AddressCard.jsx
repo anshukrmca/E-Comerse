@@ -1,11 +1,15 @@
+import { useTheme } from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react'
 import { SlOptionsVertical } from 'react-icons/sl'
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { tokens } from '../../../theme';
 
 const AddressCard = ({ index, item, fetchData, setIsFormOpen, setId }) => {
   const [isDrOpen, setIsDrOpen] = useState({});
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   
   const toggleDropdown = (index) => {
     setIsDrOpen((prevStates) => ({
@@ -51,7 +55,7 @@ const AddressCard = ({ index, item, fetchData, setIsFormOpen, setId }) => {
 
   return (
     <div>
-      <div className='flex justify-between items-center p-4  dark:bg-gray-800 bg-slate-300 mb-2'>
+      <div className='flex justify-between items-center p-4 mb-2' style={{backgroundColor:`${colors.primary[400]}`}}>
         <div>
           <div className='flex gap-4 font-semibold'>
             <p>{item.name}</p>

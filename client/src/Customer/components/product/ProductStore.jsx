@@ -11,6 +11,7 @@ import {
     Pagination,
     Radio,
     RadioGroup,
+    useTheme,
 } from "@mui/material";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
@@ -18,12 +19,15 @@ import { IoIosRemove } from "react-icons/io";
 import Product from './ProductCard.jsx'
 import axios from 'axios'
 import DataLoading from '../Loding/DataLoading.jsx';
+import { tokens } from '../../../theme.js';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
 export default function ProductStore() {
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
@@ -124,8 +128,7 @@ export default function ProductStore() {
 
     return (
         <Layout>
-            <div className="bg-slate-100 dark:bg-slate-800">
-                <div>
+                <div style={{backgroundColor:`${colors.primary[400]}`}}>
                     {/* Mobile filter dialog */}
                     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
                         <Dialog
@@ -145,7 +148,7 @@ export default function ProductStore() {
                                 <div className="fixed inset-0 bg-black bg-opacity-25" />
                             </Transition.Child>
 
-                            <div className="fixed inset-0 z-40 flex">
+                            <div className="fixed inset-0 z-40 flex ">
                                 <Transition.Child
                                     as={Fragment}
                                     enter="transition ease-in-out duration-300 transform"
@@ -155,7 +158,7 @@ export default function ProductStore() {
                                     leaveFrom="translate-x-0"
                                     leaveTo="translate-x-full"
                                 >
-                                    <Dialog.Panel className="relative ml-auto bg-white flex h-full w-full max-w-xs flex-col overflow-y-auto py-4 pb-12 shadow-xl">
+                                    <Dialog.Panel style={{backgroundColor:`${colors.primary[400]}`}} className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto py-4 pb-12 shadow-xl">
                                         <div className="flex items-center justify-between px-4">
                                             <h2 className="text-lg font-medium">
                                                 Filters
@@ -182,8 +185,8 @@ export default function ProductStore() {
                                                         <>
                                                             <h3 className="-my-3 flow-root">
                                                                 <Disclosure.Button className="flex w-full items-center justify-between py-3 text-sm">
-                                                                    <span className="font-mediumtext-black">
-                                                                        {section.name}
+                                                                    <span className="font-medium">
+                                                                        {section.name} 
                                                                     </span>
                                                                     <span className="ml-6 flex items-center">
                                                                         {open ? (
@@ -239,17 +242,16 @@ export default function ProductStore() {
                                                     {({ open }) => (
                                                         <>
                                                             <h3 className="-my-3 flow-root">
-                                                                <Disclosure.Button className="flex w-full items-center justify-between py-3 text-sm text-gray-400 hover:text-gray-500">
+                                                                <Disclosure.Button className="flex w-full items-center justify-between py-3 text-sm">
                                                                     <FormLabel
-                                                                        className="font-medium text-black"
+                                                                        className="font-medium"
                                                                         id="demo-radio-buttons-group-label"
-                                                                        sx={{ color: "black" }}
                                                                     >
                                                                         {" "}
                                                                         {section.name}
                                                                     </FormLabel>
 
-                                                                    <span className="ml-6 flex items-center text-black">
+                                                                    <span className="ml-6 flex items-center">
                                                                         {open ? (
                                                                             <IoIosRemove
                                                                                 className="h-5 w-5"
@@ -279,7 +281,7 @@ export default function ProductStore() {
                                                                                         value={option.value}
                                                                                         control={<Radio />}
                                                                                         label={option.label}
-                                                                                        sx={{ color: "black" }}
+                                                                                       
                                                                                         onChange={(e) => handleRadioFilterChange(e, section.id)}
                                                                                     />
                                                                                 )
@@ -326,7 +328,7 @@ export default function ProductStore() {
                                         leaveFrom="transform opacity-100 scale-100"
                                         leaveTo="transform opacity-0 scale-95"
                                     >
-                                        <Menu.Items className="absolute bg-slate-100 dark:bg-slate-700 right-0 z-10 mt-2 w-40 origin-top-right rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                        <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             <div className="py-1 cursor-pointer">
                                                 {sortOptions.map((option) => (
                                                     <Menu.Item key={option.name}>
@@ -375,7 +377,7 @@ export default function ProductStore() {
                                 {/* Filters */}
                                 <div className=''>
                                     <div className='hidden lg:block'>
-                                        <div className="py-5 items-center flex justify-between dark:text-white text-black">
+                                        <div className="py-5 items-center flex justify-between">
                                             <h1 className="text-lg opacity-60 font-bold ">Filters</h1>
                                             <FaFilter />
                                         </div>
@@ -390,8 +392,8 @@ export default function ProductStore() {
                                                 {({ open }) => (
                                                     <>
                                                         <h3 className="-my-3 flow-root">
-                                                            <Disclosure.Button className="flex w-full items-center justify-between py-3 text-sm text-gray-400 hover:text-gray-500">
-                                                                <span className="font-medium dark:text-white text-black">
+                                                            <Disclosure.Button className="flex w-full items-center justify-between py-3 text-sm">
+                                                                <span className="font-medium">
                                                                     {section.name}
                                                                 </span>
                                                                 <span className="ml-6 flex items-center">
@@ -429,7 +431,7 @@ export default function ProductStore() {
                                                                         />
                                                                         <label
                                                                             htmlFor={`filter-${section.id}-${optionIdx}`}
-                                                                            className="ml-3 text-sm dark:text-white text-black"
+                                                                            className="ml-3 text-sm "
                                                                         >
                                                                             {option.label}
                                                                         </label>
@@ -450,11 +452,11 @@ export default function ProductStore() {
                                                 {({ open }) => (
                                                     <>
                                                         <h3 className="-my-3 flow-root">
-                                                            <Disclosure.Button className="flex w-full items-center justify-between py-3 text-sm text-gray-400 hover:text-gray-500">
+                                                            <Disclosure.Button className="flex w-full items-center justify-between py-3 text-sm">
                                                                 <FormLabel
-                                                                    className="font-mediu dark:text-white text-black"
+                                                                    className="font-medium"
                                                                     id="demo-radio-buttons-group-label"
-                                                                    sx={{ color: "black" }}
+                                                                    
                                                                 >
                                                                     {" "}
                                                                     {section.name}
@@ -489,7 +491,6 @@ export default function ProductStore() {
                                                                                 value={option.value}
                                                                                 control={<Radio />}
                                                                                 label={option.label}
-                                                                                className='text-black dark:text-white'
                                                                                 onChange={(e) => handleRadioFilterChange(e, section.id)}
                                                                             />
                                                                         ))}
@@ -504,7 +505,7 @@ export default function ProductStore() {
                                     </form>
                                 </div>
                                 {/* Product grid */}
-                                <div className="lg:col-span-3 w-full bg-slate-100 dark:bg-slate-700">
+                                <div className="lg:col-span-3 w-full">
                                     {products && products.length > 0 ? <>
                                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 mb-3">
                                             {products && products.map((item, index) => (
@@ -524,7 +525,7 @@ export default function ProductStore() {
                                             ))}
                                         </div>
 
-                                        <section className='w-full px-[1.6rem] bg-slate-300 dark:bg-slate-600'>
+                                        <section className='w-full px-[1.6rem] shadow-lg' style={{backgroundColor:`${colors.primary[400]}`}}>
                                             <div className='px-4 py-3 flex justify-center'>
                                                 <Pagination count={pageNum} color='secondary'
                                                     onChange={handlePageChnage} />
@@ -538,7 +539,7 @@ export default function ProductStore() {
 
                     </main>
                 </div>
-            </div>
+        
         </Layout>
     );
 }

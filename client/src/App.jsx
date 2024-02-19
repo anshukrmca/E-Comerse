@@ -22,6 +22,7 @@ import Sidebar from "./admin/component/Dashboard/Sidebar";
 import { ColorModeContext, tokens, useMode } from './theme.js'
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Order from "./admin/component/order/Order.jsx";
+import ReviewForm from "./Customer/components/ProductReview/ReviewForm.jsx";
 
 const App = () => {
   const [theme, colorMode] = useMode();
@@ -40,6 +41,7 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/products/:id" element={<SingleProduct />} />
+              <Route path="/review/:id" element={<ReviewForm />} />
               <Route path="/:levelThree" element={<ProductStore />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/store" element={<ProductStore />} />

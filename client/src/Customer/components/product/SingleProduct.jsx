@@ -5,13 +5,13 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ProductReview from '../ProductReview/ProductReview';
 import HeaderTittle from '../HeaderTittle';
-import Product from './ProductCard';
-import { Rating } from '@mui/material';
+import { Rating, useTheme } from '@mui/material';
 import { toast } from 'react-toastify';
+import { tokens } from '../../../theme';
 
 const SingleProduct = () => {
-
-    const [isAddToCart, setIsAddToCart] = useState(false)
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
     const [isAddwishList, setIsAddwishList] = useState(false)
     const [products, setProducts] = useState({})
     const [Relatedproducts, setRelatedproducts] = useState([])
@@ -58,15 +58,15 @@ const SingleProduct = () => {
     }, [products.category]);
 
 
-    const handleAddToCart = async() => {
+    const handleAddToCart = async () => {
         let data = {
             color: selectedColor,
             size: selectedSize,
             quantity: selectedQuantity,
-            ProductId:products._id
+            ProductId: products._id
         }
         console.log(data)
-        const res= await axios.post('/api/cart/add',data);
+        const res = await axios.post('/api/cart/add', data);
         console.log(res)
         toast.success(res.data)
     }
@@ -79,7 +79,7 @@ const SingleProduct = () => {
     return (
         <>
             <Layout>
-                <section className="overflow-hidden bg-slate-300 py-11 font-poppins dark:bg-slate-800 mx-4">
+                <section className="overflow-hidden py-11 font-poppins mx-4 mb-4" style={{ backgroundColor: `${colors.primary[400]}` }}>
                     <div className="max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
                         <div className="flex flex-wrap -mx-4">
                             <div className="w-full px-4 md:w-1/2 ">
@@ -206,7 +206,7 @@ const SingleProduct = () => {
 
 
                     {/* rating  */}
-                    <ProductReview />
+                    <ProductReview id={P_ID.id}/>
 
                     {/* related product   */}
                     <div className='px-4'>

@@ -1,30 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import { tokens } from '../../../theme';
 import { Box, useTheme } from '@mui/material';
-import axios from 'axios';
 import OrderDropdown from './OrderDropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAdminOrder, selectorders } from '../../../redux/features/adminOrderSlice';
 import DataLoading from '../../../Customer/components/Loding/DataLoading';
 
-const columns = [
-    { field: 'CustomerName', headerName: 'Customer Name',headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.shippingAddess.name },
-    { field: 'paymentMethod', headerName: 'Payment Method',headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.paymentDetails.paymentMethod },
-    { field: 'totalDiscountPrice', headerName: 'Amount',headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => "₹ "+params.row.totalDiscountPrice },
-    { field: 'PaymentStatus', headerName: 'Payment Status',headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.paymentDetails.PaymentStatus },
-    {
-        field: 'orderStatus',
-        headerName: 'Order Status',
-        headerAlign: "center", align: "center",
-        width:200,
-        renderCell: (params) => (
-            <OrderDropdown Status={params.row.orderStatus} orderId={params.row._id}/>
-        ),
-    },
-];
+
 
 
 const Order = () => {
@@ -34,29 +17,43 @@ const Order = () => {
     const dispatch = useDispatch();
     const adminOrderss = useSelector(selectorders);
     const token = localStorage.getItem("token");
-    console.log(adminOrderss);
 
-    useEffect(() => {
+
+    const columns = [
+        { field: 'CustomerName', headerName: 'Customer Name', headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.shippingAddess.name },
+        { field: 'paymentMethod', headerName: 'Payment Method', headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.paymentDetails.paymentMethod },
+        { field: 'totalDiscountPrice', headerName: 'Amount', headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => "₹ " + params.row.totalDiscountPrice },
+        { field: 'PaymentStatus', headerName: 'Payment Status', headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.paymentDetails.PaymentStatus },
+        {
+            field: 'orderStatus',
+            headerName: 'Order Status',
+            headerAlign: "center", align: "center",
+            width: 200,
+            renderCell: (params) => (
+                <OrderDropdown Status={params.row.orderStatus} orderId={params.row._id}/>
+            ),
+        },
+    ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         if (token) {
-            try {
-                dispatch(getAdminOrder());
-            } catch (error) {
-              console.error('Error fetching data:', error);
-            }
-          }
-        
-    }, [token])
-
-    useEffect(()=>{
-        if(adminOrderss){
-            setOrder(adminOrderss);
+          dispatch(getAdminOrder());
+          setOrder(adminOrderss);
         }
-    })
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); // Invoke the async function
+  }, [token, dispatch, adminOrderss]); // Include token, dispatch, and adminOrderss in the dependency array
 
 
     return (
         <Box
-            height="90dvh"
+            height="auto"
+            maxHeight="90dvh"
             sx={{
                 "& .MuiDataGrid-root": {
                     border: "none",
@@ -86,12 +83,12 @@ const Order = () => {
                 },
             }}
         >
-            {order && order.length >0 ? <DataGrid
+            {order && order.length >= 0 ? <DataGrid
                 rows={order}
                 columns={columns}
                 components={{ Toolbar: GridToolbar }}
                 getRowId={(row) => row._id}
-            /> : <DataLoading/>}
+            /> : <DataLoading />}
         </Box>
     );
 };

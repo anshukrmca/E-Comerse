@@ -3,12 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import AddressCard from './AddressCard'
 import axios from 'axios'
 import { GiReturnArrow } from "react-icons/gi";
+import {tokens} from './../../../theme'
+import {useTheme } from '@mui/material';
 
 const DeleveryAddress = () => {
   const navigate = useNavigate()
   const [addressesData, setAddressesData] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isBtnOpen, setIsBtnOpen] = useState({});
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
     fetchData();
@@ -46,10 +50,10 @@ const DeleveryAddress = () => {
   };
   return (
     <>
-      <div className='w-full mt-4 mb-4 md:mb-0 p-4 '>
+      <div className='w-full mt-4 mb-4 md:mb-0 p-4' style={{backgroundColor:`${colors.primary[400]}`}}>
         <p className='cursor-pointer w-28 flex items-center mb-2' onClick={() => { navigate(`/cart`) }}><GiReturnArrow size={25} className='mr-2' />Go Back</p>
         {addressesData.map((item, i) => (
-          <div key={i} className='bg-slate-300 dark:bg-gray-800 shadow-lg flex items-center p-4 mb-2 rounded-md' >
+          <div key={i} className='shadow-lg flex items-center p-4 mb-2 rounded-md' >
             <input
               type='radio'
               id={item._id}
