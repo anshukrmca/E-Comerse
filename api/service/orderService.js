@@ -79,7 +79,7 @@ export const findOrderById = async (orderId) => {
 export const UsersOrderHistory = async (UserId) => {
     try {
 
-        const orders = await Order.find({ UserId: UserId, orderStatus: "PLACED" })
+        const orders = await Order.find({ UserId: UserId})
             .populate({ path: "orderItem", populate: { path: "product" } })
             .populate('shippingAddess')
             .lean();

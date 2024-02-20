@@ -2,9 +2,27 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import CreatableSelect from 'react-select/creatable';
 
-const FormColor = ({setSelectedColor}) => {
+const FormColor = ({ setSelectedColor, selectedColor }) => {
   const [color, setColor] = useState([]);
+  const [Editcolor, setEditcolor] = useState([]);
 
+
+  // edit mode set color 
+  useEffect(()=>{
+    const initialSelectedValues = selectedColor.map((colorValue) => ({
+      value: colorValue.value, // Assuming your selectedColor is an array of objects with value and label properties
+      label: colorValue.label,
+      colorCode: getColorCodeFromValue(colorValue.value),
+    }));
+
+    if(selectedColor != ''){
+      setEditcolor(initialSelectedValues);
+     }else{
+      setEditcolor([])
+     }
+  },[selectedColor])
+  
+  // get color from api 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -19,8 +37,13 @@ const FormColor = ({setSelectedColor}) => {
     fetchData();
   }, []);
 
+  const getColorCodeFromValue = (value) => {
+    const colorOption = color.find((c) => c.colorCode === value);
+    return colorOption ? colorOption.colorCode : '';
+  };
+
   const colorStyles = {
-    control: (styles) => ({ ...styles, backgroundColor: 'white'}),
+    control: (styles) => ({ ...styles, backgroundColor: 'white' }),
     option: (styles, { data }) => ({
       ...styles,
       backgroundColor: data.colorCode,
@@ -39,17 +62,21 @@ const FormColor = ({setSelectedColor}) => {
     const brightness = parseInt(backgroundColor, 16) > 0xffffff / 2 ? 'black' : 'black';
     return brightness;
   };
-  
+
 
   const handleChange = (selectedOption) => {
-    const selectedValues = selectedOption.map(option => option.value);
+    const selectedValues = selectedOption.map(option => ({
+      value: option.value,
+      label: option.label
+    }));
+    console.log("on c", selectedValues)
     setSelectedColor(selectedValues);
   };
 
   const optionsWithDisabled = [
     { value: '', label: 'Choose color', isDisabled: true },
     ...color.map((colorOption) => ({
-      value: colorOption.colorName,
+      value: colorOption.colorCode,
       label: colorOption.colorName,
       colorCode: colorOption.colorCode,
     })),
@@ -58,12 +85,13 @@ const FormColor = ({setSelectedColor}) => {
   return (
     <div>
       <CreatableSelect
-      options={optionsWithDisabled}
-      onChange={handleChange}
-    //   onInputChange={handleInputChange}
-      isMulti
-      styles={colorStyles}
-    />
+        options={optionsWithDisabled}
+        onChange={handleChange}
+        //   onInputChange={handleInputChange}
+        isMulti
+        styles={colorStyles}
+        value={Editcolor}
+      />
     </div>
   );
 };

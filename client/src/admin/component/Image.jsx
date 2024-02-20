@@ -1,11 +1,11 @@
 // ImageUpload.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { storage } from "../../DB/Firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { IoCloudUploadSharp } from "react-icons/io5";
 import { FaImages, FaImage } from "react-icons/fa";
 
-const Image = ({ setSubImage,setMainImage }) => {
+const Image = ({ setSubImage, setMainImage, mainImagess, subImagess }) => {
   const [subImages, setSubImages] = useState([]);
   const [subImgPresentage, setsubImgPresentage] = useState(0);
   const [subimageError, setsubImageError] = useState(false);
@@ -28,13 +28,13 @@ const Image = ({ setSubImage,setMainImage }) => {
     }
   };
 
-  const handleUpload = async(e) => {
+  const handleUpload = async (e) => {
     await handleUploadSub();
     await handleUploadMain();
   };
 
-  const handleUploadMain = async()=>{
-    if(mainImage){
+  const handleUploadMain = async () => {
+    if (mainImage) {
       const storageRef = ref(storage, `Mainimages/${mainImage.name}`);
       const uploadTask = uploadBytesResumable(storageRef, mainImage);
 
@@ -100,37 +100,44 @@ const Image = ({ setSubImage,setMainImage }) => {
     }
   };
 
+  useEffect(() => {
+    if (subImagess) {
+      setSubImageUrls(subImagess || []);
+      setMainImageUrl(mainImagess || "");
+    }
+  }, [subImagess, mainImagess])
+
   const MainImage = () => {
     return (
       <div className="block">
         <div>
-        <label className="flex gap-3 cursor-pointer">
-          <input
-            type="file"
-            onChange={handleChangeMain}
-            className="hidden"
-          />
-          <span>Main Image</span>
-          <FaImage size={30} />
-        </label>
-        <p className="text-sm self-center">
-          {mainimageError ? (
-            <span className="text-red-700">
-              Error uploading Main image (file size must be less than 2 MB)
-            </span>
-          ) : mainImgPresentage > 0 && mainImgPresentage < 100 ? (
-            <span className="text-lime-700">Uploading: ${mainImgPresentage} %</span>
-          ) : mainImgPresentage === 100 ? (
-            <span className="text-green-700">
-              Main Image uploaded successfully
-            </span>
-          ) : (
-            ""
-          )}
-        </p>
+          <label className="flex gap-3 cursor-pointer">
+            <input
+              type="file"
+              onChange={handleChangeMain}
+              className="hidden"
+            />
+            <span>Main Image</span>
+            <FaImage size={30} />
+          </label>
+          <p className="text-sm self-center">
+            {mainimageError ? (
+              <span className="text-red-700">
+                Error uploading Main image (file size must be less than 2 MB)
+              </span>
+            ) : mainImgPresentage > 0 && mainImgPresentage < 100 ? (
+              <span className="text-lime-700">Uploading: ${mainImgPresentage} %</span>
+            ) : mainImgPresentage === 100 ? (
+              <span className="text-green-700">
+                Main Image uploaded successfully
+              </span>
+            ) : (
+              ""
+            )}
+          </p>
         </div>
-       { mainImageurl && <div className="flex flex-wrap gap-2">
-            <img  src={mainImageurl} alt="main" className="w-20 h-20 " />
+        {mainImageurl && <div className="flex flex-wrap gap-2">
+          <img src={mainImageurl} alt="main" className="w-20 h-20 border-[1px] border-gray-600" />
         </div>}
       </div>
     );
@@ -140,35 +147,35 @@ const Image = ({ setSubImage,setMainImage }) => {
     return (
       <div className="block">
         <div>
-        <label className="flex gap-3  cursor-pointer">
-          <input
-            type="file"
-            multiple
-            onChange={handleChangeSub}
-            className="hidden"
-          />
-          <span>Sub Image</span>
-          <FaImages size={30} />
-        </label>
-        <p className="text-sm self-center">
-          {subimageError ? (
-            <span className="text-red-700">
-              Error uploading Sub image (file size must be less than 2 MB)
-            </span>
-          ) : subImgPresentage > 0 && subImgPresentage < 100 ? (
-            <span className="text-lime-700">Uploading: ${subImgPresentage} %</span>
-          ) : subImgPresentage === 100 ? (
-            <span className="text-green-700">
-              Sub Image uploaded successfully
-            </span>
-          ) : (
-            ""
-          )}
-        </p>
+          <label className="flex gap-3  cursor-pointer">
+            <input
+              type="file"
+              multiple
+              onChange={handleChangeSub}
+              className="hidden"
+            />
+            <span>Sub Image</span>
+            <FaImages size={30} />
+          </label>
+          <p className="text-sm self-center">
+            {subimageError ? (
+              <span className="text-red-700">
+                Error uploading Sub image (file size must be less than 2 MB)
+              </span>
+            ) : subImgPresentage > 0 && subImgPresentage < 100 ? (
+              <span className="text-lime-700">Uploading: ${subImgPresentage} %</span>
+            ) : subImgPresentage === 100 ? (
+              <span className="text-green-700">
+                Sub Image uploaded successfully
+              </span>
+            ) : (
+              ""
+            )}
+          </p>
         </div>
         <div className="flex flex-wrap gap-2">
           {subImageUrls && subImageUrls.map((item, index) => (
-            <img key={index} src={item} alt="" className="w-20 h-20" />
+            <img key={index} src={item} alt="" className="w-20 h-20 border-[1px] border-gray-600" />
           ))}
         </div>
       </div>
@@ -179,12 +186,12 @@ const Image = ({ setSubImage,setMainImage }) => {
       <div className="flex flex-wrap justify-between gap-3">
         <MainImage />
         <SubImage />
-      <button
-        onClick={handleUpload}
-        className="bg-green-500 flex gap-4 items-center hover:bg-green-700 h-8  py-1 px-4 rounded"
-      >
-        Upload <IoCloudUploadSharp/>
-      </button>
+        <button
+          onClick={handleUpload}
+          className="bg-green-500 flex gap-4 items-center hover:bg-green-700 h-8  py-1 px-4 rounded"
+        >
+          Upload <IoCloudUploadSharp />
+        </button>
       </div>
 
     </div>

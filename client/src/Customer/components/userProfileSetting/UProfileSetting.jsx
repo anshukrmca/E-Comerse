@@ -9,6 +9,8 @@ import { FaLocationDot } from "react-icons/fa6";
 import OrderDetail from './OrderDetail';
 import { FaShippingFast } from "react-icons/fa";
 import OrderSummery from './OrderSummery';
+import { useTheme } from '@mui/material';
+import { tokens } from '../../../theme';
 
 const UserNavigation = [
     {
@@ -30,12 +32,14 @@ const UserNavigation = [
 
 const UProfileSetting = () => {
 
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
     const [isOpen, setIsOpne] = useState(false)
     return (
         <>
             <Layout>
                 <div className="flex mb-4 gap-2 mx-4">
-                    <div className={`${isOpen ? 'w-64' : 'w-20'} p-2 px-4 dark:bg-slate-700 bg-slate-300 relative`}>
+                    <div className={`${isOpen ? 'w-64' : 'w-20'} p-2 px-4 relative`} style={{backgroundColor:`${colors.primary[400]}`}}>
                         <button
                             onClick={() => { setIsOpne(!isOpen) }}
                             className="absolute top-0 -right-4 p-2 focus:outline-none "

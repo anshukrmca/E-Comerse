@@ -7,26 +7,15 @@ import './Product.css'
 
 
 const ProductCard = ({ Kid, P_id, P_name, description, price, color, image,discountedPrice,discountedPercentage }) => {
-  const [isAddToCart, setIsAddToCart] = useState(false)
   const [isAddwishList, setIsAddwishList] = useState(false)
-
   const id  = P_id;
 
-  const handleAddToCart = () => {
-    setIsAddToCart(true)
-    setTimeout(() => {
-      setIsAddToCart(false)
-    }, 2000) // Reset success message after 2 seconds
-  }
   const handleAddToWish = () => {
     setIsAddwishList(true)
     setTimeout(() => {
       setIsAddwishList(false)
     }, 2000) // Reset success message after 2 seconds
   }
-
-
-
 
 
   return (
@@ -66,7 +55,7 @@ const ProductCard = ({ Kid, P_id, P_name, description, price, color, image,disco
                   {
                     color.slice(0,4).map((color, index) => {
                       return (
-                        <div key={index} style={{ backgroundColor: color }} className="w-6 h-6 rounded-full" title={color}></div>
+                        <div key={index} style={{ backgroundColor: color.value }} className="w-6 h-6 rounded-full" title={color}></div>
                       )
                     })
                   }

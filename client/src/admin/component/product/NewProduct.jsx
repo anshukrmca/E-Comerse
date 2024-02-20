@@ -68,7 +68,7 @@ function calculateDiscountPercentage(price, discountedPrice) {
   return 0;
 }
 
-const NewProduct = ({closeForm}) => {
+const NewProduct = ({ closeForm, productId }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [FstLevel, setFstLevel] = useState([])
@@ -76,7 +76,7 @@ const NewProduct = ({closeForm}) => {
   const [selectedColor, setSelectedColor] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [subImage, setSubImage] = useState([]);
-  const [mainImage, setMainImage] = useState([]);
+  const [mainImage, setMainImage] = useState("");
   const [topLevelCategory, settopLevelCategory] = useState('');
   const [secondLevelCategory, setsecondLevelCategory] = useState('');
   const [thirdLevelCategory, setthirdLevelCategory] = useState('');
@@ -97,7 +97,7 @@ const NewProduct = ({closeForm}) => {
     subImages: [],
   });
 
-// for getting Category 
+  // for getting Category 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -114,6 +114,33 @@ const NewProduct = ({closeForm}) => {
     fetchData();
   }, [])
 
+
+  // get data for edit modde 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`/api/product/id/${productId}`);
+        setProductData(response.data);
+        setthirdLevelCategory(response.data.category.name);
+        setSelectedSizes(response.data.size);
+        setSelectedColor(response.data.color);
+        setMainImage(response.data.mainImage)
+        setSubImage(response.data.subImage)
+        const res = await axios.get("/api/category/thirdLevelCategory");
+        const productCategoryId = response.data.category._id;
+        const matchingCategories = res.data.getThirdLevelCategory.filter(category => category._id === productCategoryId);
+        if (matchingCategories.length > 0) {
+          settopLevelCategory(matchingCategories[0].parentCategory.parentCategory.name);
+          setsecondLevelCategory(matchingCategories[0].parentCategory.name);
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+    if (productId) {
+      fetchProducts();
+    }
+  }, [productId]);
 
 
   const handleInputChange = (e) => {
@@ -146,19 +173,25 @@ const NewProduct = ({closeForm}) => {
       secondLevelCategory: secondLevelCategory,
       thirdLevelCategory: thirdLevelCategory,
     };
-
-    const response = await axios.post('/api/admin/product', updatedProductData);
-    const data = response.data.message;
-    toast.success(data);
+    if (productId) {
+      const response = await axios.put(`/api/admin/product/${productId}`, updatedProductData);
+      const data = response.data.message;
+      toast.success(data);
+    } else {
+      const response = await axios.post('/api/admin/product', updatedProductData);
+      const data = response.data.message;
+      toast.success(data);
+    }
     setTimeout(() => {
       window.location.reload();
     }, 2000);
   };
 
+
   return (
     <>
-      <div className="p-4 text-sm" style={{ backgroundColor: `${colors.primary[400]}`,color:`${colors.grey[300]}` }}>
-        <HeaderTittle tittle={"Product"} subtitle={"add new product"}/>
+      <div className="p-4 text-sm" style={{ backgroundColor: `${colors.primary[400]}`, color: `${colors.grey[300]}` }}>
+        <HeaderTittle tittle={"Product"} subtitle={"add new product"} />
         {/* <form onSubmit={handlesubmit}> */}
         <Grid container spacing={1} >
           {productField.map((item, i) => {
@@ -269,11 +302,11 @@ const NewProduct = ({closeForm}) => {
             <label className="block font-bold mb-2">
               Color
             </label>
-            <FormColor setSelectedColor={setSelectedColor} />
+            <FormColor setSelectedColor={setSelectedColor} selectedColor={selectedColor} />
           </Grid>
 
           <Grid item xs={12}>
-            <Image setSubImage={setSubImage} setMainImage={setMainImage} />
+            <Image setSubImage={setSubImage} setMainImage={setMainImage} mainImagess={mainImage} subImagess={subImage} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <Button
@@ -290,12 +323,12 @@ const NewProduct = ({closeForm}) => {
                 },
               }}
             >
-              Save
+              {productId ? "Update" : "Save"}
             </Button>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Button
-            onClick={() => { closeForm() }}
+              onClick={() => { closeForm() }}
               className="w-full"
               variant="contained"
               sx={{

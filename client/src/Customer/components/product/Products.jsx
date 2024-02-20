@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import axios from 'axios';
 
-const Products = ({ Categories }) => {
+const Products = () => {
   const [products, setProducts] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
@@ -22,16 +22,16 @@ const Products = ({ Categories }) => {
 
   // filter date by category 
 
-  useEffect(() => {
-    const filterAndMapData = (Categories) => {
-      const filteredProducts = products.filter(
-        (products) => products.category === Categories.toLowerCase()
-      );
-      setFilteredData(filteredProducts);
-    };
-    filterAndMapData(Categories);
+  // useEffect(() => {
+  //   const filterAndMapData = (Categories) => {
+  //     const filteredProducts = products.filter(
+  //       (products) => products.category === Categories.toLowerCase()
+  //     );
+  //     setFilteredData(filteredProducts);
+  //   };
+  //   filterAndMapData(Categories);
 
-  }, [Categories, products]);
+  // }, [Categories, products]);
 
 
   return (

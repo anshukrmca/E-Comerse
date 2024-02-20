@@ -61,7 +61,10 @@ export const createProduct = async (reqData) => {
 export const deleteProduct = async (productId) => {
   const product = await findProductById(productId);
 
-  await Product.findOneAndDelete(productId);
+  if (!product) {
+    throw new Error("Product not found");
+  }
+  await Product.findOneAndDelete({ _id: productId }); 
   return "Product delete SuccessFull !";
 };
 

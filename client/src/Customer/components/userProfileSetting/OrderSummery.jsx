@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../layout/Layout'
 import { IoCloudDownloadOutline } from "react-icons/io5";
 import { Link, useParams } from 'react-router-dom';
-import { Avatar, AvatarGroup } from '@mui/material';
+import { Avatar, AvatarGroup, useTheme } from '@mui/material';
 import HeaderTittle from '../HeaderTittle';
 import { useSelector } from 'react-redux';
 import { selectorder } from '../../../redux/features/orderSlice';
+import { tokens } from '../../../theme';
 
 const OrderSummery = () => {
-
     const OrderItemData = useSelector(selectorder);
     const { orderid } = useParams();
     const [Order, setOrder] = useState('')
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
-    console.log(Order)
 
     useEffect(() => {
         const filterById = (orderid) => {
@@ -26,12 +27,11 @@ const OrderSummery = () => {
     }, [orderid, OrderItemData])
 
 
-
     return (
         <Layout>
             <div className='mx-4'>
                 <HeaderTittle tittle="Order Details" />
-                <div className='flex flex-col sm:flex-row items-center shadow-lg p-4 mb-4 dark:bg-slate-900 bg-slate-300'>
+                <div className='flex flex-col sm:flex-row items-center shadow-lg p-4 mb-4 ' style={{backgroundColor:`${colors.primary[400]}`}}>
                     {
                         Order && Order.map((item, i) => {
                             return (
@@ -55,22 +55,20 @@ const OrderSummery = () => {
                 </div>
             </div>
 
-            <div className='mx-4 dark:bg-slate-800 bg-slate-300 px-4 py-2'>
-
-
+            <div className='mx-4 mb-4 px-4 py-2' style={{backgroundColor:`${colors.primary[400]}`}}>
                 {Order && Order.map((item, i) => {
                     return (
                         <div key={i}>
                             {item.orderItem.map((item,i) => {
                                return(
-                                <Link to='/order-summery' key={i} className='flex cursor-pointer flex-col sm:flex-row justify-between items-center shadow-sm hover:shadow-2xl p-4 mb-4 dark:bg-slate-900 bg-slate-300'>
+                                <Link  key={i} className='flex cursor-pointer flex-col sm:flex-row justify-between items-center shadow-lg hover:shadow-2xl p-4 mb-4' style={{backgroundColor:`${colors.primary[400]}`}}>
 
                                 <div className='mb-4 sm:mb-0'>
                                     <Avatar alt="Trevor Henderson" src={item.product.mainImage} />
                                 </div>
 
                                 <div className='mb-4 sm:mb-0'>
-                                    <p className='text-sm sm:text-base'>{item.product.title}, ({item.quantity} items)</p>
+                                    <p className='text-sm sm:text-base'>{item.product.title}, ({item.quantity} items),({item.size})</p>
                                 </div>
 
                                 <div className='mb-4 sm:mb-0'>

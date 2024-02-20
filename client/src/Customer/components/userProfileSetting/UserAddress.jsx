@@ -37,7 +37,7 @@ const UserAddress = () => {
   return (
     <>
       <div>
-        <HeaderTittle tittle="Manage Addresses" />
+        <HeaderTittle tittle="Manage Addresses" subtitle={"all address   details"}/>
         <div className=' p-3 border border-gray-400 mb-4'>
           <div onClick={() => { setIsFormOpen(!isFormOpen) }}
             className='font-bold cursor-pointer dark:bg-slate-900 bg-slate-300 p-2'> + Add New Address</div>

@@ -6,6 +6,8 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import axios from 'axios';
 import { IoClose } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
+import { useTheme } from '@emotion/react';
+import { tokens } from '../../../theme';
 
 const UserProfile = () => {
   const token = localStorage.getItem("token");
@@ -17,7 +19,8 @@ const UserProfile = () => {
   const [profilePic, setProfilePic] = useState('')
   const [DOJ, setDOJ] = useState('')
   const [Edit,setEdit]= useState(true)
-
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   useEffect(() => {
 
     if (token) {
@@ -45,8 +48,8 @@ const UserProfile = () => {
 
   return (
     <>
-      <HeaderTittle tittle="Profile" />
-      <div className="ProfileView">
+      <HeaderTittle tittle="Profile" subtitle={"profile details"}/>
+      <div>
         <div className="md:col-span-4">
           <div className="flex flex-col items-center text-center p-3 py-5">
             <img
@@ -66,20 +69,20 @@ const UserProfile = () => {
               <h4 className="text-right">Profile Details</h4>
               <div className="space-x-2">
                 <Link className='flex gap-3'>
-                {Edit &&  <AiOutlineEdit onClick={()=>{setEdit(!Edit)}} size={35} className="text-yellow-500 text-2xl bg-white p-2 rounded-full" />}
+                {Edit &&  <AiOutlineEdit onClick={()=>{setEdit(!Edit)}} size={35} className="text-yellow-500 text-2xl p-2 rounded-full" style={{backgroundColor:`${colors.primary[400]}`}} />}
                   {!Edit && 
                  <>
                   <FaCheck onClick={()=>{
                     alert("updatre")
-                   setEdit(true)}} size={35} className="text-green-500 text-2xl bg-white p-2 rounded-full" />
-                  <IoClose onClick={()=>{setEdit(true)}} size={35} className="text-red-500 text-2xl bg-white p-2 rounded-full" />
+                   setEdit(true)}} size={35} className="text-green-500 text-2xl p-2 rounded-full" style={{backgroundColor:`${colors.primary[400]}`}}/>
+                  <IoClose onClick={()=>{setEdit(true)}} size={35} className="text-red-500 text-2xl p-2 rounded-full" style={{backgroundColor:`${colors.primary[400]}`}}/>
 
                  </>
                 }
                 </Link>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 dark:bg-slate-800 bg-slate-300 p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4" style={{backgroundColor:`${colors.primary[400]}`}}>
               <div className="mb-3">
                 <div className="font-semibold">Name</div>
                 <div className="">
@@ -117,7 +120,7 @@ const UserProfile = () => {
                 />
               </div>
               <div className="mb-3">
-                <div className="font-semibold">Account Created Date</div>
+                <div className="font-semibold mb-3">Account Created Date</div>
                 <label>{DOJ}</label>
               </div>
             </div>

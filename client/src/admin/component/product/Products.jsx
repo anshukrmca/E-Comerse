@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import NewProduct from './NewProduct'
 import HeaderTittle from '../../../Customer/components/HeaderTittle';
-import { mockDataContacts } from './data';
 import { Avatar, Box, useTheme } from '@mui/material';
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from '../../../theme';
@@ -16,9 +15,12 @@ const Products = () => {
   const colors = tokens(theme.palette.mode);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [Products, setProducts] = useState('')
+  const [EditProductID, setEditProductID] = useState('')
+  
 
   const closeForm = () => {
-    setIsFormOpen(false)
+    setIsFormOpen(false);
+    setEditProductID('')
   }
 
   const columns = [
@@ -31,7 +33,7 @@ const Products = () => {
     { field: "discountedPrice", headerName: "Discounted Price",headerAlign: "center", align: "center",flex: 1, },
     { field: "quantity", headerName: "Quantity",headerAlign: "center", align: "center",flex: 1, },
     { field: "action",headerName: "Action",headerAlign: "center",align: "center", width: 150, flex: 1,renderCell: (params) => (
-        <BtnAction idd={params.row._id} closeForm={closeForm} setIsFormOpen={setIsFormOpen} />
+        <BtnAction id={params.row._id} handleEdit={handleEdit} />
       )
     }
   ];
@@ -46,17 +48,21 @@ const Products = () => {
   }, [])
 
 
+  const handleEdit = async (id) => {
+    setIsFormOpen(true);
+    setEditProductID(id)
+    // console.log(id)
+}
+
   return (
     <div>
-
-
       <div className='mb-4 p-2'>
         <HeaderTittle tittle={"Product"} subtitle={"List of Product"} />
         <div className='mb-6'>
           <div style={{ backgroundColor: `${colors.primary[400]}` }} onClick={() => { setIsFormOpen(!isFormOpen) }}
             className='font-bold cursor-pointer shadow-md p-3'> + Add New Product</div>
           <div className='mt-2'>
-            {isFormOpen && <NewProduct closeForm={closeForm} />}
+            {isFormOpen && <NewProduct closeForm={closeForm} productId={EditProductID} />}
           </div>
         </div>
         <Box

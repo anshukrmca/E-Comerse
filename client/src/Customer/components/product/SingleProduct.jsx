@@ -8,6 +8,9 @@ import HeaderTittle from '../HeaderTittle';
 import { Rating, useTheme } from '@mui/material';
 import { toast } from 'react-toastify';
 import { tokens } from '../../../theme';
+import Products from './Products';
+import ProductCard from './ProductCard';
+
 
 const SingleProduct = () => {
     const theme = useTheme();
@@ -19,14 +22,15 @@ const SingleProduct = () => {
     const [selectedSize, setSelecetedSize] = useState("")
     const [selectedQuantity, setSelecetedQuantity] = useState(1)
     const P_ID = useParams()
+
+
     // product data 
-
-
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const response = await axios.get(`/api/product/id/${P_ID.id}`);
                 setProducts(response.data);
+                // console.log(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -40,13 +44,13 @@ const SingleProduct = () => {
         const fetchProducts = async () => {
             const category = products.category.name;
             try {
-                const response = await axios.get('/api/product', {
+                const response = await axios.get('/api/product/category', {
                     params: {
                         category: category,
                     }
                 });
-                //    console.log(response);
-                // setRelatedproducts(response);
+                // console.log(response.data);
+                setRelatedproducts(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -57,7 +61,6 @@ const SingleProduct = () => {
         }
     }, [products.category]);
 
-
     const handleAddToCart = async () => {
         let data = {
             color: selectedColor,
@@ -65,9 +68,8 @@ const SingleProduct = () => {
             quantity: selectedQuantity,
             ProductId: products._id
         }
-        console.log(data)
         const res = await axios.post('/api/cart/add', data);
-        console.log(res)
+        // console.log(res)
         toast.success(res.data)
     }
     const handleAddToWish = () => {
@@ -126,12 +128,12 @@ const SingleProduct = () => {
                                             <h2 className="mb-2 text-xl font-bold dark:text-gray-400">
                                                 Color</h2>
                                             <div className="flex flex-wrap -mb-2">
-                                                {products.color.map((c) => {
+                                                {products.color.map((c, i) => {
                                                     return (
-                                                        <button key={c}
-                                                            onClick={() => setSelecetedColor(c)}
+                                                        <button key={i}
+                                                            onClick={() => setSelecetedColor(c.label)}
                                                             className="p-1 mb-2 mr-2 border border-transparent rounded-full hover:border-gray-400 dark:border-gray-800 dark:hover:border-gray-400 ">
-                                                            <div className="w-6 h-6 rounded-full" style={{ backgroundColor: c }}></div>
+                                                            <div className="w-6 h-6 rounded-full" style={{ backgroundColor: c.value }}></div>
                                                         </button>
                                                     )
                                                 })}
@@ -206,15 +208,15 @@ const SingleProduct = () => {
 
 
                     {/* rating  */}
-                    <ProductReview id={P_ID.id}/>
+                    <ProductReview id={P_ID.id} />
 
                     {/* related product   */}
                     <div className='px-4'>
                         <HeaderTittle tittle="Related Products" />
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:grid-cols-4 mb-2">
-                            {/* {Relatedproducts && Relatedproducts.map((item) => {
+                            {Relatedproducts && Relatedproducts.slice(0, 4).map((item) => {
                                 return (
-                                    <Product
+                                    <ProductCard
                                         key={item._id}
                                         P_id={item._id}
                                         P_name={item.title}
@@ -222,11 +224,10 @@ const SingleProduct = () => {
                                         price={item.price}
                                         color={item.color}
                                         size={item.size}
-                                        image={item.image}
-
+                                        image={item.mainImage}
                                     />
                                 )
-                            })} */}
+                            })}
                         </div >
                     </div>
                 </section>

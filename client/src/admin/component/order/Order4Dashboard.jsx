@@ -14,7 +14,6 @@ const Order4Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  console.log(adminOrderss);
 
   useEffect(() => {
     if (token) {

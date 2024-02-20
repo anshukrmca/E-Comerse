@@ -45,10 +45,11 @@ export const findUserByEmail = async(email)=>{
 
  export const getallUser = async()=>{
     try {
-      const user = User.find()
+      const user = User.find().populate('Useraddress');
       return user;
     } catch (error) {
      throw new Error(error.message);
     }
  }
 
+ ``
