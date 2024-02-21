@@ -13,7 +13,6 @@ const CardItem = ({ item }) => {
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
 
-
   const handleRemoveToCart = async (cartItemId) => {
     try {
       const response = await axios.delete(`/api/cartItem/${cartItemId}`);

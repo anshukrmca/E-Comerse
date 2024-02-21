@@ -1,4 +1,6 @@
 import User from '../models/userModel.js';
+import { findUserCart } from '../service/cartService.js';
+import { UsersOrderHistory } from '../service/orderService.js';
 import { getallUser } from '../service/userService.js';
 import { errorHandler } from '../utils/error.js';
 import bcryptjs from 'bcryptjs';
@@ -59,3 +61,16 @@ export const deleteUser = async (req, res, next) => {
   }
 
 }
+
+
+export const getUserDetails4admin = async (req, res, next) => {
+  const userId = req.params.id
+  try {
+    const user = await User.findById(userId).populate('Useraddress');
+    const usercart = await findUserCart(userId);
+    const userorder = await UsersOrderHistory(userId);
+    res.status(200).json({ user,usercart,userorder });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -13,6 +13,7 @@ const Category = () => {
   const [newCategory, setNewCategory] = useState(false)
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [EditData, setEditData] = useState(null)
 
 
   useEffect(() => {
@@ -30,13 +31,13 @@ const Category = () => {
   }, []);
 
   const columns = [
-    { field: "fstLevel", headerName: "First Level", headerAlign: "center", align: "center",  flex: 1, valueGetter: (params) => params.row.parentCategory.parentCategory.name },
+    { field: "fstLevel", headerName: "First Level", headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.parentCategory.parentCategory.name },
     { field: "SndLevel", headerName: " Second Level", headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.parentCategory.name },
     { field: "thrdLevel", headerName: " Third Level", headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.name },
     {
-      field: "action", headerName: "Action", headerAlign: "center", align: "center", width: 150,  flex: 1,renderCell: (params) => (
+      field: "action", headerName: "Action", headerAlign: "center", align: "center", width: 150, flex: 1, renderCell: (params) => (
         <Tooltip title='Edit'>
-          <IconButton onClick={() => { handleEdit(params.row._id, params.row.parentCategory._id) }}>
+          <IconButton onClick={() => { handleEdit(params.row._id, params.row.name, params.row.parentCategory._id, params.row.parentCategory.name) }}>
             <FaRegEdit size={20} className='text-yellow-500' />
           </IconButton>
         </Tooltip>
@@ -46,10 +47,12 @@ const Category = () => {
 
   const closeForm = () => {
     setNewCategory(false);
+    setEditData(null);
   }
 
-  const handleEdit = async (TopId, SecId) => {
-    console.log("T", TopId, "s", SecId);
+  const handleEdit = async (TopId, TopData, SecId, SecData) => {
+    setEditData({ TopId: TopId, TopData: TopData, SecId: SecId, SecData: SecData });
+    setNewCategory(true);
   }
 
   return (
@@ -59,7 +62,7 @@ const Category = () => {
         <div style={{ backgroundColor: `${colors.primary[400]}` }} onClick={(e) => { setNewCategory(!newCategory) }} className="font-semibold cursor-pointer p-2 mb-4  uppercase">
           <span className='px-3'>&#128073;</span>Add New Category
         </div>
-        {newCategory && <AddCategory closeForm={closeForm} />}
+        {newCategory && <AddCategory closeForm={closeForm} EditData={EditData} />}
         <Box
           height="75dvh"
           sx={{

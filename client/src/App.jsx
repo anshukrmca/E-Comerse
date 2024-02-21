@@ -23,6 +23,7 @@ import { ColorModeContext, tokens, useMode } from './theme.js'
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Order from "./admin/component/order/Order.jsx";
 import ReviewForm from "./Customer/components/ProductReview/ReviewForm.jsx";
+import UserAllInformation from "./admin/component/user/UserAllInformation.jsx";
 
 const App = () => {
   const [theme, colorMode] = useMode();
@@ -66,6 +67,7 @@ const App = () => {
                 <Route path="/admin/category" element={<Category />} />
                 <Route path="/admin/color" element={<Category />} />
                 <Route path="/admin/order" element={<Order />} />
+                <Route path="/admin/user/:id" element={<UserAllInformation/>}/>
               </Route>
 
             </Routes>

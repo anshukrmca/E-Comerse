@@ -6,18 +6,13 @@ import { tokens } from '../../../theme'
 import HeaderTittle from '../../../Customer/components/HeaderTittle'
 import { IoIosMail } from "react-icons/io";
 import { FaHandshake } from "react-icons/fa";
-import UserInfoModel from './UserInfoModel'
-
-
-
+import { useNavigate } from 'react-router-dom'
 
 const User = () => {
   const [user, setUser] = useState([])
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [open, setOpen] = useState(false)
-  const [Singleuser, setSingleuser] = useState(null)
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -54,20 +49,15 @@ const User = () => {
                   <p className="mt-1 text-sm flex items-center gap-2"><FaHandshake size={20} /> {new Date(item.createdAt).toLocaleString()}</p>
                   <button
                     onClick={() => {
-                      setOpen(!open);
-                      setSingleuser(item )
+                      navigate(`/admin/user/${item._id}`)
                     }}
                     className='p-2 rounded-lg mt-2' style={{ backgroundColor: `${colors.blueAccent[800]}` }}>view more</button>
                 </div>
-
-
               </div>
-
             ))
             : <DataLoading />}
         </div>
       </div>
-      <UserInfoModel open={open} setOpen={setOpen} user={Singleuser} />
     </>
   )
 }

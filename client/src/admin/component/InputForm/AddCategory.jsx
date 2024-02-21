@@ -1,10 +1,10 @@
 import { Button, Grid, TextField, useTheme } from '@mui/material'
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { tokens } from '../../../theme'
 
-const AddCategory = ({ closeForm }) => {
+const AddCategory = ({ closeForm, EditData }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [category, setCategory] = useState({});
@@ -12,6 +12,15 @@ const AddCategory = ({ closeForm }) => {
     topLevelCategory: '',
     secondLevelCategory: '',
   });
+
+  useEffect(() => {
+    if (EditData) {
+      setSelectedCategory({
+        topLevelCategory: EditData.TopData,
+        secondLevelCategory: EditData.SecData,
+      })
+    }
+  }, [EditData])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,18 +31,29 @@ const AddCategory = ({ closeForm }) => {
   };
 
   const handleSubmit = async () => {
-      // Make the POST request
+    // Make the POST request
+    if (EditData) {
+      const Edata = { selectedCategory, TopId: EditData.TopId, SecId: EditData.SecId };
+      const response = await axios.put('/api/category', Edata);
+      const data = response.data;
+      console.log(data)
+      closeForm();
+      toast.success(data.message)
+    } else {
       const response = await axios.post('/api/category', selectedCategory);
       const data = response.data;
       closeForm();
       toast.success(data.message)
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+    }
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
-  console.log(category)
+
+  // console.log(EditData);
+
   return (
-    <div className='p-3 mt-4 rounded-sm' style={{background:`${colors.primary[400]}`,color:`${colors.grey[200]}`}}>
+    <div className='p-3 mt-4 rounded-sm' style={{ background: `${colors.primary[400]}`, color: `${colors.grey[200]}` }}>
       <p className='mb-2 font-semibold'>New Category</p>
       {/* <form onSubmit={handleSubmit}> */}
 
@@ -83,7 +103,7 @@ const AddCategory = ({ closeForm }) => {
               },
             }}
           >
-            Save
+            {EditData ? "update" : "Save"}
           </Button>
         </Grid>
         <Grid item xs={12} sm={6}>

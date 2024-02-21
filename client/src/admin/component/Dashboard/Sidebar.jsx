@@ -17,6 +17,7 @@ import { MdMenu } from "react-icons/md";
 import './Navbar.css'
 import { RiLuggageCartLine } from "react-icons/ri";
 import Order from "../order/Order";
+import UserAllInformation from "../user/UserAllInformation";
 
 
 const Sidebar = () => {
@@ -181,6 +182,7 @@ const Sidebar = () => {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="product" element={<Products />} />
             <Route path="user" element={<User />} />
+            <Route path="user/:id" element={<UserAllInformation />} />
             <Route path="color" element={<Color />} />
             <Route path="category" element={<Category />} />
             <Route path="order" element={<Order />} />
