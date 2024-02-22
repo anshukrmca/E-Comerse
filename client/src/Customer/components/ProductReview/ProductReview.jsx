@@ -54,7 +54,7 @@ const ProductReview = ({ id }) => {
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/2">
             <div className="space-y-5 mb-4">
-              {review?.map((item, index) => (
+              {review && review.slice(0,2)?.map((item, index) => (
                 <ProductRevirewCard item={item} key={index} />
               ))}
             </div>
@@ -93,6 +93,7 @@ const ProductReview = ({ id }) => {
             ))}
           </div>
         </div>
+        <p className='p-2 justify-right' style={{alignItems:'end'}}>view all review ..</p>
       </section>
     </>
   )

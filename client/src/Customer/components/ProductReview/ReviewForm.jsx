@@ -6,6 +6,8 @@ import { tokens } from '../../../theme';
 import { FaRegStar } from "react-icons/fa";
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { selectorder } from '../../../redux/features/orderSlice';
 
 const ReviewForm = () => {
     const theme = useTheme();
@@ -17,6 +19,7 @@ const ReviewForm = () => {
     const [BuyProduct, setBuyproduct] = useState(false)
     const [products, setProducts] = useState();
     const navigate = useNavigate()
+    const orderHistory = useSelector(selectorder);
 
     const data = [
         {
@@ -49,39 +52,33 @@ const ReviewForm = () => {
     function getLabelText(value) {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
     }
-
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await axios.get(`/api/review/${id}`);
-                setProducts(response.data.product);
-                if (response.data.message === 'Review not found') {
-                    setBuyproduct(true)
-
+        orderHistory?.map((item, i) => {
+            item.orderItem?.map((data, i) => {
+                if (data.product._id === id) {
+                    console.log("o p id :",data.product._id)
+                    console.log("p id :",id)
+                    setBuyproduct(true);
+                    setProducts(data.product);
                 }
-                else {
-                    toast.success("You all complate Review for this product !")
-                    setTimeout(() => {
-                        navigate(`/products/${id}`)
-                    }, 2000);
-                }
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            }
-        };
+            })
 
-        fetchProducts();
-    }, [id]);
+        })
 
+    }, [orderHistory, id])
+  
     const handleReview = async () => {
         const data = {
             product: products._id,
             rating: value,
             review: reviewContaint
         }
-        //console.log(data); create
         const response = await axios.post('/api/review/create', data);
         console.log(response.data);
+        toast.success(response.data.message);
+        setTimeout(() => {
+            navigate(`/products/${id}`);
+        }, 2000);
     }
 
     return (
