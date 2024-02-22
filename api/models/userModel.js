@@ -27,36 +27,12 @@ const userSchema = new mongoose.Schema(
     mobile: {
       type: String,
     },
-    // cart: [
-    //   {
-    //     typeof:  mongoose.Schema.Types.ObjectId,
-    //     ref: "cart",
-    //   }
-    // ],
     Useraddress: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Address", 
       }
     ],
-    // paymentInformaton: [
-    //   {
-    //     typeof:  mongoose.Schema.Types.ObjectId,
-    //     ref: "payment_Informaton",
-    //   }
-    // ],
-    // ratings: [
-    //   {
-    //     typeof:  mongoose.Schema.Types.ObjectId,
-    //     ref: "ratings",
-    //   }
-    // ],
-    // reviews: [
-    //   {
-    //     typeof:  mongoose.Schema.Types.ObjectId,
-    //     ref: "reviews",
-    //   }
-    // ],
   },
 
   { timestamps: true }

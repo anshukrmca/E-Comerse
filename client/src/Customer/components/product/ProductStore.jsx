@@ -76,8 +76,9 @@ export default function ProductStore() {
                         pageSize: data.pageSize,
                     }
                 });
-                setProducts(response.data.content);
-                setPageNum(response.data.totalPage);
+                console.log(response.data)
+                setProducts(response.data.product.content);
+                setPageNum(response.data.product.totalPage);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }

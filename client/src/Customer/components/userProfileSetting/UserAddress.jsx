@@ -3,6 +3,8 @@ import HeaderTittle from '../HeaderTittle'
 import AddressFrom from '../From/AddressFrom';
 import axios from 'axios';
 import AddressCard from '../checkout/AddressCard';
+import { useTheme } from '@mui/material';
+import { tokens } from '../../../theme';
 
 
 const UserAddress = () => {
@@ -10,7 +12,8 @@ const UserAddress = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [addressesData, setAddressesData] = useState([]);
   const [id,setId] = useState("")
-
+  const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
   const closeForm = () => {
     setIsFormOpen(false)
@@ -40,7 +43,7 @@ const UserAddress = () => {
         <HeaderTittle tittle="Manage Addresses" subtitle={"all address   details"}/>
         <div className=' p-3 border border-gray-400 mb-4'>
           <div onClick={() => { setIsFormOpen(!isFormOpen) }}
-            className='font-bold cursor-pointer dark:bg-slate-900 bg-slate-300 p-2'> + Add New Address</div>
+            className='font-bold cursor-pointer p-2' style={{backgroundColor:`${colors.primary[400]}`}}> + Add New Address</div>
           <div className='mt-2'>
             {isFormOpen && <AddressFrom closeForm={closeForm} AddressId={id}/>}
           </div>
@@ -53,7 +56,7 @@ const UserAddress = () => {
               )
             })}
           </div>
-          : ''}
+          : 'No Address'}
 
       </div>
     </>

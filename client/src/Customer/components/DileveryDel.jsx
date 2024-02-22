@@ -4,8 +4,13 @@ import { FiGift } from "react-icons/fi";
 import { BiSolidOffer } from "react-icons/bi";
 import { MdOutlineSupportAgent } from "react-icons/md";
 import { MdOutlinePayment } from "react-icons/md";
+import { useTheme } from "@mui/material";
+import { tokens } from '../../theme';
 
 const DileveryDel = () => {
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+
     const Delev = ({ icon, tittle, subtittle }) => {
         return (
 
@@ -20,7 +25,7 @@ const DileveryDel = () => {
     }
     return (
         <>
-            <div className='grid grid-cols-1 gap-2 sm:grid-cols-3 lg:grid-cols-5 mb-2 bg-slate-600 mt-4'>
+            <div className='grid grid-cols-1 gap-2 sm:grid-cols-3 lg:grid-cols-5 mb-2 mt-4' style={{backgroundColor:`${colors.primary[400]}`}}>
                 <Delev icon={<FaShippingFast />} tittle="Free Shipping" subtittle="From all order over $20" />
                 <Delev icon={<FiGift />} tittle="Daily Suprise offers" subtittle="Save upto 20%" />
                 <Delev icon={<MdOutlineSupportAgent />} tittle="Support 24/7" subtittle="Support with an expert" />

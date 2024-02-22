@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Button, Grid, LinearProgress, Rating, useTheme } from "@mui/material";
 import ProductRevirewCard from './ProductRevirewCard';
 import { tokens } from '../../../theme';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 
 const ratingdata = [
   {
@@ -31,11 +32,21 @@ const ratingdata = [
   },
 ];
 
-const ProductReview = ({id}) => {
+const ProductReview = ({ id }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-const navigate = useNavigate();
-  console.log(id)
+  const navigate = useNavigate();
+  const [review ,setReview] = useState(null);
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      const response = await axios.get(`/api/review/product/${id}`);
+      setReview(response.data)
+    }
+    fetchdata();
+  }, [id])
+
+
   return (
     <>
       <section className=" p-4 mb-4">
@@ -43,16 +54,16 @@ const navigate = useNavigate();
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/2">
             <div className="space-y-5 mb-4">
-              {[1, 1, 1].map((item, index) => (
-                <ProductRevirewCard key={index} />
+              {review?.map((item, index) => (
+                <ProductRevirewCard item={item} key={index} />
               ))}
             </div>
           </div>
           <div className="md:w-1/2 md:pl-8">
-           <div className='flex justify-between mr-4'>
-           <h1 className="text-xl font-semibold pb-2 ">Product Rating</h1>
-           <button onClick={()=>{navigate(`/review/${id}`)}}  className='p-2 cursor-pointer rounded-sm' style={{backgroundColor:`${colors.blueAccent[700]}`}}>Rate Product</button>
-           </div>
+            <div className='flex justify-between mr-4'>
+              <h1 className="text-xl font-semibold pb-2 ">Product Rating</h1>
+              <button onClick={() => { navigate(`/review/${id}`) }} className='p-2 cursor-pointer rounded-sm' style={{ backgroundColor: `${colors.blueAccent[700]}` }}>Rate Product</button>
+            </div>
             <div className="flex items-center space-x-3">
               <Rating value={4.5} precision={0.5} readOnly />
             </div>

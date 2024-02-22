@@ -45,7 +45,7 @@ export const findProductByIds =async(req,res,next)=>{
 export const gettAllProducts =async(req,res,next)=>{
     try {
         const product = await getAllProduct(req.query);
-        res.status(200).json(product);
+        res.status(200).json({product});
     } catch (error) {
         next(error)
     }

@@ -35,7 +35,7 @@ const productSchema = new Schema(
     size: {
       type: Array,
       required: true,
-  },
+    },
     mainImage: {
       type: String,
       required: true,
@@ -46,26 +46,18 @@ const productSchema = new Schema(
         required: true,
       }
     ],
-    ratings: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "ratings",
-    },
-    reviews: {
+    reviews: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "reviews",
-    },
-    numRating: {
-      type: Number,
-      default: 0,
-    },
+    }],
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "categories",
-      required:true
+      required: true
     },
     brand: {
       type: String,
-      required:true
+      required: true
     },
   },
   {

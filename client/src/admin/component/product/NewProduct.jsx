@@ -6,6 +6,8 @@ import { Button, Grid, useTheme } from "@mui/material";
 import { toast } from 'react-toastify'
 import { tokens } from "../../../theme";
 import HeaderTittle from "../../../Customer/components/HeaderTittle";
+import { getProductList } from "../../../redux/features/productSlice";
+import { useDispatch } from "react-redux";
 
 const productField = [
   {
@@ -71,6 +73,7 @@ function calculateDiscountPercentage(price, discountedPrice) {
 const NewProduct = ({ closeForm, productId }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const dispatch = useDispatch()
   const [FstLevel, setFstLevel] = useState([])
   const [SndLevel, setSndLevel] = useState([])
   const [selectedColor, setSelectedColor] = useState([]);
@@ -182,8 +185,10 @@ const NewProduct = ({ closeForm, productId }) => {
       const data = response.data.message;
       toast.success(data);
     }
+    dispatch(getProductList());
+    await closeForm();
     setTimeout(() => {
-      window.location.reload();
+      //  window.location.reload();
     }, 2000);
   };
 

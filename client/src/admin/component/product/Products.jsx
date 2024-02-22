@@ -6,17 +6,21 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from '../../../theme';
 import BtnAction from './BtnAction';
 import axios from 'axios';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import DataLoading from '../../../Customer/components/Loding/DataLoading';
+import { useDispatch, useSelector } from 'react-redux'
+import { getProductList, selectproduct } from '../../../redux/features/productSlice';
 
 
 const Products = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [Products, setProducts] = useState('')
   const [EditProductID, setEditProductID] = useState('')
-  
+  const dispatch = useDispatch()
+  const Products = useSelector(selectproduct);
+
+
 
   const closeForm = () => {
     setIsFormOpen(false);
@@ -24,15 +28,16 @@ const Products = () => {
   }
 
   const columns = [
-    { field: "mainImage", headerName: "Image", width: 100, headerAlign: "center", align: "center",flex: 1, renderCell: (params) => <Link to={`/products/${params.row._id}`}><Avatar alt="Avatar" src={params.value} /></Link> },
-    { field: "title", headerName: "Title",headerAlign: "center", align: "center",flex: 1,},
-    { field: "brand", headerName: "Brand",headerAlign: "center", align: "center",flex: 1, },
-    { field: 'categoryName', headerName: 'Category', headerAlign: "center",align: "center",flex: 1, valueGetter: (params) => params.row.category.name },
-    { field: "price", headerName: "Price",headerAlign: "center", align: "center" },
-    { field: "discountedPercentage", headerName: "Discounted Percentage",headerAlign: "center", align: "center",flex: 1, },
-    { field: "discountedPrice", headerName: "Discounted Price",headerAlign: "center", align: "center",flex: 1, },
-    { field: "quantity", headerName: "Quantity",headerAlign: "center", align: "center",flex: 1, },
-    { field: "action",headerName: "Action",headerAlign: "center",align: "center", width: 150, flex: 1,renderCell: (params) => (
+    { field: "mainImage", headerName: "Image", width: 100, headerAlign: "center", align: "center", flex: 1, renderCell: (params) => <Link to={`/products/${params.row._id}`}><Avatar alt="Avatar" src={params.value} /></Link> },
+    { field: "title", headerName: "Title", headerAlign: "center", align: "center", flex: 1, },
+    { field: "brand", headerName: "Brand", headerAlign: "center", align: "center", flex: 1, },
+    { field: 'categoryName', headerName: 'Category', headerAlign: "center", align: "center", flex: 1, valueGetter: (params) => params.row.category.name },
+    { field: "price", headerName: "Price", headerAlign: "center", align: "center" },
+    { field: "discountedPercentage", headerName: "Discounted Percentage", headerAlign: "center", align: "center", flex: 1, },
+    { field: "discountedPrice", headerName: "Discounted Price", headerAlign: "center", align: "center", flex: 1, },
+    { field: "quantity", headerName: "Quantity", headerAlign: "center", align: "center", flex: 1, },
+    {
+      field: "action", headerName: "Action", headerAlign: "center", align: "center", width: 150, flex: 1, renderCell: (params) => (
         <BtnAction id={params.row._id} handleEdit={handleEdit} />
       )
     }
@@ -40,8 +45,7 @@ const Products = () => {
 
   useEffect(() => {
     const fetchdata = async () => {
-      const response = await axios.get('/api/product');
-      setProducts(response.data);
+      dispatch(getProductList());
     };
 
     fetchdata();
@@ -52,7 +56,7 @@ const Products = () => {
     setIsFormOpen(true);
     setEditProductID(id)
     // console.log(id)
-}
+  }
 
   return (
     <div>
@@ -96,12 +100,12 @@ const Products = () => {
             },
           }}
         >
-          {Products && Products.length >0 ? <DataGrid
+          {Products && Products.length > 0 ? <DataGrid
             rows={Products}
             columns={columns}
             components={{ Toolbar: GridToolbar }}
             getRowId={(row) => row._id}
-          /> :<DataLoading/>}
+          /> : <DataLoading />}
         </Box>
 
       </div>

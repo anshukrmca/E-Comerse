@@ -66,9 +66,6 @@ app.use('/api/admin/orders', AdminorderRoute);
 import reviewRoute from '../api/Routes/reviewRoute.js'
 app.use('/api/review', reviewRoute);
 
-import ratingRoute from '../api/Routes/ratingRoute.js'
-app.use('/api/rating', ratingRoute);
-
 import categoryRoute from '../api/Routes/categoryRoute.js'
 app.use('/api/category', categoryRoute);
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
-import { Button } from "@mui/material";
+import { Button, useTheme } from "@mui/material";
 // import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 // import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Product from "../product/ProductCard";
@@ -9,6 +9,7 @@ import axios from 'axios';
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa6";
 import HeaderTittle from "../HeaderTittle";
+import { tokens } from "../../../theme";
 
 const responsive = {
     0: { items: 1 },
@@ -20,6 +21,8 @@ const HomeProductCarousels = ({ category }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const carouselRef = useRef(null);
     const [products, setProducts] = useState([]);
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     useEffect(() => {
         const fetchProducts = async (category) => {
@@ -75,9 +78,9 @@ const HomeProductCarousels = ({ category }) => {
 
     return (
         <>
-            <div className="px-2 mb-3 bg-slate-300 dark:bg-slate-700 h-[auto]">
+            <div className="px-2 mb-3 b h-[auto]" style={{backgroundColor:`${colors.primary[400]}`}}>
                 {/* <h3 className="text-2xl font-bold">Product from {`${Categories}`}</h3> */}
-                <HeaderTittle tittle={`Product from ${category}`} />
+                <HeaderTittle tittle={`${category}`} subtitle={`all product related from ${category}`}/>
                 <div className="relative p-5">
                     <AliceCarousel
                         items={items}

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Layout from '../layout/Layout'
 import { Avatar, Box, Button, Rating, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 import { FaRegStar } from "react-icons/fa";
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const ReviewForm = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const { id } = useParams();
     const [value, setValue] = useState(0);
+    const [reviewContaint, setreviewContaint] = useState('');
     const [hover, setHover] = useState(-1);
     const [BuyProduct, setBuyproduct] = useState(false)
     const [products, setProducts] = useState();
-
+    const navigate = useNavigate()
 
     const data = [
         {
@@ -48,12 +50,21 @@ const ReviewForm = () => {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
     }
 
-
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`/api/product/id/${id}`);
-                setProducts(response.data);
+                const response = await axios.get(`/api/review/${id}`);
+                setProducts(response.data.product);
+                if (response.data.message === 'Review not found') {
+                    setBuyproduct(true)
+
+                }
+                else {
+                    toast.success("You all complate Review for this product !")
+                    setTimeout(() => {
+                        navigate(`/products/${id}`)
+                    }, 2000);
+                }
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -61,6 +72,17 @@ const ReviewForm = () => {
 
         fetchProducts();
     }, [id]);
+
+    const handleReview = async () => {
+        const data = {
+            product: products._id,
+            rating: value,
+            review: reviewContaint
+        }
+        //console.log(data); create
+        const response = await axios.post('/api/review/create', data);
+        console.log(response.data);
+    }
 
     return (
 
@@ -112,7 +134,11 @@ const ReviewForm = () => {
                                 </div>
                                 <div>
                                     <h5 className='font-bold text-xl p-2'>Review this product</h5>
-                                    <textarea placeholder='Description ' className='w-full h-48 outline-none p-2 bg-transparent border-2 border-gray-300' />
+                                    <textarea
+                                        value={reviewContaint}
+                                        onChange={(e) => { setreviewContaint(e.target.value) }}
+                                        placeholder='Description'
+                                        className='w-full h-48 outline-none p-2 bg-transparent border-2 border-gray-300' />
                                 </div>
                                 <div>
                                     <p>Title (optional)</p>
@@ -122,6 +148,7 @@ const ReviewForm = () => {
                                 </div>
                                 <div>
                                     <Button
+                                        onClick={handleReview}
                                         className="w-full"
                                         type="submit"
                                         variant="contained"
