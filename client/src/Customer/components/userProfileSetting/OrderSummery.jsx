@@ -7,6 +7,8 @@ import HeaderTittle from '../HeaderTittle';
 import { useSelector } from 'react-redux';
 import { selectorder } from '../../../redux/features/orderSlice';
 import { tokens } from '../../../theme';
+import { FaCheck } from 'react-icons/fa';
+import Ordertracking from './Ordertracking';
 
 const OrderSummery = () => {
     const OrderItemData = useSelector(selectorder);
@@ -31,7 +33,8 @@ const OrderSummery = () => {
         <Layout>
             <div className='mx-4'>
                 <HeaderTittle tittle="Order Details" />
-                <div className='flex flex-col sm:flex-row items-center shadow-lg p-4 mb-4 ' style={{backgroundColor:`${colors.primary[400]}`}}>
+
+                <div className='flex flex-col sm:flex-row items-center shadow-lg p-4 mb-4 ' style={{ backgroundColor: `${colors.primary[400]}` }}>
                     {
                         Order && Order.map((item, i) => {
                             return (
@@ -55,27 +58,30 @@ const OrderSummery = () => {
                 </div>
             </div>
 
-            <div className='mx-4 mb-4 px-4 py-2' style={{backgroundColor:`${colors.primary[400]}`}}>
+            <div className='mx-4 mb-4 px-4 py-2' style={{ backgroundColor: `${colors.primary[400]}` }}>
+                <div>
+                    <Ordertracking activeStep={0}/>
+                </div>
                 {Order && Order.map((item, i) => {
                     return (
                         <div key={i}>
-                            {item.orderItem.map((item,i) => {
-                               return(
-                                <Link  key={i} className='flex cursor-pointer flex-col sm:flex-row justify-between items-center shadow-lg hover:shadow-2xl p-4 mb-4' style={{backgroundColor:`${colors.primary[400]}`}}>
+                            {item.orderItem.map((item, i) => {
+                                return (
+                                    <Link key={i} className='flex cursor-pointer flex-col sm:flex-row justify-between items-center shadow-lg hover:shadow-2xl p-4 mb-4' style={{ backgroundColor: `${colors.primary[400]}` }}>
 
-                                <div className='mb-4 sm:mb-0'>
-                                    <Avatar alt="Trevor Henderson" src={item.product.mainImage} />
-                                </div>
+                                        <div className='mb-4 sm:mb-0'>
+                                            <Avatar alt="Trevor Henderson" src={item.product.mainImage} />
+                                        </div>
 
-                                <div className='mb-4 sm:mb-0'>
-                                    <p className='text-sm sm:text-base'>{item.product.title}, ({item.quantity} items),({item.size})</p>
-                                </div>
+                                        <div className='mb-4 sm:mb-0'>
+                                            <p className='text-sm sm:text-base'>{item.product.title}, ({item.quantity} items),({item.size})</p>
+                                        </div>
 
-                                <div className='mb-4 sm:mb-0'>
-                                    ₹{item.product.discountedPrice}
-                                </div>
-                            </Link>
-                               )
+                                        <div className='mb-4 sm:mb-0'>
+                                            ₹{item.product.discountedPrice}
+                                        </div>
+                                    </Link>
+                                )
                             })
                             }
                         </div>
