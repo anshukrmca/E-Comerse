@@ -38,7 +38,6 @@ const SingleProduct = () => {
 
         fetchProducts();
     }, [P_ID]);
-
     // Related product data 
     useEffect(() => {
         const fetchProducts = async () => {

@@ -76,7 +76,6 @@ export default function ProductStore() {
                         pageSize: data.pageSize,
                     }
                 });
-                console.log(response.data)
                 setProducts(response.data.product.content);
                 setPageNum(response.data.product.totalPage);
             } catch (error) {

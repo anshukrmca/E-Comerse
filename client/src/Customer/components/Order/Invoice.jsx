@@ -54,7 +54,7 @@ const Invoice = ({ Order }) => {
                                 <div className="flex-grow">
                                     <p className="text-[12px] font-semibold">{item.product?.title}</p>
                                     <p className="text-gray-600">Size: {item.size}</p>
-                                    <p className="text-gray-600">Price: ${item.price - item.discountedprice}</p>
+                                    <p className="text-gray-600">Price: ₹{item.price - item.discountedprice}</p>
                                 </div>
                             </div>
                         ))}
@@ -64,9 +64,9 @@ const Invoice = ({ Order }) => {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold mb-2">Order Summary</h2>
                         <p>Total Items: {Order?.totalItem}</p>
-                        <p>Total Price: ${Order?.totalPrice}</p>
-                        <p>Discounts: ${Order?.discounts}</p>
-                        <p className='font-bold'>Total Payable Price: ${Order?.totalDiscountPrice}</p>
+                        <p>Total Price: ₹{Order?.totalPrice}</p>
+                        <p>Discounts: ₹{Order?.discounts}</p>
+                        <p className='font-bold'>Total Payable Price: ₹{Order?.totalDiscountPrice}</p>
                     </div>
                 </div>
                 <ReactToPrint

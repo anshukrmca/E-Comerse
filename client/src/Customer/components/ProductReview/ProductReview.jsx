@@ -52,6 +52,7 @@ const ProductReview = ({ id }) => {
       <section className=" p-4 mb-4">
         <h1 className="font-semiblod text-lg pb-4">Recent Review & Rating</h1>
         <div className="flex flex-col md:flex-row">
+          {review?.length > 0 && 
           <div className="md:w-1/2">
             <div className="space-y-5 mb-4">
               {review && review.slice(0,2)?.map((item, index) => (
@@ -59,6 +60,7 @@ const ProductReview = ({ id }) => {
               ))}
             </div>
           </div>
+          }
           <div className="md:w-1/2 md:pl-8">
             <div className='flex justify-between mr-4'>
               <h1 className="text-xl font-semibold pb-2 ">Product Rating</h1>
@@ -93,7 +95,8 @@ const ProductReview = ({ id }) => {
             ))}
           </div>
         </div>
-        <p className='p-2 justify-right' style={{alignItems:'end'}}>view all review ..</p>
+        {review?.length > 0 && 
+        <p className='p-2 justify-right' style={{alignItems:'end'}}>view all review ..</p> }
       </section>
     </>
   )

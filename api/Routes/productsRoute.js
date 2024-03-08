@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/",gettAllProducts);
 router.get("/category",gettallProductByCatergory);
-router.get("/id/:id",verifyToken,findProductByIds);
+router.get("/id/:id",findProductByIds);
 
 
 export default router;

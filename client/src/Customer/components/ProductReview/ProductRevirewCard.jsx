@@ -30,9 +30,9 @@ const ProductRevirewCard = ({item}) => {
                             </p>
                         </div>
                     </Grid>
-                    <div>
+                    {/* <div>
                         <MdDeleteForever/>
-                    </div>
+                    </div> */}
                 </Grid>
             </div>
         </>

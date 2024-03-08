@@ -30,7 +30,6 @@ const OrderSummery = () => {
         }
     }, [orderid, OrderItemData])
 
-    console.log(Order);
     return (
         <Layout>
             <div className='mx-4'>
