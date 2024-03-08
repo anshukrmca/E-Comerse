@@ -28,7 +28,7 @@ const OrderSummery = () => {
         }
     }, [orderid, OrderItemData])
 
-
+console.log(Order);
     return (
         <Layout>
             <div className='mx-4'>
@@ -60,7 +60,7 @@ const OrderSummery = () => {
 
             <div className='mx-4 mb-4 px-4 py-2' style={{ backgroundColor: `${colors.primary[400]}` }}>
                 <div>
-                    <Ordertracking activeStep={0}/>
+                    <Ordertracking Order={Order}/>
                 </div>
                 {Order && Order.map((item, i) => {
                     return (
