@@ -9,11 +9,13 @@ import { selectorder } from '../../../redux/features/orderSlice';
 import { tokens } from '../../../theme';
 import { FaCheck } from 'react-icons/fa';
 import Ordertracking from './Ordertracking';
+import Invoice from '../Order/Invoice';
 
 const OrderSummery = () => {
     const OrderItemData = useSelector(selectorder);
     const { orderid } = useParams();
     const [Order, setOrder] = useState('')
+    const [getInvoice, setgetInvoice] = useState(false)
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -28,7 +30,7 @@ const OrderSummery = () => {
         }
     }, [orderid, OrderItemData])
 
-console.log(Order);
+    console.log(Order);
     return (
         <Layout>
             <div className='mx-4'>
@@ -51,16 +53,22 @@ console.log(Order);
                         })
                     }
                     <hr className='border-r border-gray-400 hidden sm:block' />
-                    <div className='flex justify-center items-center p-2 w-full sm:w-1/4'>
+                    <div
+                        onClick={() => {
+                            setgetInvoice(!getInvoice)
+                        }} className='flex justify-center items-center p-2 w-full sm:w-1/4 cursor-pointer'>
                         <p className='text-center'>Download Invoice</p>
                         <IoCloudDownloadOutline size={30} className='hover:text-lime-600 mx-4 cursor-pointer' />
                     </div>
                 </div>
             </div>
+            {getInvoice && <div className='mx-4 mb-4 px-4 py-2 duration-300 ease-in-out' style={{ backgroundColor: `${colors.primary[400]}` }}>
+                <Invoice Order={Order && Order[0]} />
+            </div>}
 
             <div className='mx-4 mb-4 px-4 py-2' style={{ backgroundColor: `${colors.primary[400]}` }}>
                 <div>
-                    <Ordertracking Order={Order}/>
+                    <Ordertracking Order={Order} />
                 </div>
                 {Order && Order.map((item, i) => {
                     return (
