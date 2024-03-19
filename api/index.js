@@ -26,8 +26,8 @@ app.listen(process.env.PORT, () => {
 import userRoutes from '../api/Routes/userRoute.js';
 app.use('/api/user', userRoutes);
 
-import authRoute from '../api/routes/authRoute.js';
-app.use('/api/auth', authRoute);
+import authRoutes from '../api/Routes/authRoute.js';
+app.use('/api/auth', authRoutes);
 
 
 import addressRoute from '../api/Routes/addressRoute.js'
