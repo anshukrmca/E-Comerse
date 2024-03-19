@@ -1,7 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
 import cookieParser from 'cookie-parser';
 import path from 'path';
 dotenv.config();
@@ -13,10 +12,6 @@ mongoose.connect(mongoURI)
   .catch((err) => console.error('Error connecting to MongoDB:', err));
 
 const app = express();
-
-const __dirname = path.resolve();
-
-
 
 app.use(express.json());
 
@@ -68,7 +63,7 @@ app.use('/api/category', categoryRoute);
 import paymentRoute from '../api/Routes/paymentRoute.js'
 app.use('/api/payment', paymentRoute);
 
-
+const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, '/client/dist')));
 
 app.get('*', (req, res) => {

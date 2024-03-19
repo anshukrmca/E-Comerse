@@ -5,9 +5,8 @@
   "description": "Mern stack",
   "main": "index.js",
   "scripts": {
-   
-    "dev": "nodemon /opt/render/project/api/index.js",
-    "start": "node /opt/render/project/api/index.js",
+    "dev": "nodemon api/index.js",
+    "start": "node api/index.js",
     "build": "npm install && npm install --prefix client && npm run build --prefix client"
   },
   "author": "Anshu",
