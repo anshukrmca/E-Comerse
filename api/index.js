@@ -14,13 +14,9 @@ mongoose.connect(mongoURI)
 
 const app = express();
 
-// const __dirname = path.resolve();
+const __dirname = path.resolve();
 
-// app.use(express.static(path.join(__dirname, '/client/dist')));
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
-// });
 
 app.use(express.json());
 
@@ -72,6 +68,12 @@ app.use('/api/category', categoryRoute);
 import paymentRoute from '../api/Routes/paymentRoute.js'
 app.use('/api/payment', paymentRoute);
 
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 app.use((err, req, res, next) => {  
   const statusCode = err.statusCode || 500;
